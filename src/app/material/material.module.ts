@@ -14,6 +14,8 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
+import {MatSelectModule} from '@angular/material/select';
+
 
 
 @NgModule({
@@ -33,7 +35,8 @@ import { MatCardModule } from '@angular/material/card';
     MatSlideToggleModule,
     MatFormFieldModule,
     MatInputModule,
-    MatCardModule 
+    MatCardModule,
+    MatSelectModule
   ],
   exports: [
     MatSliderModule,
@@ -49,7 +52,8 @@ import { MatCardModule } from '@angular/material/card';
     MatSlideToggleModule,
     MatFormFieldModule,
     MatInputModule,
-    MatCardModule 
+    MatCardModule,
+    MatSelectModule
   ]
 })
 export class MaterialModule { }

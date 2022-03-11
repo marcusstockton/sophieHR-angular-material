@@ -6,7 +6,10 @@
     </button>
     <span>Sophies Human Resources</span>
     <span class="example-spacer"></span>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" (click)="logout">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" (click)="viewProfile()">
+      <mat-icon>account_box</mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" (click)="logout()">
       <mat-icon>logout</mat-icon>
     </button>
   </mat-toolbar>
@@ -14,7 +17,12 @@
   <mat-drawer-container class="example-container" autosize>
     <mat-drawer #drawer class="example-sidenav" mode="side">
       <span *ngIf="this.role=='Admin'">
-        Admin Options
+        <p>Admin Options</p>
+        <div class="example-button-row">
+          <a mat-raised-button routerLink="/admin"><mat-icon>home</mat-icon>Home</a>
+          
+        </div>
+            
       </span>
       <span *ngIf="this.role =='Manager'">
         Manager Options
