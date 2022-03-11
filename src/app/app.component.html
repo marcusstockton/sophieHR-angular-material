@@ -4,20 +4,24 @@
     <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
       <mat-icon (click)="drawer.toggle()">menu</mat-icon>
     </button>
-    <span>My App</span>
+    <span>Sophies Human Resources</span>
     <span class="example-spacer"></span>
-    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-      <mat-icon>favorite</mat-icon>
-    </button>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-      <mat-icon>share</mat-icon>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" (click)="logout">
+      <mat-icon>logout</mat-icon>
     </button>
   </mat-toolbar>
   
   <mat-drawer-container class="example-container" autosize>
     <mat-drawer #drawer class="example-sidenav" mode="side">
-      <p>Auto-resizing sidenav</p>
-      <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p>
+      <span *ngIf="this.role=='Admin'">
+        Admin Options
+      </span>
+      <span *ngIf="this.role =='Manager'">
+        Manager Options
+      </span>
+      <span *ngIf="this.role =='User'">
+        User Options
+      </span>
     </mat-drawer>
     <router-outlet></router-outlet>  
   </mat-drawer-container>

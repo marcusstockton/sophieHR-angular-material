@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from '../_services/auth.service';
 import { TokenStorageService } from '../_services/token-storage.service';
 
@@ -14,8 +15,8 @@ export class LoginComponent implements OnInit {
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
-  roles: string[] = [];
-  constructor(private authService: AuthService, private tokenStorage: TokenStorageService, private fb: FormBuilder) { }
+  role: string = '';
+  constructor(private authService: AuthService, private tokenStorage: TokenStorageService, private fb: FormBuilder, private router: Router) { }
   ngOnInit(): void {
     this.form = this.fb.group({
       username: [null, [Validators.required]],
@@ -24,28 +25,40 @@ export class LoginComponent implements OnInit {
 
     if (this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
-      this.roles = this.tokenStorage.getUser().roles;
+      this.role = this.tokenStorage.getUser().role;
+      this.redirectUser(this.role);
     }
   }
   onSubmit(form: any): void {
-    alert('SUCCESS!! :-)\n\n' + JSON.stringify(form.value, null, 4));
-    // const { username, password } = this.form;
-    // this.authService.login(username, password).subscribe({
-    //   next: data => {
-    //     this.tokenStorage.saveToken(data.accessToken);
-    //     this.tokenStorage.saveUser(data);
-    //     this.isLoginFailed = false;
-    //     this.isLoggedIn = true;
-    //     this.roles = this.tokenStorage.getUser().roles;
-    //     this.reloadPage();
-    //   },
-    //   error: err => {
-    //     this.errorMessage = err.error.message;
-    //     this.isLoginFailed = true;
-    //   }
-    // });
+    const { username, password } = form.value;
+    this.authService.login(username, password).subscribe({
+      next: data => {
+        this.tokenStorage.saveToken(data.token);
+        this.tokenStorage.saveUser(data);
+        this.isLoginFailed = false;
+        this.isLoggedIn = true;
+        this.role = this.tokenStorage.getUser().role;
+        this.redirectUser(this.role);
+      },
+      error: err => {
+        this.errorMessage = err.error.message;
+        this.isLoginFailed = true;
+      }
+    });
   }
-  // reloadPage(): void {
-  //   window.location.reload();
-  // }
+
+  redirectUser( role: string){
+    if(this.role === 'Admin'){
+      console.log("Logged in as Admin");
+      this.router.navigate(['/admin'])
+    }
+    if(this.role === 'Manager'){
+      console.log("Logged in as Manager");
+      this.router.navigate(['/manager'])
+    }
+    if(this.role==='User'){
+      console.log("Logged in as User");
+      this.router.navigate(['/user'])
+    }
+  }
 }
