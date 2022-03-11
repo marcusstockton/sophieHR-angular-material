@@ -2,8 +2,8 @@
   <div>
     <mat-card>
       <mat-card-content>
+        <mat-card-title>Log In</mat-card-title>
         <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
-          <h2>Log In</h2>
           <mat-form-field appearance="standard">
             <mat-label>Username</mat-label>
             <input matInput placeholder="UserName" formControlName="username" #nameInput>
