@@ -1,0 +1,26 @@
+
+.login {
+    background: url('../../images/hr-analytics-2021-hero-image@2x.jpg') no-repeat center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height:100vh;
+    position: relative;
+    overflow-x: hidden !important;
+}
+mat-card {
+    max-width: 20%;
+    text-align: center;
+    position: fixed;
+    max-height:30%;
+    width: 15%;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -100px;
+
+}
+mat-form-field {
+    display: block;
+}
