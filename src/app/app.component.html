@@ -1,6 +1,6 @@
 
 <div id="app">
-  <mat-toolbar color="primary">
+  <mat-toolbar color="primary" *ngIf="isLoggedIn">
     <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
       <mat-icon (click)="drawer.toggle()">menu</mat-icon>
     </button>
