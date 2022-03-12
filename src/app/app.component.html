@@ -1,32 +1,35 @@
-
 <div id="app">
-  <mat-toolbar color="primary" *ngIf="isLoggedIn">
+  <mat-toolbar color="primary" *ngIf="this.tokenStorageService.isLoggedIn | async">
     <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
       <mat-icon (click)="drawer.toggle()">menu</mat-icon>
     </button>
     <span>Sophies Human Resources</span>
     <span class="example-spacer"></span>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" (click)="viewProfile()">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon"
+      (click)="viewProfile()">
       <mat-icon>account_box</mat-icon>
     </button>
     <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" (click)="logout()">
       <mat-icon>logout</mat-icon>
     </button>
   </mat-toolbar>
-  
+
   <mat-drawer-container class="example-container" autosize>
-    <mat-drawer #drawer class="example-sidenav" mode="side">
+    <mat-drawer #drawer class="example-sidenav" mode="side" opened="this.tokenStorageService.isLoggedIn | async">
       <span *ngIf="this.role=='Admin'">
         <p>Admin Options</p>
         <div class="example-button-row">
-          <a mat-raised-button routerLink="/admin"><mat-icon>home</mat-icon>Home</a>
+          <a mat-raised-button routerLink="/admin">
+            <mat-icon>home</mat-icon>Home
+          </a>
         </div>
         <div>
+          <!-- Company list dropdown -->
           <mat-form-field appearance="fill">
             <mat-label>Companies</mat-label>
-            <mat-select>
-              <mat-option *ngFor="let name of companyNames" [value]="name">
-                {{name}}
+            <mat-select (selectionChange)="onCompanyChange($event)">
+              <mat-option *ngFor="let company of companyNames" [value]="company.id">
+                {{company.name}}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -34,17 +37,26 @@
       </span>
       <span *ngIf="this.role =='Manager'">
         <p>Manager Options</p>
-        <a mat-raised-button routerLink="/manager"><mat-icon>home</mat-icon>Home</a>
+        <div class="example-button-row">
+          <a mat-raised-button routerLink="/manager">
+            <mat-icon>home</mat-icon>Home
+          </a>
+        </div>
+        <!-- Stick in an employee select list for the manager -->
       </span>
       <span *ngIf="this.role =='User'">
         <p>User Options</p>
-        <a mat-raised-button routerLink="/user"><mat-icon>home</mat-icon>Home</a>
+        <div class="example-button-row">
+          <a mat-raised-button routerLink="/user">
+            <mat-icon>home</mat-icon>Home
+          </a>
+        </div>
       </span>
     </mat-drawer>
-    <router-outlet></router-outlet>  
+
+    <mat-drawer-content>
+      <router-outlet></router-outlet>
+    </mat-drawer-content>
   </mat-drawer-container>
-  
+
 </div>
-
-
-  

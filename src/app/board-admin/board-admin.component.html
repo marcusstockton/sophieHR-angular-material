@@ -1,3 +1,9 @@
 <div class="admin">
   <p>Welcome Admin</p>   
+  <div *ngIf="companyId; else noCompany">
+    <p>Company Id is {{companyId}}</p>
+  </div>
+  <ng-template #noCompany>
+    Select a company to get going...
+  </ng-template>
 </div>

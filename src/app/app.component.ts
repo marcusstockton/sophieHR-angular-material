@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { TokenStorageService } from './_services/token-storage.service';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
+import { UserService } from './_services/user.service';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -12,15 +14,13 @@ import { map } from 'rxjs/operators';
 })
 export class AppComponent {
   role: string;
-  isLoggedIn = false;
   username?: string;
-  companyNames: string[] = [];
+  companyNames: { id: string, name: string }[] = [];
 
-  constructor(private tokenStorageService: TokenStorageService, private router: Router, private http: HttpClient) { }
+  constructor(public tokenStorageService: TokenStorageService, private router: Router, private http: HttpClient, private userService: UserService) { }
 
   ngOnInit(): void {
-    this.isLoggedIn = !!this.tokenStorageService.getToken();
-    if (this.isLoggedIn) {
+    if (!!this.tokenStorageService.getToken()) {
       const user = this.tokenStorageService.getUser();
       this.role = user.role;
       this.username = user.username;
@@ -42,9 +42,15 @@ export class AppComponent {
     this.http.get(environment.base_url + "/Companies")
       .pipe(
         map((res: any) => {
-          res.forEach((element: { name: string; }) => {
-            this.companyNames.push(element.name);
+          res.forEach((element: any) => {
+            this.companyNames.push({id: element.id, name: element.name});
           });
         })).subscribe();
+  }
+
+  onCompanyChange(event:any){
+    console.log("You clicked on company id: " + event.value);
+    this.userService.updateCompanyId(event.value);
+    // Emit this to the admin page?
   }
 }

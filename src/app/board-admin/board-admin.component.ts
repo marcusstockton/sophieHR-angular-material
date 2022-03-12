@@ -9,7 +9,12 @@ import { UserService } from '../_services/user.service';
 export class BoardAdminComponent implements OnInit {
 
   content?: string;
-  constructor(private userService: UserService) { }
+  companyId: string;
+  constructor(private userService: UserService) { 
+    userService.companyId.subscribe((x=>{
+      this.companyId = x;
+    }));
+  }
   ngOnInit(): void {
     
   }

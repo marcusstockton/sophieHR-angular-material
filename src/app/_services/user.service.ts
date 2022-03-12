@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 const API_URL = 'http://localhost:8080/api/';
 
 
@@ -8,18 +8,11 @@ const API_URL = 'http://localhost:8080/api/';
   providedIn: 'root'
 })
 export class UserService {
-
+  public companyId = new BehaviorSubject("");
   constructor(private http: HttpClient) { }
-  getPublicContent(): Observable<any> {
-    return this.http.get(API_URL + 'all', { responseType: 'text' });
+
+  updateCompanyId(companyId:string){
+    this.companyId.next(companyId);
   }
-  getUserBoard(): Observable<any> {
-    return this.http.get(API_URL + 'user', { responseType: 'text' });
-  }
-  getModeratorBoard(): Observable<any> {
-    return this.http.get(API_URL + 'mod', { responseType: 'text' });
-  }
-  getAdminBoard(): Observable<any> {
-    return this.http.get(API_URL + 'admin', { responseType: 'text' });
-  }
+
 }

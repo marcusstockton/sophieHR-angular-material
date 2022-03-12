@@ -34,21 +34,6 @@ export class HomeComponent implements OnInit {
   dataSource = ELEMENT_DATA;
   content?: string;
   error?: string;
-  constructor(private userService: UserService, private _snackBar: MatSnackBar) { }
-  ngOnInit(): void {
-    this.userService.getPublicContent().subscribe({
-      next: data => {
-        this.content = data;
-      },
-      error: err => {
-        if(typeof(err === HttpErrorResponse)){
-          this.error = err.statusText + " " + err.message;
-          this._snackBar.open(this.error, "Error", {duration: 2000});
-        } else{
-          this.error = JSON.parse(err.error).message;
-        }
-        
-      }
-    });
-  }
+  constructor(private _snackBar: MatSnackBar) { }
+  ngOnInit(): void { }
 }
