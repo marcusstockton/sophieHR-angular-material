@@ -2,21 +2,24 @@
   <div>
     <mat-card>
       <mat-card-content>
-        <mat-card-title>Log In</mat-card-title>
+        <mat-card-title>Sign in details</mat-card-title>
         <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
           <mat-form-field appearance="standard">
             <mat-label>Username</mat-label>
             <input matInput placeholder="UserName" formControlName="username" #nameInput>
-            <mat-hint>Your username....duh</mat-hint>
+            <mat-hint>Your username</mat-hint>
             <mat-error>Username is required</mat-error>
           </mat-form-field>
           <mat-form-field appearance="standard">
             <mat-label>Password</mat-label>
             <input matInput placeholder="Password" type="password" formControlName="password" #nameInput>
-            <mat-hint>Your password....duh</mat-hint>
+            <mat-hint>Your password</mat-hint>
             <mat-error>Password is required</mat-error>
           </mat-form-field>
-          <button mat-raised-button color="primary" [disabled]="!form.valid">Login</button>
+          <mat-error *ngIf="errorMessage">{{errorMessage}}</mat-error>
+          <button mat-raised-button color="primary" [disabled]="!form.valid">
+            <mat-spinner color="accent" [diameter]="25" style="float:left; margin-top: 5px;" *ngIf="loggingIn">
+            </mat-spinner> Login</button>
         </form>
       </mat-card-content>
     </mat-card>

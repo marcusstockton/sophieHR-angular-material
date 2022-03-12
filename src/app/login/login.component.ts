@@ -1,3 +1,4 @@
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,6 +14,7 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
   
   isLoggedIn = false;
+  loggingIn = false;
   isLoginFailed = false;
   errorMessage = '';
   role: string = '';
@@ -30,9 +32,11 @@ export class LoginComponent implements OnInit {
     }
   }
   onSubmit(form: any): void {
+    this.loggingIn = true;
     const { username, password } = form.value;
     this.authService.login(username, password).subscribe({
       next: data => {
+        this.loggingIn = false;
         this.tokenStorage.saveToken(data.token);
         this.tokenStorage.saveUser(data);
         this.isLoginFailed = false;
@@ -41,7 +45,19 @@ export class LoginComponent implements OnInit {
         this.redirectUser(this.role);
       },
       error: err => {
-        this.errorMessage = err.error.message;
+        this.loggingIn = false;
+        if(err instanceof HttpErrorResponse){
+          switch(err.status){
+            case HttpStatusCode.BadRequest:
+              this.errorMessage = err.error;
+              break;
+
+            default:
+              this.errorMessage = err.error.message;
+          }
+        }else{
+          this.errorMessage = err.error.message;
+        }
         this.isLoginFailed = true;
       }
     });
