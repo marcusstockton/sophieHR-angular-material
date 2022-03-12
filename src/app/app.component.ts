@@ -15,6 +15,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class AppComponent {
   role: string;
   username?: string;
+  isExpanded: boolean;
   companyNames: { id: string, name: string }[] = [];
 
   constructor(public tokenStorageService: TokenStorageService, private router: Router, private http: HttpClient, private userService: UserService) { }
