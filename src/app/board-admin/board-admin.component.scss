@@ -1,10 +1,23 @@
 .admin{
     height: 100vh;
     display: flex;
+    flex-direction: column;
     width: 90%;
     padding-left: 5%;
 }
-.example-card {
-    flex-wrap: wrap;
-    max-width: 400px;
+.detail-card {
+    width: 20vw;
+    align-content: center;
   }
+
+.image-card{
+    max-width: 20vh;
+    align-content: center;
+}
+
+.card-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex: 1 1 auto;
+}
