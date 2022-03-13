@@ -1,7 +1,7 @@
 export class Company{
     id: string;
     name: string;
-    logo: string;
+    logo?: string;
     createdDate:Date;
     updatedDate:Date;
     address: {

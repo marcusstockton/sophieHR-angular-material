@@ -1,10 +1,14 @@
 <div class="admin">
-  <p>Welcome Admin</p>   
-  <img *ngIf="company.logo" src="data:image/png;base64,{{company.logo}}" alt="">
+  <p>Welcome Admin</p>
+
   <div *ngIf="companyId; else noCompany">
     <p>Company Id is {{companyId}}</p>
 
     <div *ngIf="company">
+
+      <mat-card class="example-card">
+        <img mat-card-image src="data:image/png;base64,{{company.logo}}" />
+      </mat-card>
 
       <mat-card class="example-card">
         <mat-card-header>
@@ -19,14 +23,15 @@
       <mat-card class="example-card">
         <mat-card-header>
           <mat-card-title>Address</mat-card-title>
+          
         </mat-card-header>
         <mat-card-content>
-          <p>{{company.address.line1}}</p>
-          <p>{{company.address.line2}}</p>
-          <p>{{company.address.line3}}</p>
-          <p>{{company.address.line4}}</p>
-          <p>{{company.address.county}}</p>
-          <p>{{company.address.postcode}}</p>
+          <p>{{company.address?.line1}}</p>
+          <p>{{company.address?.line2}}</p>
+          <p>{{company.address?.line3}}</p>
+          <p>{{company.address?.line4}}</p>
+          <p>{{company.address?.county}}</p>
+          <p>{{company.address?.postcode}}</p>
 
         </mat-card-content>
        
