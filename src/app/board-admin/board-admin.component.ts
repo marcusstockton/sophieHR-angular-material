@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Company } from '../_models/Company';
+import { CompanyService } from '../_services/company.service';
 import { UserService } from '../_services/user.service';
 
 @Component({
@@ -10,9 +12,17 @@ export class BoardAdminComponent implements OnInit {
 
   content?: string;
   companyId: string;
-  constructor(private userService: UserService) { 
-    userService.companyId.subscribe((x=>{
+  company: Company;
+  constructor(private userService: UserService, private companyService: CompanyService) { 
+    this.userService.companyId.subscribe((x=>{
       this.companyId = x;
+
+      this.companyService.getCompanyById(this.companyId).subscribe((result: Company)=>{
+        this.company = result;
+      }, (err)=>{
+        console.log(err);
+      })
+
     }));
   }
   ngOnInit(): void {

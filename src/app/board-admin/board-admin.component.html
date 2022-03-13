@@ -1,7 +1,43 @@
 <div class="admin">
   <p>Welcome Admin</p>   
+  <img *ngIf="company.logo" src="data:image/png;base64,{{company.logo}}" alt="">
   <div *ngIf="companyId; else noCompany">
     <p>Company Id is {{companyId}}</p>
+
+    <div *ngIf="company">
+
+      <mat-card class="example-card">
+        <mat-card-header>
+          <mat-card-title>{{company.name}}</mat-card-title>
+          <mat-card-subtitle>
+            <p>Created: <small>{{company.createdDate}}</small></p>
+            <p>Updated: <small>{{company.updatedDate}}</small></p>
+          </mat-card-subtitle>
+        </mat-card-header>
+      </mat-card>
+
+      <mat-card class="example-card">
+        <mat-card-header>
+          <mat-card-title>Address</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{company.address.line1}}</p>
+          <p>{{company.address.line2}}</p>
+          <p>{{company.address.line3}}</p>
+          <p>{{company.address.line4}}</p>
+          <p>{{company.address.county}}</p>
+          <p>{{company.address.postcode}}</p>
+
+        </mat-card-content>
+       
+      </mat-card>
+      
+
+      
+
+      <pre>{{company | json}}</pre>
+    </div>
+
   </div>
   <ng-template #noCompany>
     Select a company to get going...

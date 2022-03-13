@@ -1,7 +1,20 @@
 .admin{
     height: 100vh;
-    // display: flex;
-    // flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: space-between;
     width: 90%;
     padding-left: 5%;
 }
+
+mat-card{
+    width: 30%;
+    justify-content: space-between;
+}
+
+.example-card {
+    display: flex;
+    flex-wrap: wrap;
+    
+ }
