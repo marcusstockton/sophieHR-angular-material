@@ -4,8 +4,8 @@
   <div *ngIf="companyId; else noCompany">
     <p>Company Id is {{companyId}}</p>
 
-    <div *ngIf="company" class="card-row">
-
+    <div *ngIf="company" >
+      <span class="card-row">
       <mat-card class="image-card" *ngIf="company.logo">
         <img mat-card-image src="data:image/png;base64,{{company.logo}}"/>
       </mat-card>
@@ -13,6 +13,9 @@
       <mat-card class="detail-card">
         <mat-card-header>
           <mat-card-title>{{company.name}}</mat-card-title>
+          <mat-card-content>
+            
+          </mat-card-content>
           <mat-card-subtitle>
             <p>Created: <small>{{company.createdDate}}</small></p>
             <p>Updated: <small>{{company.updatedDate}}</small></p>
@@ -54,8 +57,17 @@
         <mat-card-content style="font-size: 15vh; margin-top: 5vh;">
           {{company.employeeCount}}
         </mat-card-content>
-
       </mat-card>
+    </span>
+    <span class="card-row">
+      
+      <mat-card class="detail-card">
+        <mat-card-title>Title</mat-card-title>
+        <mat-card-content>Content</mat-card-content>
+        <mat-card-subtitle>Subtitle</mat-card-subtitle>
+      </mat-card>
+    </span>
+      
     </div>
     <!-- <pre>{{company | json}}</pre> -->
   </div>

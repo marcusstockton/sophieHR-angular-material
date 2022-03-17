@@ -56,8 +56,8 @@ export class AppComponent {
     // Emit this to the admin page?
   }
 
-  clearCompany($event:any){
-    this.companyId = undefined; 
+  clearCompany($event: any) {
+    this.companyId = undefined;
     $event.stopPropagation();
     this.userService.updateCompanyId("");
   }
