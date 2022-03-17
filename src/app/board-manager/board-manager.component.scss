@@ -1,7 +1,17 @@
 .manager{
     height: 100vh;
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     width: 90%;
     padding-left: 5%;
+}
+
+.image-card{
+    max-width: 20vh;
+    display: flex;
+    justify-content: center;
+}
+table{
+    width: 100%;
 }
