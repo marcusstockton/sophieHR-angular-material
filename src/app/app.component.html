@@ -7,15 +7,15 @@
     <span class="example-spacer"></span>
     <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon"
       (click)="viewProfile()">
-      <mat-icon>account_box</mat-icon>
+      <mat-icon title="View my account">account_box</mat-icon>
     </button>
     <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" (click)="logout()">
-      <mat-icon>logout</mat-icon>
+      <mat-icon title="Log Out">logout</mat-icon>
     </button>
   </mat-toolbar>
 
   <mat-drawer-container class="example-container" autosize>
-    <mat-drawer #drawer class="example-sidenav" mode="side" opened="(this.tokenStorageService.isLoggedIn | async)">
+    <mat-drawer #drawer class="example-sidenav" mode="side" opened="this.tokenStorageService.isLoggedIn | async">
       <span *ngIf="this.role=='Admin'">
         <p>Admin Options</p>
         <div class="example-button-row">
@@ -28,11 +28,14 @@
           <mat-icon>business</mat-icon>
           <mat-form-field appearance="fill">
             <mat-label>Companies</mat-label>
-            <mat-select (selectionChange)="onCompanyChange($event)">
+            <mat-select (selectionChange)="onCompanyChange($event)" [(ngModel)]="companyId">
               <mat-option *ngFor="let company of companyNames" [value]="company.id">
                 {{company.name}}
               </mat-option>
             </mat-select>
+            <button mat-button mat-icon-button matSuffix *ngIf="companyId" (click)="clearCompany($event)">
+              <mat-icon color="warn" [inline]="true">close</mat-icon>
+          </button>
           </mat-form-field>
         </div>
       </span>

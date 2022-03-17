@@ -17,6 +17,7 @@ export class AppComponent {
   username?: string;
   isExpanded: boolean;
   companyNames: { id: string, name: string }[] = [];
+  companyId?: string;
 
   constructor(public tokenStorageService: TokenStorageService, private router: Router, private http: HttpClient, private userService: UserService) { }
 
@@ -53,5 +54,11 @@ export class AppComponent {
     console.log("You clicked on company id: " + event.value);
     this.userService.updateCompanyId(event.value);
     // Emit this to the admin page?
+  }
+
+  clearCompany($event:any){
+    this.companyId = undefined; 
+    $event.stopPropagation();
+    this.userService.updateCompanyId("");
   }
 }
