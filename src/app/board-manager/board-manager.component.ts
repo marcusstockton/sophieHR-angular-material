@@ -1,6 +1,7 @@
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { map } from 'rxjs';
 import { EmployeeList } from '../_models/EmployeeList';
@@ -13,17 +14,18 @@ import { TokenStorageService } from '../_services/token-storage.service';
   templateUrl: './board-manager.component.html',
   styleUrls: ['./board-manager.component.scss']
 })
-export class BoardManagerComponent implements OnInit, AfterViewInit  {
+export class BoardManagerComponent implements OnInit, AfterViewInit {
 
   user: any;
   company: any;
   employees: EmployeeList[];
+  isLoading: boolean;
   dataSource = new MatTableDataSource<EmployeeList>();
   displayedColumns: string[] = ['firstName', 'middleName', 'lastName', 'workEmailAddress', 'workPhoneNumber', 'holidayAllowance', 'dateOfBirth', 'startOfEmployment'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private companyService: CompanyService, private tokenStorageService: TokenStorageService, private employeeService: EmployeeService) { }
+  constructor(private companyService: CompanyService, private tokenStorageService: TokenStorageService, private employeeService: EmployeeService, private _liveAnnouncer: LiveAnnouncer) { }
 
   ngOnInit(): void {
     this.user = this.tokenStorageService.getUser();
@@ -32,12 +34,14 @@ export class BoardManagerComponent implements OnInit, AfterViewInit  {
       .pipe(map(res => {
         this.company = res;
       })).subscribe();
-    
+
+    this.isLoading = true;
     this.employeeService.getEmployeesByManagerId(this.user['id'])
-    .pipe(map(results =>{
-      this.employees = results;
-      this.dataSource.data = this.employees;
-    })).subscribe();
+      .pipe(map(results => {
+        this.employees = results;
+        this.dataSource.data = this.employees;
+        this.isLoading = false;
+      })).subscribe();
   }
 
   ngAfterViewInit(): void {
@@ -48,5 +52,9 @@ export class BoardManagerComponent implements OnInit, AfterViewInit  {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  getEmployeeRecord(row: any) {
+    console.log(row);
   }
 }

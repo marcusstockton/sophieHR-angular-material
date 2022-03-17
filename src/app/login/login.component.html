@@ -17,7 +17,7 @@
             <mat-error>Password is required</mat-error>
           </mat-form-field>
           <mat-error *ngIf="errorMessage">{{errorMessage}}</mat-error>
-          <button mat-raised-button color="primary" [disabled]="!form.valid">
+          <button mat-raised-button color="primary" [disabled]="!form.valid || loggingIn">
             <mat-spinner color="accent" [diameter]="25" style="float:left; margin-top: 5px;" *ngIf="loggingIn">
             </mat-spinner> Login</button>
         </form>
