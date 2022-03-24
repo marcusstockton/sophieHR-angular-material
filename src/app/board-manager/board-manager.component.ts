@@ -3,6 +3,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { map } from 'rxjs';
 import { EmployeeList } from '../_models/EmployeeList';
 import { CompanyService } from '../_services/company.service';
@@ -21,11 +22,15 @@ export class BoardManagerComponent implements OnInit, AfterViewInit {
   employees: EmployeeList[];
   isLoading: boolean;
   dataSource = new MatTableDataSource<EmployeeList>();
-  displayedColumns: string[] = ['firstName', 'middleName', 'lastName', 'workEmailAddress', 'workPhoneNumber', 'holidayAllowance', 'dateOfBirth', 'startOfEmployment'];
+  displayedColumns: string[] = ['firstName', 'middleName', 'lastName','jobTitle', 'workEmailAddress', 'workPhoneNumber', 'holidayAllowance', 'dateOfBirth', 'startOfEmployment'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private companyService: CompanyService, private tokenStorageService: TokenStorageService, private employeeService: EmployeeService, private _liveAnnouncer: LiveAnnouncer) { }
+  constructor(
+    private companyService: CompanyService, 
+    private tokenStorageService: TokenStorageService, 
+    private employeeService: EmployeeService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.user = this.tokenStorageService.getUser();
@@ -55,6 +60,8 @@ export class BoardManagerComponent implements OnInit, AfterViewInit {
   }
 
   getEmployeeRecord(row: any) {
-    console.log(row);
+    //alert("Row clicked:" + JSON.stringify(row));
+    console.log(JSON.stringify(row));
+    this.router.navigate(['/user/'+row.id]);
   }
 }

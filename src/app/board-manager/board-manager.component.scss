@@ -6,11 +6,18 @@
     width: 90%;
     padding-left: 5%;
 }
-
+.row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
 .image-card{
     max-width: 20vh;
     display: flex;
     justify-content: center;
+}
+.card{
+    max-width: 20vh;
 }
 table{
     width: 100%;

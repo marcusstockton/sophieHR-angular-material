@@ -1,7 +1,38 @@
 .user{
     height: 100vh;
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     width: 90%;
     padding-left: 5%;
+}
+
+.main{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 10px;
+}
+.grid-item {
+    max-width: 40vw;
+    width: 30vw;
+  }
+
+.avatar{
+    padding:2px;
+    max-height: 50vh;
+    border: 1px solid black;
+    
+}
+.info{
+    display: flex;
+    flex-direction: row;
+    background-color: lightyellow;
+    font-size: small;
+}
+
+dl > dt{
+    color:gray;
+    font-size: small;
+    text-transform: uppercase;
 }

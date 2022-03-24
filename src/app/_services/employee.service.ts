@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { EmployeeDetailDto } from '../_models/Employee/EmployeeDetailDto';
 import { EmployeeList } from '../_models/EmployeeList';
 
 
@@ -18,5 +19,9 @@ export class EmployeeService {
 
   getEmployeesByManagerId(managerId: string): Observable<EmployeeList[]>{
     return this.http.get<EmployeeList[]>(`${environment.base_url}/Employees/list-of-employees-for-manager/${managerId}`, httpOptions);
+  }
+
+  getEmployeeById(employeeId:string): Observable<EmployeeDetailDto>{
+    return this.http.get<EmployeeDetailDto>(`${environment.base_url}/Employees/get-by-id/${employeeId}`, httpOptions);
   }
 }

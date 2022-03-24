@@ -1,3 +1,47 @@
 <div class="user">
-    <p>Welcome user</p>   
+    <p>Welcome user {{employeeId}}</p>   
+
+    
+    <mat-spinner color="accent" diameter="50" *ngIf="loading"></mat-spinner>
+
+    <div class="main" *ngIf="!loading">
+
+      <div class="grid-item" *ngIf="userImage">
+        <img mat-card-image [src]="userImage" class="avatar"/>
+      </div>
+
+      <div class="grid-item">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>{{employeeRecord.firstName}} {{employeeRecord.lastName}}</mat-card-title>
+            <mat-card-subtitle>{{employeeRecord.jobTitle}}</mat-card-subtitle>
+            <mat-card-subtitle>{{employeeRecord.department.name}}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+
+            <dl>
+              <dt>Email Address</dt>
+              <dd><a href="mailto:{{employeeRecord.workEmailAddress}}">{{employeeRecord.workEmailAddress}}</a></dd>
+              <dt>Date Of Birth</dt>
+              <dd>{{employeeRecord.dateOfBirth | date:'mediumDate'}}</dd>
+              <dt>Start Date</dt>
+              <dd>{{employeeRecord.startOfEmployment | date:'mediumDate'}}</dd>
+            </dl>
+
+            <fieldset style="width: 50%;">
+              <legend>Address:</legend>
+                <p>{{employeeRecord.address.line1}} {{employeeRecord.address.line2}}</p>
+                <p>{{employeeRecord.address.line3}}</p>
+                <p>{{employeeRecord.address.line4}}</p>
+                <p>{{employeeRecord.address.postcode| uppercase}}</p>
+                <p>{{employeeRecord.address.county}}</p>
+            </fieldset>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
   </div>
+  <span class="info">
+    <pre><small>{{employeeRecord|json}}</small></pre>
+  </span>
