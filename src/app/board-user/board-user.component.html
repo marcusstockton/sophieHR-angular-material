@@ -4,42 +4,61 @@
     
     <mat-spinner color="accent" diameter="50" *ngIf="loading"></mat-spinner>
 
-    <div class="main" *ngIf="!loading">
-
-      <div class="grid-item" *ngIf="userImage">
-        <img mat-card-image [src]="userImage" class="avatar"/>
+    <div class="Parent" *ngIf="!loading">
+      <div class="child1">
+        <div class="grid-item" *ngIf="userImage">
+          <img mat-card-image [src]="userImage" class="avatar"/>
+        </div>
       </div>
+      <div class="child2">
+          <mat-card>
+            <mat-card-header style="justify-content: center; text-align: center;">
+              <mat-card-title>{{employeeRecord.firstName}} {{employeeRecord.lastName}}</mat-card-title>
+              <mat-card-subtitle>{{employeeRecord.jobTitle}}</mat-card-subtitle>
+              <mat-card-subtitle>Department: {{employeeRecord.department.name}}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="Parent">
+                <div style="width: 50%;">
+                  <dl>
+                    <dt>Age</dt>
+                    <dd>{{employeeAge}}</dd>
+                    <dt>Email Address</dt>
+                    <dd><a href="mailto:{{employeeRecord.workEmailAddress}}">{{employeeRecord.workEmailAddress}}</a></dd>
+                    
+                    <dt *ngIf="employeeRecord.phoneNumber">Phone Number</dt>
+                    <dd *ngIf="employeeRecord.phoneNumber"><a href="tel:{{employeeRecord.phoneNumber}}">{{employeeRecord.phoneNumber}}</a></dd>
+                    
+                    <dt *ngIf="employeeRecord.workMobileNumber">Work Mobile Number</dt>
+                    <dd *ngIf="employeeRecord.workMobileNumber">{{employeeRecord.workMobileNumber}}</dd>
+                    
+                    <dt *ngIf="employeeRecord.personalMobileNumber">Personal Mobile Number</dt>
+                    <dd *ngIf="employeeRecord.personalMobileNumber">{{employeeRecord.personalMobileNumber}}</dd>
 
-      <div class="grid-item">
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title>{{employeeRecord.firstName}} {{employeeRecord.lastName}}</mat-card-title>
-            <mat-card-subtitle>{{employeeRecord.jobTitle}}</mat-card-subtitle>
-            <mat-card-subtitle>{{employeeRecord.department.name}}</mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
+                    <dt>Date Of Birth</dt>
+                    <dd>{{employeeRecord.dateOfBirth | date:'mediumDate'}}</dd>
+                    <dt>Start Date</dt>
+                    <dd>{{employeeRecord.startOfEmployment | date:'mediumDate'}}</dd>
+                    <dt>Length Of Service</dt>
+                    <dd>{{employmentLength}}</dd>
+                  </dl>
+                </div>
+                <div style="width: 50%;">
+                  <dl>
+                    <dt>Address</dt>
+                    <dd>{{employeeRecord.address.line1}} {{employeeRecord.address.line2}}</dd>
+                    <dd>{{employeeRecord.address.line3}}</dd>
+                    <dd>{{employeeRecord.address.line4}}</dd>
+                    <dd>{{employeeRecord.address.postcode| uppercase}}</dd>
+                    <dd>{{employeeRecord.address.county}}</dd>
+                  </dl>
 
-            <dl>
-              <dt>Email Address</dt>
-              <dd><a href="mailto:{{employeeRecord.workEmailAddress}}">{{employeeRecord.workEmailAddress}}</a></dd>
-              <dt>Date Of Birth</dt>
-              <dd>{{employeeRecord.dateOfBirth | date:'mediumDate'}}</dd>
-              <dt>Start Date</dt>
-              <dd>{{employeeRecord.startOfEmployment | date:'mediumDate'}}</dd>
-            </dl>
-
-            <fieldset style="width: 50%;">
-              <legend>Address:</legend>
-                <p>{{employeeRecord.address.line1}} {{employeeRecord.address.line2}}</p>
-                <p>{{employeeRecord.address.line3}}</p>
-                <p>{{employeeRecord.address.line4}}</p>
-                <p>{{employeeRecord.address.postcode| uppercase}}</p>
-                <p>{{employeeRecord.address.county}}</p>
-            </fieldset>
-          </mat-card-content>
-        </mat-card>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
       </div>
-    </div>
+  </div>
 
   </div>
   <span class="info">

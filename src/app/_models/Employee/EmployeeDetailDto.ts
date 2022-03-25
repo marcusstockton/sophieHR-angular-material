@@ -10,6 +10,7 @@ export class EmployeeDetailDto{
     personalEmailAddress:string
     workPhoneNumber:string
     workMobileNumber:string
+    phoneNumber:string
     personalMobileNumber:string
     jobTitle:string
     holidayAllowance:number

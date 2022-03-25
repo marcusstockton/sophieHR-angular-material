@@ -6,13 +6,13 @@
         <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
           <mat-form-field appearance="standard">
             <mat-label>Username</mat-label>
-            <input matInput placeholder="UserName" formControlName="username" #nameInput value="admin@hr.com">
+            <input matInput placeholder="UserName" formControlName="username" #nameInput>
             <mat-hint>Your username</mat-hint>
             <mat-error>Username is required</mat-error>
           </mat-form-field>
           <mat-form-field appearance="standard">
             <mat-label>Password</mat-label>
-            <input matInput placeholder="Password" type="password" formControlName="password" #nameInput value="P@55w0rd1">
+            <input matInput placeholder="Password" type="password" formControlName="password" #nameInput>
             <mat-hint>Your password</mat-hint>
             <mat-error>Password is required</mat-error>
           </mat-form-field>

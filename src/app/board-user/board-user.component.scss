@@ -1,34 +1,15 @@
-.user{
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    width: 90%;
-    padding-left: 5%;
-}
-
-.main{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    padding: 10px;
-}
 .grid-item {
     max-width: 40vw;
     width: 30vw;
+    padding-left: 2em;
+    padding-top: 1em;
   }
 
 .avatar{
     padding:2px;
-    max-height: 50vh;
+    height: 30vh;
+    width: auto;
     border: 1px solid black;
-    
-}
-.info{
-    display: flex;
-    flex-direction: row;
-    background-color: lightyellow;
-    font-size: small;
 }
 
 dl > dt{
@@ -36,3 +17,20 @@ dl > dt{
     font-size: small;
     text-transform: uppercase;
 }
+
+.Parent {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    .child1 {
+        width: 30%;
+        height: 100vh;
+    }
+    .child2 {
+        width: 60%;
+        height: 100vh;
+    }
+}
+
+

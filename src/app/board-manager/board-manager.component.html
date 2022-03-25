@@ -1,7 +1,7 @@
 <div class="manager">
     <p>Welcome Manager {{this.user['userName']}}</p>   
 
-    <div class="row">
+    <div class="row" *ngIf="company">
       <mat-card class="image-card" *ngIf="company?.logo">
         <img mat-card-image src="data:image/png;base64,{{company.logo}}"/>
       </mat-card>
