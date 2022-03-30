@@ -23,6 +23,7 @@ export class AppComponent {
 
   ngOnInit(): void {
     if (!!this.tokenStorageService.getToken()) {
+      this.isExpanded = true;
       const user = this.tokenStorageService.getUser();
       this.role = user.role;
       this.username = user.username;

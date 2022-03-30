@@ -1,31 +1,39 @@
-
 .login {
     background: url('../../images/hr-analytics-2021-hero-image@2x.jpg') no-repeat center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    height:100vh;
+    height: 100vh;
     position: relative;
     overflow-x: hidden !important;
 }
-mat-card {
-    max-width: 20%;
-    text-align: center;
-    position: fixed;
-    max-height:30%;
-    width: 20%;
-    top: 50%;
-    left: 50%;
-    margin-top: -100px;
-    margin-left: -100px;
 
+.flex-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 mat-form-field {
     display: block;
 }
-mat-card-title{
+
+.mat-card-header {
     background-color: #00843d;
+    text-shadow: black 2px 2px 2px;
     color: white;
-    padding: 5%;
+    padding: 13px 5px 0 5px !important;
+    justify-content: center;
+    align-items: center;
+}
+
+.mat-card {
+    width: 20%;
+    padding: 0 !important;
+}
+
+.mat-card-content {
+    padding: 15px !important;
 }

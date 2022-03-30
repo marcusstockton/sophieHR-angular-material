@@ -1,4 +1,4 @@
-import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -18,7 +18,15 @@ export class LoginComponent implements OnInit {
   isLoginFailed = false;
   errorMessage = '';
   role: string = '';
-  constructor(private authService: AuthService, private tokenStorage: TokenStorageService, private fb: FormBuilder, private router: Router) { }
+
+  managers: string[];
+
+  constructor(
+    private authService: AuthService, 
+    private tokenStorage: TokenStorageService, 
+    private fb: FormBuilder, 
+    private router: Router,
+    private httpClient: HttpClient) { }
   ngOnInit(): void {
     this.form = this.fb.group({
       username: [null, [Validators.required]],
@@ -30,6 +38,7 @@ export class LoginComponent implements OnInit {
       this.role = this.tokenStorage.getUser().role;
       this.redirectUser(this.role);
     }
+    this.getManagers();
   }
   onSubmit(form: any): void {
     this.loggingIn = true;
@@ -62,6 +71,14 @@ export class LoginComponent implements OnInit {
         this.isLoginFailed = true;
       }
     });
+  }
+
+  getManagers() {
+    this.httpClient.get<string[]>("https://localhost:7189/api/Account/GetListOfManagers").subscribe({
+      next: (v) => this.managers = v,
+      error: (e) => console.log(e),
+      complete: () => console.info('complete')
+    })
   }
 
   redirectUser( role: string){

@@ -15,7 +15,7 @@
   </mat-toolbar>
 
   <mat-drawer-container class="example-container" autosize>
-    <mat-drawer #drawer class="example-sidenav" mode="side" opened="this.username != null">
+    <mat-drawer #drawer class="example-sidenav" mode="side" [opened]="(this.tokenStorageService.isLoggedIn | async)">
       <span *ngIf="this.role=='Admin'">
         <p>Admin Options</p>
         <div class="example-button-row">

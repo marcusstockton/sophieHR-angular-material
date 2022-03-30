@@ -19,3 +19,11 @@
 .example-button-row .mat-button-base {
   margin: 8px 8px 8px 0;
 }
+
+
+::ng-deep .mat-button.mat-success,
+.mat-stroked-button.mat-success {
+  background-color: #00843d;
+  text-shadow: black 2px 2px 2px;
+  color: white;
+}
