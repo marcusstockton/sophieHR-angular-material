@@ -1,7 +1,7 @@
 <div id="app">
   <mat-toolbar color="primary" *ngIf="this.tokenStorageService.isLoggedIn | async">
     <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-      <mat-icon (click)="drawer.toggle()">menu</mat-icon>
+      <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
     </button>
     <span>Sophies Human Resources</span>
     <span class="example-spacer"></span>
@@ -14,8 +14,57 @@
     </button>
   </mat-toolbar>
 
-  <mat-drawer-container class="example-container" autosize>
-    <mat-drawer #drawer class="example-sidenav" mode="side" [opened]="(this.tokenStorageService.isLoggedIn | async)">
+  <mat-sidenav-container autosize>
+    <mat-sidenav id="my-sidenav" mode="side" [opened]="(this.tokenStorageService.isLoggedIn | async)">
+      <mat-nav-list *ngIf="this.role=='Admin'">
+        <mat-list-item>
+          <button mat-button class="menu-button" routerLink="/admin">
+            <mat-icon>home</mat-icon>
+            <span> Home</span>
+          </button>
+        </mat-list-item>
+        <mat-list-item>
+          <button mat-button class="menu-button">
+            <mat-icon>business</mat-icon>
+            <span> Companies</span>
+          </button>
+        </mat-list-item>
+      </mat-nav-list>
+
+      <mat-nav-list *ngIf="this.role=='Manager'">
+        <mat-list-item>
+          <button mat-button class="menu-button" routerLink="/manager">
+            <mat-icon>home</mat-icon>
+            <span> Home</span>
+          </button>
+        </mat-list-item>
+      </mat-nav-list>
+
+      <mat-nav-list *ngIf="this.role=='User'">
+        <mat-list-item>
+          <button mat-button class="menu-button" routerLink="/user">
+            <mat-icon>home</mat-icon>
+            <span> Home</span>
+          </button>
+        </mat-list-item>
+      </mat-nav-list>
+
+      <mat-nav-list>
+        <mat-list-item>
+          <button mat-icon-button (click)="sidenav.toggle()">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+
+  <!-- <mat-drawer-container class="example-container" autosize>
+    <mat-drawer class="mat-elevation-z8" mode="side" [opened]="true">
       <span *ngIf="this.role=='Admin'">
         <p>Admin Options</p>
         <div class="example-button-row">
@@ -24,7 +73,6 @@
           </a>
         </div>
         <div>
-          <!-- Company list dropdown -->
           <mat-icon>business</mat-icon>
           <mat-form-field appearance="fill">
             <mat-label>Companies</mat-label>
@@ -46,7 +94,6 @@
             <mat-icon>home</mat-icon>Home
           </a>
         </div>
-        <!-- Stick in an employee select list for the manager -->
       </span>
       <span *ngIf="this.role =='User'">
         <p>User Options</p>
@@ -61,6 +108,6 @@
     <mat-drawer-content>
       <router-outlet></router-outlet>
     </mat-drawer-content>
-  </mat-drawer-container>
+  </mat-drawer-container> -->
 
 </div>

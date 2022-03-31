@@ -1,14 +1,14 @@
 @import '~@angular/material/theming';
 
 .example-spacer {
-    flex: 1 1 auto;
-  }
-
-#drawer{
-    height:100%;
+  flex: 1 1 auto;
 }
 
-.devon-green{
+#drawer {
+  height: 100%;
+}
+
+.devon-green {
   color: #00843d;
 }
 
@@ -20,10 +20,7 @@
   margin: 8px 8px 8px 0;
 }
 
-
-::ng-deep .mat-button.mat-success,
-.mat-stroked-button.mat-success {
-  background-color: #00843d;
-  text-shadow: black 2px 2px 2px;
-  color: white;
+#my-sidenav{
+  display: flex;
+  align-content: space-between;
 }
