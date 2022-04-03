@@ -13,19 +13,18 @@
         Person:
         <div [formGroup]="form">
 
-            <mat-form-field appearance="standard">
+            <mat-form-field appearance="standard" class="third-width">
                 <mat-label>First Name</mat-label>
                 <input matInput placeholder="First Name" formControlName="firstName" #nameInput>
                 <mat-hint>First Name</mat-hint>
                 <mat-error>firstName is required</mat-error>
             </mat-form-field>
-            <mat-form-field appearance="standard">
+            <mat-form-field appearance="standard" class="third-width">
                 <mat-label>Middle Name</mat-label>
                 <input matInput placeholder="Middle Name" formControlName="middleName" #nameInput>
                 <mat-hint>Middle Name</mat-hint>
-                <mat-error>middleName is required</mat-error>
             </mat-form-field>
-            <mat-form-field appearance="standard">
+            <mat-form-field appearance="standard" class="third-width">
                 <mat-label>Last Name</mat-label>
                 <input matInput placeholder="Surname" formControlName="lastName" #nameInput>
                 <mat-hint>Last Name</mat-hint>
