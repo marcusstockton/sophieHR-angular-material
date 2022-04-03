@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   isLoginFailed = false;
   errorMessage = '';
   role: string = '';
+  hidePassword:boolean = true;
 
   managers: string[];
 
@@ -40,7 +41,10 @@ export class LoginComponent implements OnInit {
     }
     this.getManagers();
   }
-  onSubmit(form: any): void {
+  onSubmit(form: FormGroup): void {
+    if(!form.valid){
+      return;
+    }
     this.loggingIn = true;
     const { username, password } = form.value;
     this.authService.login(username, password).subscribe({
@@ -81,7 +85,7 @@ export class LoginComponent implements OnInit {
     })
   }
 
-  redirectUser( role: string){
+  redirectUser(role: string){
     if(this.role === 'Admin'){
       console.log("Logged in as Admin");
       this.router.navigate(['/admin'])

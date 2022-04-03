@@ -8,18 +8,23 @@
         <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
           <mat-form-field appearance="standard">
             <mat-label>Username</mat-label>
+            <span matPrefix><mat-icon>account_box</mat-icon></span>
             <input matInput placeholder="UserName" formControlName="username" #nameInput>
             <mat-hint>Your username</mat-hint>
             <mat-error>Username is required</mat-error>
           </mat-form-field>
           <mat-form-field appearance="standard">
             <mat-label>Password</mat-label>
-            <input matInput placeholder="Password" type="password" formControlName="password" #nameInput>
+            <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'">
+            <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+              <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <!-- <input matInput placeholder="Password" type="password" formControlName="password" #nameInput> -->
             <mat-hint>Your password</mat-hint>
             <mat-error>Password is required</mat-error>
           </mat-form-field>
           <mat-error *ngIf="errorMessage">{{errorMessage}}</mat-error>
-          <button mat-raised-button color="primary" [disabled]="!form.valid || loggingIn">
+          <button mat-raised-button color="primary" [disabled]="!form.valid || loggingIn" type="submit">
             <mat-spinner color="accent" [diameter]="25" style="float:left; margin-top: 5px;" *ngIf="loggingIn">
             </mat-spinner> Login
           </button>
