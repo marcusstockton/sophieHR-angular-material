@@ -1,0 +1,71 @@
+<div class="add-user-form">
+
+    <div class="column">
+        <div [formGroup]="form">
+            <label for="avatar">Avatar: </label>
+            <input formControlName="avatar" id="avatar" type="file" class="form-control"
+                (change)="onFileChange($event)">
+        </div>
+        <img [src]="imageSrc" *ngIf="imageSrc" class="avatar">
+    </div>
+
+    <div class="column">
+        Person:
+        <div [formGroup]="form">
+
+            <mat-form-field appearance="standard">
+                <mat-label>First Name</mat-label>
+                <input matInput placeholder="First Name" formControlName="firstName" #nameInput>
+                <mat-hint>First Name</mat-hint>
+                <mat-error>firstName is required</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="standard">
+                <mat-label>Middle Name</mat-label>
+                <input matInput placeholder="Middle Name" formControlName="middleName" #nameInput>
+                <mat-hint>Middle Name</mat-hint>
+                <mat-error>middleName is required</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="standard">
+                <mat-label>Last Name</mat-label>
+                <input matInput placeholder="Surname" formControlName="lastName" #nameInput>
+                <mat-hint>Last Name</mat-hint>
+                <mat-error>lastName is required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="standard">
+                <mat-label>Username</mat-label>
+                <span matPrefix>
+                    <mat-icon>account_box</mat-icon>
+                </span>
+                <input matInput placeholder="UserName" formControlName="username" #nameInput>
+                <mat-hint>Your username</mat-hint>
+                <mat-error>Username is required</mat-error>
+            </mat-form-field>
+
+        </div>
+
+    </div>
+    <div class="column">
+        Address:
+        <div [formGroup]="form">
+            <mat-form-field appearance="standard">
+                <mat-label>Line 1</mat-label>
+                <input matInput placeholder="Line 1" formControlName="address.line1" #nameInput>
+                <mat-hint>Line 1</mat-hint>
+                <mat-error>Line 1 is required</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="standard">
+                <mat-label>Line 2</mat-label>
+                <input matInput placeholder="Line 2" formControlName="address.line2" #nameInput>
+                <mat-hint>Line 2</mat-hint>
+                <mat-error>Line 2 is required</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="standard">
+                <mat-label>Line 3</mat-label>
+                <input matInput placeholder="Line 3" formControlName="address.line3" #nameInput>
+                <mat-hint>Line 3</mat-hint>
+                <mat-error>Line 3 is required</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+</div>

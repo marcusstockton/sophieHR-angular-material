@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BoardAdminComponent } from './board-admin/board-admin.component';
 import { BoardManagerComponent } from './board-manager/board-manager.component';
 import { BoardUserComponent } from './board-user/board-user.component';
+import { AddUserFormComponent } from './board-user/forms/add-user-form/add-user-form.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'user', component: BoardUserComponent, canActivate: [AuthGuard] },
   { path: 'user/:userid', component: BoardUserComponent, canActivate: [AuthGuard] },
+  { path: 'user-add', component: AddUserFormComponent, canActivate: [AuthGuard] },
   { path: 'manager', component: BoardManagerComponent, canActivate: [AuthGuard] },
   { path: 'admin', component: BoardAdminComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: 'home', pathMatch: 'full' }

@@ -3,6 +3,8 @@ import { Company } from "./Company";
 
 export class EmployeeList {
     id:string;
+    title:string;
+    gender:string;
     firstName:string;
     middleName: string;
     lastName:string;

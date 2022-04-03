@@ -26,8 +26,8 @@ export class AppComponent {
     if (!!this.tokenStorageService.getToken()) {
       this.isExpanded = true;
       const user = this.tokenStorageService.getUser();
-      this.role = user.role;
-      this.username = user.username;
+      this.role = user?.role;
+      this.username = user?.username;
       // if (this.role === "Admin") {
       //   this.getCompanies();
       // }

@@ -16,6 +16,7 @@
 
   <mat-sidenav-container autosize>
     <mat-sidenav id="my-sidenav" mode="side" [opened]="(this.tokenStorageService.isLoggedIn | async)">
+      
       <mat-nav-list *ngIf="this.role=='Admin'">
         <mat-list-item>
           <button mat-button class="menu-button" routerLink="/admin">
@@ -30,12 +31,17 @@
           </button>
         </mat-list-item>
       </mat-nav-list>
-
       <mat-nav-list *ngIf="this.role=='Manager'">
         <mat-list-item>
           <button mat-button class="menu-button" routerLink="/manager">
             <mat-icon>home</mat-icon>
             <span> Home</span>
+          </button>
+        </mat-list-item>
+        <mat-list-item>
+          <button mat-button class="menu-button" routerLink="/user-add">
+            <mat-icon>person_add</mat-icon>
+            <span> Add Employee</span>
           </button>
         </mat-list-item>
       </mat-nav-list>

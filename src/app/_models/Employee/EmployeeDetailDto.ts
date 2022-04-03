@@ -3,6 +3,8 @@ import { Address } from "../Address"
 export class EmployeeDetailDto{
     id:string
     userName:string
+    title:string
+    gender:string
     firstName:string
     middleName:string
     lastName:string

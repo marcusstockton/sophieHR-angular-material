@@ -1,0 +1,24 @@
+.add-user-form{
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 90%;
+    padding-left: 5%;
+}
+.column{
+    display: flex;
+    flex-direction: column;
+    border: 2px solid red;
+    flex-basis:50%;
+    height:90vh;
+}
+.avatar{
+    padding:2px;
+    max-height: 30vh;
+    max-width: 20vw;
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid black;
+}
