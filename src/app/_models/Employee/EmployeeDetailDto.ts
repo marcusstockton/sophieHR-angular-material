@@ -22,6 +22,8 @@ export class EmployeeDetailDto{
     managerId:string
     avatar: AvatarDetail
     department:Department
+    passportNumber:string
+    nationalInsuranceNumber:string
 }
 
 export class AvatarDetail{

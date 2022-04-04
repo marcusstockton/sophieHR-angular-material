@@ -4,6 +4,15 @@
       <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
     </button>
     <span>Sophies Human Resources</span>
+    <span *ngIf="this.role=='Admin'">
+      <button mat-button [matMenuTriggerFor]="menu">Companies <mat-icon>expand_more</mat-icon></button>
+      <mat-menu #menu="matMenu">
+        <span *ngFor="let company of companyNames">
+          <button mat-menu-item (click)="onCompanyChange(company)">{{company.name}}</button>
+        </span>
+      </mat-menu>
+    </span>
+
     <span class="example-spacer"></span>
     <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon"
       (click)="viewProfile()">
@@ -25,10 +34,6 @@
           </button>
         </mat-list-item>
         <mat-list-item>
-          <button mat-button class="menu-button">
-            <mat-icon>business</mat-icon>
-            <span> Companies</span>
-          </button>
         </mat-list-item>
       </mat-nav-list>
       <mat-nav-list *ngIf="this.role=='Manager'">
@@ -67,53 +72,5 @@
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
-
-
-  <!-- <mat-drawer-container class="example-container" autosize>
-    <mat-drawer class="mat-elevation-z8" mode="side" [opened]="true">
-      <span *ngIf="this.role=='Admin'">
-        <p>Admin Options</p>
-        <div class="example-button-row">
-          <a mat-raised-button routerLink="/admin">
-            <mat-icon>home</mat-icon>Home
-          </a>
-        </div>
-        <div>
-          <mat-icon>business</mat-icon>
-          <mat-form-field appearance="fill">
-            <mat-label>Companies</mat-label>
-            <mat-select (selectionChange)="onCompanyChange($event)" [(ngModel)]="companyId">
-              <mat-option *ngFor="let company of companyNames" [value]="company.id">
-                {{company.name}}
-              </mat-option>
-            </mat-select>
-            <button mat-button mat-icon-button matSuffix *ngIf="companyId" (click)="clearCompany($event)">
-              <mat-icon color="warn" [inline]="true">close</mat-icon>
-          </button>
-          </mat-form-field>
-        </div>
-      </span>
-      <span *ngIf="this.role =='Manager'">
-        <p>Manager Options</p>
-        <div class="example-button-row">
-          <a mat-raised-button routerLink="/manager">
-            <mat-icon>home</mat-icon>Home
-          </a>
-        </div>
-      </span>
-      <span *ngIf="this.role =='User'">
-        <p>User Options</p>
-        <div class="example-button-row">
-          <a mat-raised-button routerLink="/user">
-            <mat-icon>home</mat-icon>Home
-          </a>
-        </div>
-      </span>
-    </mat-drawer>
-
-    <mat-drawer-content>
-      <router-outlet></router-outlet>
-    </mat-drawer-content>
-  </mat-drawer-container> -->
 
 </div>
