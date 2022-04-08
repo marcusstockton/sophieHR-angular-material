@@ -37,7 +37,7 @@ export class BoardUserComponent implements OnInit {
         let employmentLength = this.dateDiff(results.startOfEmployment);
         this.employmentLength = `${employmentLength?.years} years, ${employmentLength?.months} months, ${employmentLength?.days} days`
         this.userImage = this.sanitizer.bypassSecurityTrustUrl("data:image/png;base64, " + results.avatar.avatar);
-        this.employeeRecord.nationalInsuranceNumber = this.employeeRecord?.nationalInsuranceNumber?.replace(/(.{2})/g, '$1 ')
+        this.employeeRecord.nationalInsuranceNumber = this.employeeRecord?.nationalInsuranceNumber?.replace(/(.{2})/g, '$1 ') // Splits out the string into 2's
       })).subscribe();
     }
   }
