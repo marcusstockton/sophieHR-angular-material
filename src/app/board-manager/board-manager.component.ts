@@ -1,13 +1,10 @@
-import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, Sort } from '@angular/material/sort';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { map } from 'rxjs';
-import { EmployeeListDto } from 'src/libs/client';
-import { CompanyService } from '../_services/company.service';
-import { EmployeeService } from '../_services/employee.service';
+import { CompaniesService, EmployeeListDto, EmployeesService } from 'src/libs/client';
 import { TokenStorageService } from '../_services/token-storage.service';
 
 @Component({
@@ -27,21 +24,21 @@ export class BoardManagerComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
-    private companyService: CompanyService, 
+    private companyService: CompaniesService, 
     private tokenStorageService: TokenStorageService, 
-    private employeeService: EmployeeService,
+    private employeeService: EmployeesService,
     private router: Router) { }
 
   ngOnInit(): void {
     this.user = this.tokenStorageService.getUser();
 
-    this.companyService.getCompanyById(this.user['companyId'])
+    this.companyService.apiCompaniesIdGet(this.user['companyId'])
       .pipe(map(res => {
         this.company = res;
       })).subscribe();
 
     this.isLoading = true;
-    this.employeeService.getEmployeesByManagerId(this.user['id'])
+    this.employeeService.apiEmployeesListOfEmployeesForManagerManagerIdGet(this.user['id'])
       .pipe(map(results => {
         this.employees = results;
         this.dataSource.data = this.employees;
