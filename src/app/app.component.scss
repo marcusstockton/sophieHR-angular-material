@@ -24,3 +24,6 @@
   display: flex;
   align-content: space-between;
 }
+router-outlet{
+  overflow-y: auto;
+}

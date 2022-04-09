@@ -5,7 +5,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { map } from 'rxjs';
-import { EmployeeList } from '../_models/EmployeeList';
+import { EmployeeListDto } from 'src/libs/client';
 import { CompanyService } from '../_services/company.service';
 import { EmployeeService } from '../_services/employee.service';
 import { TokenStorageService } from '../_services/token-storage.service';
@@ -19,10 +19,10 @@ export class BoardManagerComponent implements OnInit, AfterViewInit {
 
   user: any;
   company: any;
-  employees: EmployeeList[];
+  employees: EmployeeListDto[];
   isLoading: boolean;
-  dataSource = new MatTableDataSource<EmployeeList>();
-  displayedColumns: string[] = ['firstName', 'middleName', 'lastName','jobTitle', 'workEmailAddress', 'workPhoneNumber', 'holidayAllowance', 'dateOfBirth', 'startOfEmployment'];
+  dataSource = new MatTableDataSource<EmployeeListDto>();
+  displayedColumns: string[] = ['firstName', 'lastName','jobTitle', 'workEmailAddress', 'workPhoneNumber', 'holidayAllowance', 'dateOfBirth', 'startOfEmployment'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 

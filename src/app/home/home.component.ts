@@ -1,6 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../_services/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 
@@ -34,6 +32,6 @@ export class HomeComponent implements OnInit {
   dataSource = ELEMENT_DATA;
   content?: string;
   error?: string;
-  constructor(private _snackBar: MatSnackBar) { }
+  constructor() { }
   ngOnInit(): void { }
 }

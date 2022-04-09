@@ -1,6 +1,4 @@
-.user{
-    height: 90vh;
-}
+.user{ }
 
 .grid-item {
     max-width: 40vw;
@@ -29,11 +27,13 @@ dl > dt{
 
     .child1 {
         width: 30%;
-        height: 100vh;
+        height: 89vh;
+        max-height: 89vh;
     }
     .child2 {
         width: 60%;
-        height: 100vh;
+        height: 89vh;
+        max-height: 89vh;
     }
 }
 

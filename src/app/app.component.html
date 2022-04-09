@@ -1,76 +1,78 @@
 <div id="app">
-  <mat-toolbar color="primary" *ngIf="this.tokenStorageService.isLoggedIn | async">
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-      <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
-    </button>
-    <span>Sophies Human Resources</span>
-    <span *ngIf="this.role=='Admin'">
-      <button mat-button [matMenuTriggerFor]="menu">Companies <mat-icon>expand_more</mat-icon></button>
-      <mat-menu #menu="matMenu">
-        <span *ngFor="let company of companyNames">
-          <button mat-menu-item (click)="onCompanyChange(company)">{{company.name}}</button>
-        </span>
-      </mat-menu>
-    </span>
+  <mat-drawer-container>
+    <mat-toolbar color="primary" *ngIf="this.tokenStorageService.isLoggedIn | async" fullscreen>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+        <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+      </button>
+      <span>Sophies Human Resources</span>
+      <span *ngIf="this.role==='Admin'">
+        <button mat-button [matMenuTriggerFor]="menu">Companies <mat-icon>expand_more</mat-icon></button>
+        <mat-menu #menu="matMenu">
+          <span *ngFor="let company of companyNames">
+            <button mat-menu-item (click)="onCompanyChange(company)">{{company.name}}</button>
+          </span>
+        </mat-menu>
+      </span>
 
-    <span class="example-spacer"></span>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon"
-      (click)="viewProfile()">
-      <mat-icon title="View my account">account_box</mat-icon>
-    </button>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" (click)="logout()">
-      <mat-icon title="Log Out">logout</mat-icon>
-    </button>
-  </mat-toolbar>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon"
+        (click)="viewProfile()">
+        <mat-icon title="View my account">account_box</mat-icon>
+      </button>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" (click)="logout()">
+        <mat-icon title="Log Out">logout</mat-icon>
+      </button>
+    </mat-toolbar>
 
-  <mat-sidenav-container autosize>
-    <mat-sidenav id="my-sidenav" mode="side" [opened]="(this.tokenStorageService.isLoggedIn | async)">
-      
-      <mat-nav-list *ngIf="this.role=='Admin'">
-        <mat-list-item>
-          <button mat-button class="menu-button" routerLink="/admin">
-            <mat-icon>home</mat-icon>
-            <span> Home</span>
-          </button>
-        </mat-list-item>
-        <mat-list-item>
-        </mat-list-item>
-      </mat-nav-list>
-      <mat-nav-list *ngIf="this.role=='Manager'">
-        <mat-list-item>
-          <button mat-button class="menu-button" routerLink="/manager">
-            <mat-icon>home</mat-icon>
-            <span> Home</span>
-          </button>
-        </mat-list-item>
-        <mat-list-item>
-          <button mat-button class="menu-button" routerLink="/user-add">
-            <mat-icon>person_add</mat-icon>
-            <span> Add Employee</span>
-          </button>
-        </mat-list-item>
-      </mat-nav-list>
+    <mat-sidenav-container>
+      <mat-sidenav id="my-sidenav" mode="side" [opened]="(this.tokenStorageService.isLoggedIn | async)">
+        <mat-nav-list *ngIf="this.role==='Admin'">
+          <mat-list-item>
+            <button mat-button class="menu-button" routerLink="/admin">
+              <mat-icon>home</mat-icon>
+              <span> Home</span>
+            </button>
+          </mat-list-item>
+          <mat-list-item>
+          </mat-list-item>
+        </mat-nav-list>
+        <mat-nav-list *ngIf="this.role==='Manager'">
+          <mat-list-item>
+            <button mat-button class="menu-button" routerLink="/manager">
+              <mat-icon>home</mat-icon>
+              <span> Home</span>
+            </button>
+          </mat-list-item>
+          <mat-list-item>
+            <button mat-button class="menu-button" routerLink="/user-add">
+              <mat-icon>person_add</mat-icon>
+              <span> Add Employee</span>
+            </button>
+          </mat-list-item>
+        </mat-nav-list>
 
-      <mat-nav-list *ngIf="this.role=='User'">
-        <mat-list-item>
-          <button mat-button class="menu-button" routerLink="/user">
-            <mat-icon>home</mat-icon>
-            <span> Home</span>
-          </button>
-        </mat-list-item>
-      </mat-nav-list>
+        <mat-nav-list *ngIf="this.role==='User'">
+          <mat-list-item>
+            <button mat-button class="menu-button" routerLink="/user">
+              <mat-icon>home</mat-icon>
+              <span> Home</span>
+            </button>
+          </mat-list-item>
+        </mat-nav-list>
 
-      <mat-nav-list>
-        <mat-list-item>
-          <button mat-icon-button (click)="sidenav.toggle()">
-            <mat-icon>chevron_left</mat-icon>
-          </button>
-        </mat-list-item>
-      </mat-nav-list>
-    </mat-sidenav>
-    <mat-sidenav-content>
-      <router-outlet></router-outlet>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
-
+        <mat-nav-list>
+          <footer style="position: absolute; bottom: 0;">
+            <mat-list-item>
+              <button mat-icon-button (click)="sidenav.toggle()">
+                <mat-icon>chevron_left</mat-icon>
+              </button>
+            </mat-list-item>
+          </footer>
+        </mat-nav-list>
+      </mat-sidenav>
+      <mat-sidenav-content>
+        <router-outlet></router-outlet>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </mat-drawer-container>
 </div>
