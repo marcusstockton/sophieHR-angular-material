@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { TokenStorageService } from './_services/token-storage.service';
 import { environment } from 'src/environments/environment';
@@ -70,4 +70,14 @@ export class AppComponent implements OnInit {
     $event.stopPropagation();
     this.userService.updateCompanyId("");
   }
+
+  @HostListener('window:resize', ['$event'])
+    onResize(event: { target: { innerWidth: number; }; }) {
+        if (event.target.innerWidth < 500) {
+            this.sidenav.close();
+        }
+        if (event.target.innerWidth > 500) {
+           this.sidenav.open();
+        }
+    }
 }

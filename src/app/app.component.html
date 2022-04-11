@@ -24,8 +24,8 @@
       </button>
     </mat-toolbar>
 
-    <mat-sidenav-container>
-      <mat-sidenav id="my-sidenav" mode="side" [opened]="(this.tokenStorageService.isLoggedIn | async)">
+    <mat-sidenav-container autosize>
+      <mat-sidenav id="my-sidenav" mode="side" [opened]="(this.tokenStorageService.isLoggedIn | async)" >
         <mat-nav-list *ngIf="this.role==='Admin'">
           <mat-list-item>
             <button mat-button class="menu-button" routerLink="/admin">

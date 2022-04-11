@@ -1,24 +1,22 @@
-.manager{
+.manager {
     height: 90vh;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    width: 90%;
-    padding-left: 5%;
+    margin: 15px;
 }
-.row{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-}
-.image-card{
+
+.image-card {
     max-width: 20vh;
     display: flex;
     justify-content: center;
 }
-.card{
-    max-width: 20vh;
-}
-table{
+
+// .card {
+//     max-width: 20vh;
+// }
+
+.table {
     width: 100%;
+
+    table {
+        width: 100%;
+    }
 }

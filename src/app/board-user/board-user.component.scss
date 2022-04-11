@@ -1,18 +1,12 @@
-.user{ }
+.user{
+    height: 88vh;
+    padding-left: 20vw;
+    margin: 15px;
+ }
 
-.grid-item {
-    max-width: 40vw;
-    width: 30vw;
-    padding-left: 2em;
-    padding-top: 1em;
-  }
-
-.avatar{
-    padding:2px;
-    height: 30vh;
-    width: auto;
-    border: 1px solid black;
-}
+ mat-card{
+     max-width: 40%;
+ }
 
 dl > dt{
     color:gray;
@@ -20,21 +14,8 @@ dl > dt{
     text-transform: uppercase;
 }
 
-.Parent {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
 
-    .child1 {
-        width: 30%;
-        height: 89vh;
-        max-height: 89vh;
-    }
-    .child2 {
-        width: 60%;
-        height: 89vh;
-        max-height: 89vh;
-    }
-}
-
-
+// .info{
+//     word-wrap: normal;
+//     width: 100%;
+// }
