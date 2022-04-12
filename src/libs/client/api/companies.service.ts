@@ -24,6 +24,8 @@ import { CompanyCreateDto } from '../model/companyCreateDto';
 import { CompanyDetailDto } from '../model/companyDetailDto';
 // @ts-ignore
 import { CompanyDetailNoLogo } from '../model/companyDetailNoLogo';
+// @ts-ignore
+import { GuidStringKeyValuePair } from '../model/guidStringKeyValuePair';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -36,7 +38,7 @@ import { Configuration }                                     from '../configurat
 })
 export class CompaniesService {
 
-    protected basePath = 'https://localhost:7189';
+    protected basePath = 'https://localhost:7189'
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
     public encoder: HttpParameterCodec;
@@ -154,6 +156,67 @@ export class CompaniesService {
         }
 
         return this.httpClient.get<Array<CompanyDetailNoLogo>>(`${this.configuration.basePath}/api/Companies`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiCompaniesGetCompanyNamesForSelectGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<GuidStringKeyValuePair>>;
+    public apiCompaniesGetCompanyNamesForSelectGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<GuidStringKeyValuePair>>>;
+    public apiCompaniesGetCompanyNamesForSelectGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<GuidStringKeyValuePair>>>;
+    public apiCompaniesGetCompanyNamesForSelectGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (Bearer) required
+        localVarCredential = this.configuration.lookupCredential('Bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        return this.httpClient.get<Array<GuidStringKeyValuePair>>(`${this.configuration.basePath}/api/Companies/GetCompanyNamesForSelect`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

@@ -6,29 +6,12 @@
     width: 90%;
     padding-left: 5%;
 }
-.column{
-    display: flex;
-    flex-direction: column;
-    border: 2px solid red;
-    flex-basis:50%;
-    height:90vh;
-}
+
 .avatar{
     padding:2px;
-    max-height: 30vh;
     max-width: 20vw;
     width: 100%;
     height: auto;
     display: block;
     border: 1px solid black;
-}
-
-.full-width {
-    width: 100%;
- }
-.half-width{
-    width: 50%;
-}
-.third-width{
-    width: 33%;
 }

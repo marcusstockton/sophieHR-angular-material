@@ -13,5 +13,6 @@ export * from './employeeAvatarDetail';
 export * from './employeeCreateDto';
 export * from './employeeDetailDto';
 export * from './employeeListDto';
+export * from './guidStringKeyValuePair';
 export * from './registerUserDto';
 export * from './userLogins';

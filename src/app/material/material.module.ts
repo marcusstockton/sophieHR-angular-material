@@ -18,6 +18,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
 
 
 @NgModule({
@@ -41,7 +43,9 @@ import { MatSortModule } from '@angular/material/sort';
     MatSelectModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   exports: [
     MatSliderModule,
@@ -61,7 +65,9 @@ import { MatSortModule } from '@angular/material/sort';
     MatSelectModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ]
 })
 export class MaterialModule { }

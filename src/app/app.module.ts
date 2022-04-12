@@ -15,7 +15,7 @@ import { BoardUserComponent } from './board-user/board-user.component';
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
-import { AddUserFormComponent } from './board-user/forms/add-user-form/add-user-form.component';
+import { UserFormComponent } from './board-user/forms/user-form/user-form.component';
 
 
 @NgModule({
@@ -28,7 +28,7 @@ import { AddUserFormComponent } from './board-user/forms/add-user-form/add-user-
     BoardAdminComponent,
     BoardManagerComponent,
     BoardUserComponent,
-    AddUserFormComponent
+    UserFormComponent
   ],
   imports: [
     BrowserModule,

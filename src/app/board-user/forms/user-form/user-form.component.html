@@ -1,0 +1,203 @@
+<div class="user-form">
+    <div class="row" *ngIf="loading">
+        <div class="column">
+            <div [formGroup]="userForm">
+                <label for="avatar">Avatar: </label>
+                <input formControlName="avatar" id="avatar" type="file" class="form-control" accept=".jpg,.png"
+                    (change)="onFileChange($event)">
+            </div>
+            <span *ngIf="imageSrc">
+                <img [src]="imageSrc" class="avatar">
+            </span>
+        </div>
+        <div class="column">
+
+            <div [formGroup]="userForm">
+
+                <div class="row">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Company</mat-label>
+                        <mat-select formControlName="companyId" (selectionChange)="companyChange()">
+                            <mat-option *ngFor="let company of companies" [value]="company?.value">
+                                {{company.value}}
+                              </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                </div>
+
+                <div class="row">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Username</mat-label>
+                        <span matPrefix>
+                            <mat-icon>account_box</mat-icon>
+                        </span>
+                        <input matInput placeholder="UserName" formControlName="userName" #nameInput
+                            [readonly]="editing">
+                        <mat-hint>Your username</mat-hint>
+                        <mat-error>Username is required</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" width="100%">
+                        <mat-label>Job Title</mat-label>
+                        <input matInput placeholder="Job Title" formControlName="jobTitle" #nameInput>
+                        <mat-hint>Job Title</mat-hint>
+                        <mat-error>Job Title is required</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="row">
+                    <mat-form-field appearance="fill">
+                        <mat-label>First Name</mat-label>
+                        <input matInput placeholder="First Name" formControlName="firstName" #nameInput>
+                        <mat-hint>First Name</mat-hint>
+                        <mat-error>firstName is required</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Middle Name</mat-label>
+                        <input matInput placeholder="Middle Name" formControlName="middleName" #nameInput>
+                        <mat-hint>Middle Name</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput placeholder="Surname" formControlName="lastName" #nameInput>
+                        <mat-hint>Last Name</mat-hint>
+                        <mat-error>lastName is required</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="row"> 
+                    <!-- Drop downs -->
+                    <mat-form-field appearance="fill">
+                        <mat-label>Title</mat-label>
+                        <mat-select formControlName="title">
+                            <mat-option *ngFor="let title of titles" [value]="title">
+                                {{title}}
+                              </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                    <mat-form-field appearance="fill">
+                        <mat-label>Gender</mat-label>
+                        <mat-select formControlName="gender">
+                          <mat-option>None</mat-option>
+                          <mat-option value="Male">Male</mat-option>
+                          <mat-option value="Female">Female</mat-option>
+                          <mat-option value="Other">Other</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                </div>
+                <div class="row"> 
+                    <mat-form-field appearance="fill">
+                        <mat-label>Personal Email</mat-label>
+                        <input matInput placeholder="Personal Email" formControlName="personalEmailAddress" #nameInput>
+                        <mat-hint>Personal Email</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Work Email</mat-label>
+                        <input matInput placeholder="Work Email" formControlName="workEmailAddress" #nameInput>
+                        <mat-hint>Work Email</mat-hint>
+                        <mat-error>Work Email is required</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Personal Mobile Number</mat-label>
+                        <input matInput placeholder="Personal Mobile Number" formControlName="personalMobileNumber" #nameInput>
+                        <mat-hint>Personal Mobile Number</mat-hint>
+                    </mat-form-field>
+                    
+                </div>
+                <div class="row"> 
+                    <mat-form-field appearance="fill">
+                        <mat-label>Work Phone Number</mat-label>
+                        <input matInput placeholder="Work Phone Number" formControlName="workPhoneNumber" #nameInput>
+                        <mat-hint>Work Phone Number</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Work Mobile Number</mat-label>
+                        <input matInput placeholder="Work Mobile Number" formControlName="workMobileNumber" #nameInput>
+                        <mat-hint>Work Mobile Number</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Phone Number</mat-label>
+                        <input matInput placeholder="Work Email" formControlName="phoneNumber" #nameInput>
+                        <mat-hint>Phone Number</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="row"> 
+                    <mat-form-field appearance="fill">
+                        <mat-label>DoB</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="dateOfBirth">
+                        <mat-hint>DD/MM/YYYY</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Start Of Employment</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="startOfEmployment">
+                        <mat-hint>DD/MM/YYYY</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+
+                </div>
+                <div class="row" formGroupName="address"> 
+                    <mat-form-field appearance="fill">
+                        <mat-label>Line 1</mat-label>
+                        <input matInput placeholder="Line 1" formControlName="line1" #nameInput>
+                        <mat-hint>Address Line 1</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Line 2</mat-label>
+                        <input matInput placeholder="Line 2" formControlName="line2" #nameInput>
+                        <mat-hint>Address Line 2</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Line 3</mat-label>
+                        <input matInput placeholder="Line 3" formControlName="line3" #nameInput>
+                        <mat-hint>Address Line 3</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="row" formGroupName="address"> 
+                    <mat-form-field appearance="fill">
+                        <mat-label>Line 4</mat-label>
+                        <input matInput placeholder="Line 4" formControlName="line4" #nameInput>
+                        <mat-hint>Address Line 4</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Post Code</mat-label>
+                        <input matInput placeholder="Post Code" formControlName="postcode" #nameInput>
+                        <mat-hint>Address Post Code</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>County</mat-label>
+                        <input matInput placeholder="County" formControlName="county" #nameInput>
+                        <mat-hint>Address County</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="row"> 
+                    <mat-form-field appearance="fill">
+                        <mat-label>Manager</mat-label>
+                        <mat-select formControlName="managerId">
+                            <mat-option *ngFor="let manager of managers" [value]="manager.id">
+                                {{manager.firstName}} {{manager.lastName}}
+                              </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                      <mat-form-field appearance="fill">
+                        <mat-label>Department</mat-label>
+                        <mat-select formControlName="departmentId">
+                          <mat-option>None</mat-option>
+                          <mat-option value="Male">Male</mat-option>
+                          <mat-option value="Female">Female</mat-option>
+                          <mat-option value="Other">Other</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                </div>
+                <div class="row">
+                    <button type="submit" mat-raised-button color="primary" [disabled]="userForm.invalid">Save</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
