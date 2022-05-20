@@ -3,8 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { map } from 'rxjs';
-import { CompaniesService, EmployeeListDto, EmployeesService } from 'src/libs/client';
+import { CompaniesClient, CompanyDetailDto, EmployeeListDto, EmployeesClient } from '../client';
 import { TokenStorageService } from '../_services/token-storage.service';
 
 @Component({
@@ -15,7 +14,7 @@ import { TokenStorageService } from '../_services/token-storage.service';
 export class BoardManagerComponent implements OnInit, AfterViewInit {
 
   user: any;
-  company: any;
+  company: CompanyDetailDto;
   employees: EmployeeListDto[];
   isLoading: boolean;
   dataSource = new MatTableDataSource<EmployeeListDto>();
@@ -24,26 +23,22 @@ export class BoardManagerComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
-    private companyService: CompaniesService, 
+    private companyService: CompaniesClient, 
     private tokenStorageService: TokenStorageService, 
-    private employeeService: EmployeesService,
+    private employeeService: EmployeesClient,
     private router: Router) { }
 
   ngOnInit(): void {
     this.user = this.tokenStorageService.getUser();
-
-    this.companyService.apiCompaniesIdGet(this.user['companyId'])
-      .pipe(map(res => {
-        this.company = res;
-      })).subscribe();
-
     this.isLoading = true;
-    this.employeeService.apiEmployeesListOfEmployeesForManagerManagerIdGet(this.user['id'])
-      .pipe(map(results => {
-        this.employees = results;
-        this.dataSource.data = this.employees;
-        this.isLoading = false;
-      })).subscribe();
+    this.companyService.getCompany(this.user['companyId']).subscribe((result: CompanyDetailDto)=>{
+      this.company = result;
+    })
+    this.employeeService.getEmployeesForManager(this.user['id']).subscribe((results) => {
+      this.employees = results;
+      this.dataSource.data = this.employees;
+    });
+    this.isLoading = false;
   }
 
   ngAfterViewInit(): void {
@@ -57,7 +52,6 @@ export class BoardManagerComponent implements OnInit, AfterViewInit {
   }
 
   getEmployeeRecord(row: any) {
-    //alert("Row clicked:" + JSON.stringify(row));
     console.log(JSON.stringify(row));
     this.router.navigate(['/user/'+row.id]);
   }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../_services/auth.service';
+import { AccountClient, RegisterUserDto } from '../client';
 
 @Component({
   selector: 'app-register',
@@ -10,28 +10,33 @@ export class RegisterComponent implements OnInit {
 
   form: any = {
     firstName: null,
-    lastName:null,
+    lastName: null,
     email: null,
     password: null
   };
   isSuccessful = false;
   isSignUpFailed = false;
   errorMessage = '';
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AccountClient) { }
   ngOnInit(): void {
   }
   onSubmit(): void {
     const { firstName, lastName, email, password } = this.form;
-    this.authService.register(firstName, lastName, email, password).subscribe({
-      next: data => {
-        console.log(data);
-        this.isSuccessful = true;
-        this.isSignUpFailed = false;
-      },
-      error: err => {
-        this.errorMessage = err.error.message;
-        this.isSignUpFailed = true;
-      }
+
+    var userReg: RegisterUserDto = new RegisterUserDto({
+      firstName: firstName,
+      lastName: lastName,
+      emailAddress: email,
+      password: password
+    });
+
+    this.authService.registerNewAdminUser(userReg).subscribe((result) => {
+      console.log(result);
+      this.isSuccessful = true;
+      this.isSignUpFailed = false;
+    }, (err)=>{
+      this.errorMessage = err.error.message;
+      this.isSignUpFailed = true;
     });
   }
 

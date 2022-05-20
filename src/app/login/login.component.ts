@@ -1,8 +1,8 @@
-import { HttpClient, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../_services/auth.service';
+import { AccountClient, UserLogins } from '../client';
 import { TokenStorageService } from '../_services/token-storage.service';
 
 @Component({
@@ -11,23 +11,24 @@ import { TokenStorageService } from '../_services/token-storage.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  retrievingManagers: boolean = false;
+
   form: FormGroup;
-  
+
   isLoggedIn = false;
   loggingIn = false;
   isLoginFailed = false;
   errorMessage = '';
   role: string = '';
-  hidePassword:boolean = true;
+  hidePassword: boolean = true;
 
   managers: string[];
 
   constructor(
-    private authService: AuthService, 
-    private tokenStorage: TokenStorageService, 
-    private fb: FormBuilder, 
-    private router: Router,
-    private httpClient: HttpClient) { }
+    private authService: AccountClient,
+    private tokenStorage: TokenStorageService,
+    private fb: FormBuilder,
+    private router: Router) { }
   ngOnInit(): void {
     this.form = this.fb.group({
       username: [null, [Validators.required]],
@@ -42,59 +43,62 @@ export class LoginComponent implements OnInit {
     this.getManagers();
   }
   onSubmit(form: FormGroup): void {
-    if(!form.valid){
+    if (!form.valid) {
       return;
     }
     this.loggingIn = true;
     const { username, password } = form.value;
-    this.authService.login(username, password).subscribe({
-      next: data => {
-        this.loggingIn = false;
-        this.tokenStorage.saveToken(data.token);
-        this.tokenStorage.saveUser(data);
-        this.isLoginFailed = false;
-        this.isLoggedIn = true;
-        this.role = this.tokenStorage.getUser().role;
-        this.tokenStorage.isLoggedIn.next(true);
-        this.redirectUser(this.role);
-      },
-      error: err => {
-        this.loggingIn = false;
-        if(err instanceof HttpErrorResponse){
-          switch(err.status){
-            case HttpStatusCode.BadRequest:
-              this.errorMessage = err.error;
-              break;
 
-            default:
-              this.errorMessage = err.error.message;
-          }
-        }else{
-          this.errorMessage = err.error.message;
+    var userlogin: UserLogins = new UserLogins({
+      userName: username,
+      password: password
+    });
+
+    this.authService.getToken(userlogin).subscribe((data) => {
+      this.loggingIn = false;
+      this.tokenStorage.saveToken(data.token!);
+      this.tokenStorage.saveUser(data);
+      this.isLoginFailed = false;
+      this.isLoggedIn = true;
+      this.role = this.tokenStorage.getUser().role;
+      this.tokenStorage.isLoggedIn.next(true);
+      this.redirectUser(this.role);
+    }, (err) => {
+      this.loggingIn = false;
+      if (err instanceof HttpErrorResponse) {
+        switch (err.status) {
+          case HttpStatusCode.BadRequest:
+            this.errorMessage = err.error;
+            break;
+
+          default:
+            this.errorMessage = err.error.message;
         }
-        this.isLoginFailed = true;
+      } else {
+        this.errorMessage = err.error.message;
       }
+      this.isLoginFailed = true;
     });
   }
 
   getManagers() {
-    this.httpClient.get<string[]>("https://localhost:7189/api/Account/GetListOfManagers").subscribe({
-      next: (v) => this.managers = v,
-      error: (e) => console.log(e),
-      complete: () => console.info('complete')
+    this.retrievingManagers = true;
+    this.authService.getListOfManagers().subscribe((managers) => {
+      this.managers = managers;
+      this.retrievingManagers = false;
     })
   }
 
-  redirectUser(role: string){
-    if(this.role === 'Admin'){
+  redirectUser(role: string) {
+    if (role === 'Admin') {
       console.log("Logged in as Admin");
       this.router.navigate(['/admin'])
     }
-    if(this.role === 'Manager'){
+    if (role === 'Manager') {
       console.log("Logged in as Manager");
       this.router.navigate(['/manager'])
     }
-    if(this.role==='User'){
+    if (role === 'User') {
       console.log("Logged in as User");
       this.router.navigate(['/user'])
     }

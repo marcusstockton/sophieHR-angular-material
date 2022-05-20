@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
-import { map } from 'rxjs';
-import { EmployeeDetailDto, EmployeesService } from 'src/libs/client';
+import { EmployeeDetailDto, EmployeesClient } from '../client';
 
 @Component({
   selector: 'app-board-user',
@@ -19,7 +18,7 @@ export class BoardUserComponent implements OnInit {
   public employeeAge: string;
   public employmentLength: string;
 
-  constructor(private route: ActivatedRoute, private employeeService: EmployeesService, private sanitizer: DomSanitizer) { }
+  constructor(private route: ActivatedRoute, private employeeService: EmployeesClient, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('userid');
@@ -27,25 +26,26 @@ export class BoardUserComponent implements OnInit {
 
     if (this.employeeId != null) {
       this.loading = true;
-      this.employeeService.apiEmployeesGetByIdIdGet(this.employeeId).pipe(map((results:EmployeeDetailDto) => {
+
+      this.employeeService.getEmployee(this.employeeId).subscribe((results: EmployeeDetailDto) => {
         this.loading = false;
         this.employeeRecord = results;
-        if(results.dateOfBirth){
+        if (results.dateOfBirth) {
           let employeeAge = this.dateDiff(results.dateOfBirth);
           this.employeeAge = `${employeeAge?.years} years, ${employeeAge?.months} months`
         }
-        if(results.startOfEmployment){
+        if (results.startOfEmployment) {
           let employmentLength = this.dateDiff(results.startOfEmployment);
           this.employmentLength = `${employmentLength?.years} years, ${employmentLength?.months} months, ${employmentLength?.days} days`
         }
-        
+
         this.userImage = this.sanitizer.bypassSecurityTrustUrl("data:image/png;base64, " + results.avatar?.avatar);
         this.employeeRecord.nationalInsuranceNumber = this.employeeRecord?.nationalInsuranceNumber?.replace(/(.{2})/g, '$1 ') // Splits out the string into 2's
-      })).subscribe();
+      });
     }
   }
 
-  private dateDiff(startdate:string) {
+  private dateDiff(startdate:Date) {
     //define moments for the startdate and enddate
     var startdateMoment = moment(startdate);
     var enddateMoment = moment(new Date());

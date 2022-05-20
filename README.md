@@ -1,4 +1,4 @@
-# SophieHRAngularMaterial
+# Sophie HR Angular Material
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.5.
 
@@ -26,6 +26,17 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
+## Generating the Client.ts
+This is done using NSwagStudio and copy/pasting the data across...will look to have nswag generate the data on build in the future...
+
+
 
 ## Dev Notes:
 Copied out the auth bits from https://www.bezkoder.com/angular-13-jwt-auth/
+
+
+## Useful API's:
+Get UK Bank holidays - https://www.gov.uk/bank-holidays.json
+
+## Possible libraries to use:
+Calendar library - https://mattlewis92.github.io/angular-calendar/docs/

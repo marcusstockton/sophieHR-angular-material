@@ -16,6 +16,7 @@ import { authInterceptorProviders } from './_helpers/auth.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import { UserFormComponent } from './board-user/forms/user-form/user-form.component';
+import { CompaniesClient, EmployeesClient, AccountClient, DepartmentsClient } from './client';
 
 
 @NgModule({
@@ -39,7 +40,7 @@ import { UserFormComponent } from './board-user/forms/user-form/user-form.compon
     MaterialModule,
     ReactiveFormsModule
   ],
-  providers: [authInterceptorProviders],
+  providers: [authInterceptorProviders, CompaniesClient, EmployeesClient, AccountClient, DepartmentsClient],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

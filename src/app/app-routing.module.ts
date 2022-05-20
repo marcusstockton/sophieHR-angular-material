@@ -9,6 +9,7 @@ import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './_helpers/auth.guard';
+import { AccountClient, CompaniesClient, DepartmentsClient, EmployeesClient } from './client';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -26,6 +27,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  // providers:[CompaniesClient, EmployeesClient, AccountClient, DepartmentsClient]
 })
 export class AppRoutingModule { }

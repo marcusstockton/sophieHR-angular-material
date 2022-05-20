@@ -15,10 +15,10 @@
           {{company.name}}
         </mat-card-title>
         <mat-card-content>
-          <p><small>{{company.address.line1}} {{company.address.line2}} {{company.address.line3}}
-              {{company.address.line4}}</small></p>
-          <p><small>{{company.address.county}}</small></p>
-          <p><small>{{company.address.postcode | uppercase}}</small></p>
+          <p><small>{{company.address?.line1}} {{company.address?.line2}} {{company.address?.line3}}
+              {{company.address?.line4}}</small></p>
+          <p><small>{{company.address?.county}}</small></p>
+          <p><small>{{company.address?.postcode | uppercase}}</small></p>
         </mat-card-content>
       </mat-card>
     </div>
