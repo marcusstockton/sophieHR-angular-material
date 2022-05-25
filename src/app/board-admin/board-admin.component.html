@@ -17,8 +17,8 @@
             
           </mat-card-content>
           <mat-card-subtitle>
-            <p>Created: <small>{{company.createdDate}}</small></p>
-            <p>Updated: <small>{{company.updatedDate}}</small></p>
+            <p>Created: <small>{{company.createdDate| date : 'long'}}</small></p>
+            <p>Updated: <small>{{company.updatedDate| date : 'long'}}</small></p>
           </mat-card-subtitle>
         </mat-card-header>
       </mat-card>
