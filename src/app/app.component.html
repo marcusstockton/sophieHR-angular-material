@@ -5,14 +5,14 @@
         <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
       </button>
       <span>Sophies Human Resources</span>
-      <!-- <span *ngIf="this.role==='Admin'">
+      <span *ngIf="this.role==='Admin' && companyNames">
         <button mat-button [matMenuTriggerFor]="menu">Companies <mat-icon>expand_more</mat-icon></button>
         <mat-menu #menu="matMenu">
           <span *ngFor="let company of companyNames">
-            <button mat-menu-item (click)="onCompanyChange(company)">{{company.name}}</button>
+            <button mat-menu-item (click)="onCompanyChange(company.key!)">{{company.value}}</button>
           </span> 
         </mat-menu>
-      </span> -->
+      </span>
 
       <span class="example-spacer"></span>
       <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon"

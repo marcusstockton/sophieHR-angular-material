@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { TokenStorageService } from './_services/token-storage.service';
 import { UserService } from './_services/user.service';
 import { MatSidenav } from '@angular/material/sidenav';
-import { CompaniesClient } from './client';
+import { CompaniesClient, KeyValuePairOfGuidAndString } from './client';
 
 @Component({
   selector: 'app-root',
@@ -14,13 +14,15 @@ export class AppComponent implements OnInit {
   role: string;
   username?: string;
   isExpanded: boolean;
-  companyNames: { id: string, name: string }[] = [];
+  companyNames: KeyValuePairOfGuidAndString[] = [];
   companyId?: string;
 
   @ViewChild(MatSidenav) sidenav: MatSidenav;
   constructor(public tokenStorageService: TokenStorageService,
     private router: Router,
-    private userService: UserService) { }
+    private userService: UserService,
+    private companyService: CompaniesClient
+    ) { }
 
   ngOnInit(): void {
     this.tokenStorageService.isLoggedIn.subscribe(data => {
@@ -30,7 +32,11 @@ export class AppComponent implements OnInit {
         this.role = user.role;
         this.username = user.username;
       }
-    })
+    });
+
+    if(this.role == "Admin"){
+      this.getCompanies();
+    }
   }
 
   logout(): void {
@@ -42,9 +48,16 @@ export class AppComponent implements OnInit {
     this.router.navigate(['/profile'])
   }
 
-  onCompanyChange(event: any) {
-    console.log("You clicked on company id: " + event.id);
-    this.userService.updateCompanyId(event.id);
+  getCompanies(){
+    console.log("Fetching companies");
+    this.companyService.getCompanyNames().subscribe((companies)=>{
+      this.companyNames.push(...companies);
+    })
+  }
+
+  onCompanyChange(companyId: string) {
+    console.log("You clicked on company id: " + companyId);
+    this.userService.updateCompanyId(companyId);
   }
 
   clearCompany($event: any) {

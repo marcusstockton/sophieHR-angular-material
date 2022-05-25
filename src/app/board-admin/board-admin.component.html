@@ -1,14 +1,8 @@
 <div class="admin">
   <p>Welcome Admin</p>
 
-  <mat-select (selectionChange)='onCompanyChange($event.value)' [(ngModel)]="company" placeholder="Select a customer...">
-    <mat-option *ngFor="let company of companies" [value]="company.key">
-      {{ company.value }}
-    </mat-option>
-  </mat-select>
-
-  <div *ngIf="companyId; else noCompany">
-    <p>Company Id is {{companyId}}</p>
+  <div>
+    <p *ngIf="companyId">Company Id is {{companyId}}</p>
 
     <div *ngIf="company" >
       <span class="card-row">
@@ -77,7 +71,4 @@
     </div>
     <!-- <pre>{{company | json}}</pre> -->
   </div>
-  <ng-template #noCompany>
-    Select a company to get going...
-  </ng-template>
 </div>

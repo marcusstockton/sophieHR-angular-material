@@ -28,6 +28,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  // providers:[CompaniesClient, EmployeesClient, AccountClient, DepartmentsClient]
+  providers:[CompaniesClient, EmployeesClient, AccountClient, DepartmentsClient]
 })
 export class AppRoutingModule { }

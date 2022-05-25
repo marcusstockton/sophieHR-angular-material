@@ -14,10 +14,9 @@ export class BoardAdminComponent implements OnInit {
   company: CompanyDetailDto;
   companies: KeyValuePairOfGuidAndString[] = [];
 
-  constructor(private userService: UserService, private companyService: CompaniesClient) { }
+  constructor(private userService: UserService, private readonly companyService: CompaniesClient) { }
 
   ngOnInit(): void { 
-    this.getCompanies();
     this.userService.companyId.subscribe((x => {
       this.companyId = x;
       if (this.companyId) {
@@ -28,14 +27,6 @@ export class BoardAdminComponent implements OnInit {
     }));
   }
 
-
-  getCompanies() {
-    this.companyService.getCompanyNames().subscribe((companyList)=>{      
-      companyList.forEach((r)=>{
-        this.companies.push( new KeyValuePairOfGuidAndString({key: r.key, value: r.value}) );
-      })
-    })
-  }
   onCompanyChange(companyId: string) {
     console.log("You clicked on company id: " + companyId);
     this.userService.updateCompanyId(companyId);
