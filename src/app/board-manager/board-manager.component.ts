@@ -34,7 +34,7 @@ export class BoardManagerComponent implements OnInit, AfterViewInit {
     this.companyService.getCompany(this.user['companyId']).subscribe((result: CompanyDetailDto)=>{
       this.company = result;
     })
-    this.employeeService.getEmployeesForManager(this.user['id']).subscribe((results) => {
+    this.employeeService.getEmployeesForManager(this.user['id']).subscribe((results: EmployeeListDto[]) => {
       this.employees = results;
       this.dataSource.data = this.employees;
     });
