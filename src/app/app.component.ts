@@ -49,14 +49,14 @@ export class AppComponent implements OnInit {
   }
 
   getCompanies(){
-    console.log("Fetching companies");
+    // console.log("Fetching companies");
     this.companyService.getCompanyNames().subscribe((companies)=>{
       this.companyNames.push(...companies);
     })
   }
 
   onCompanyChange(companyId: string) {
-    console.log("You clicked on company id: " + companyId);
+    // console.log("You clicked on company id: " + companyId);
     this.userService.updateCompanyId(companyId);
   }
 

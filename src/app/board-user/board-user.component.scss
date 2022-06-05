@@ -1,11 +1,12 @@
 .user{
-    height: 88vh;
-    padding-left: 20vw;
-    margin: 15px;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
  }
 
  mat-card{
-     max-width: 40%;
+    margin: 0 auto;
+    width: 40%;
  }
 
 dl > dt{

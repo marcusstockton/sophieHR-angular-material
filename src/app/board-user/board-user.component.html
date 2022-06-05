@@ -1,5 +1,6 @@
 <div class="user">
   <mat-spinner color="accent" diameter="50" *ngIf="loading"></mat-spinner>
+
   <div class='row' *ngIf="!loading">
     <div class='column'>
       <div>
@@ -63,6 +64,9 @@
             </div>
 
           </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button onclick="history.back()">Go Back</button>
+          </mat-card-actions>
         </mat-card>
       </div>
     </div>

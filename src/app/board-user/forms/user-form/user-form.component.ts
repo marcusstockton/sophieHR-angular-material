@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { CompaniesClient, EmployeeDetailDto, EmployeeListDto, EmployeesClient, KeyValuePairOfGuidAndString } from 'src/app/client';
+import { CompaniesClient, EmployeeAddress, EmployeeCreateDto, EmployeeDetailDto, EmployeeListDto, EmployeesClient, KeyValuePairOfGuidAndString } from 'src/app/client';
 
 @Component({
   selector: 'app-user-form',
@@ -84,6 +84,7 @@ export class UserFormComponent implements OnInit {
       if (result.length === 1) {
         this.userForm.controls['companyId'].setValue(result[0].value);
         this.getManagersForComany(result[0].key!);
+        this.loading=false;
       }
     })
     this.employeeService.getTitles().subscribe((result) => {
@@ -118,5 +119,22 @@ export class UserFormComponent implements OnInit {
     });
 
   }
+
+  submit(form: FormGroup) {
+    if (!form.valid) {
+      return;
+    }
+    console.log(form.value);
+    var address = new EmployeeAddress({...form.value.address});
+    var ef2 = new EmployeeCreateDto({...form.value});
+    ef2.address = address;
+    this.employeeService.postEmployee(ef2).subscribe((result)=>{
+      // redirect to page
+      console.log(result);
+    }, (err)=>{
+      alert(err);
+    });
+  }
+
 
 }

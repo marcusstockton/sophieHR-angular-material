@@ -1,19 +1,15 @@
 <div class="user-form">
-    <div class="row" *ngIf="loading">
+    <div class="row" *ngIf="!loading">
         <div class="column">
-            <div [formGroup]="userForm">
-                <label for="avatar">Avatar: </label>
-                <input formControlName="avatar" id="avatar" type="file" class="form-control" accept=".jpg,.png"
-                    (change)="onFileChange($event)">
-            </div>
-            <span *ngIf="imageSrc">
-                <img [src]="imageSrc" class="avatar">
-            </span>
-        </div>
-        <div class="column">
-
-            <div [formGroup]="userForm">
-
+            <form [formGroup]="userForm" (ngSubmit)="submit(userForm)">
+                <div>
+                    <label for="avatar">Avatar: </label>
+                    <input formControlName="avatar" id="avatar" type="file" class="form-control" accept=".jpg,.png"
+                        (change)="onFileChange($event)">
+                </div>
+                <span *ngIf="imageSrc">
+                    <img [src]="imageSrc" class="avatar">
+                </span>
                 <div class="row">
                     <mat-form-field appearance="fill">
                         <mat-label>Company</mat-label>
@@ -83,7 +79,11 @@
                           <mat-option value="Other">Other</mat-option>
                         </mat-select>
                       </mat-form-field>
-
+                      <mat-form-field appearance="fill">
+                        <mat-label>Leave Allowance</mat-label>
+                        <input matInput placeholder="Leave Allowance" formControlName="holidayAllowance" #leaveInput>
+                        <mat-hint>Leave Allowance</mat-hint>
+                    </mat-form-field>
                 </div>
                 <div class="row"> 
                     <mat-form-field appearance="fill">
@@ -124,17 +124,17 @@
                 <div class="row"> 
                     <mat-form-field appearance="fill">
                         <mat-label>DoB</mat-label>
-                        <input matInput [matDatepicker]="picker" formControlName="dateOfBirth">
+                        <input matInput [matDatepicker]="dobpicker" formControlName="dateOfBirth">
                         <mat-hint>DD/MM/YYYY</mat-hint>
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-datepicker-toggle matSuffix [for]="dobpicker"></mat-datepicker-toggle>
+                        <mat-datepicker #dobpicker></mat-datepicker>
                       </mat-form-field>
                     <mat-form-field appearance="fill">
                         <mat-label>Start Of Employment</mat-label>
-                        <input matInput [matDatepicker]="picker" formControlName="startOfEmployment">
+                        <input matInput [matDatepicker]="soepicker" formControlName="startOfEmployment">
                         <mat-hint>DD/MM/YYYY</mat-hint>
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-datepicker-toggle matSuffix [for]="soepicker"></mat-datepicker-toggle>
+                        <mat-datepicker #soepicker></mat-datepicker>
                       </mat-form-field>
 
                 </div>
@@ -195,7 +195,7 @@
                 <div class="row">
                     <button type="submit" mat-raised-button color="primary" [disabled]="userForm.invalid">Save</button>
                 </div>
-            </div>
+            </form>
         </div>
 
     </div>
