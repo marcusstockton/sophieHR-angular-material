@@ -17,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import { UserFormComponent } from './board-user/forms/user-form/user-form.component';
 import { CompaniesClient, EmployeesClient, AccountClient, DepartmentsClient } from './client';
+import { DeptCreateDialogComponent } from './dialogs/departments/dept-create-dialog/dept-create-dialog.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { CompaniesClient, EmployeesClient, AccountClient, DepartmentsClient } fr
     BoardAdminComponent,
     BoardManagerComponent,
     BoardUserComponent,
-    UserFormComponent
+    UserFormComponent,
+    DeptCreateDialogComponent
   ],
   imports: [
     BrowserModule,

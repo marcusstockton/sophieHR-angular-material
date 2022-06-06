@@ -1,9 +1,11 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { CompaniesClient, CompanyDetailDto, DepartmentDetailDto, DepartmentsClient, EmployeeListDto, EmployeesClient, KeyValuePairOfGuidAndString } from 'src/app/client';
+import { DeptCreateDialogComponent } from '../dialogs/departments/dept-create-dialog/dept-create-dialog.component';
 import { UserService } from '../_services/user.service';
 
 @Component({
@@ -30,7 +32,8 @@ export class BoardAdminComponent implements OnInit, AfterViewInit {
     private readonly companyService: CompaniesClient,
     private readonly employeesClient: EmployeesClient,
     private readonly departmentClient: DepartmentsClient,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -75,7 +78,19 @@ export class BoardAdminComponent implements OnInit, AfterViewInit {
   }
 
   addDepartment(){
-    alert("Add in logic...a modal?");
+    this.openCreateDepartmentDialog();
   }
 
+  
+  openCreateDepartmentDialog(): void {
+    const dialogRef = this.dialog.open(DeptCreateDialogComponent, {
+      width: '250px',
+      data: {companyId: this.companyId}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.getDepartmentsForCompany(this.companyId);
+    });
+  }
 }
