@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
     private tokenStorage: TokenStorageService,
     private fb: FormBuilder,
     private router: Router) { }
+
   ngOnInit(): void {
     this.form = this.fb.group({
       username: [null, [Validators.required]],
@@ -42,6 +43,8 @@ export class LoginComponent implements OnInit {
     }
     this.getManagers();
   }
+
+
   onSubmit(form: FormGroup): void {
     if (!form.valid) {
       return;
@@ -103,4 +106,5 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/user'])
     }
   }
+  
 }

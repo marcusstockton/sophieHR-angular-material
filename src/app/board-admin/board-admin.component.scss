@@ -1,10 +1,11 @@
-.admin{
+.admin {
     height: 90vh;
     display: flex;
     flex-direction: column;
     width: 90%;
     padding-left: 5%;
 }
+
 .detail-card {
     display: flex;
     flex-direction: column;
@@ -12,15 +13,15 @@
     max-width: 20vw;
     align-content: center;
     align-items: center;
-  }
+}
 
-.image-card{
+.image-card {
     max-width: 20vh;
     display: flex;
     justify-content: center;
 }
 
-.card-row{
+.card-row {
     display: flex;
     flex-direction: row;
     padding-top: 2vh;
@@ -28,20 +29,20 @@
     flex: 1 1 auto;
 }
 
-#customer-select{
+#customer-select {
     background-color: lightgray;
 }
 
 
-table {
+.table {
     width: 100%;
-  }
-  
-  .mat-form-field {
-    font-size: 14px;
-    width: 100%;
-  }
-  
-  td, th {
-    width: 25%;
-  }
+
+    table {
+        width: 100%;
+    }
+}
+
+.mat-column-department,
+.mat-column-holidayAllowance {
+    text-align: center;
+}

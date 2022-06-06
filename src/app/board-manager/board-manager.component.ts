@@ -30,6 +30,9 @@ export class BoardManagerComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.user = this.tokenStorageService.getUser();
+    if(!this.user){
+      this.router.navigate(['/login/']);
+    }
     this.isLoading = true;
     this.companyService.getCompany(this.user['companyId']).subscribe((result: CompanyDetailDto)=>{
       this.company = result;

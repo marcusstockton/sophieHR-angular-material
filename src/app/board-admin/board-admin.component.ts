@@ -2,7 +2,8 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { CompaniesClient, CompanyDetailDto, EmployeeListDto, EmployeesClient, KeyValuePairOfGuidAndString } from 'src/app/client';
+import { Router } from '@angular/router';
+import { CompaniesClient, CompanyDetailDto, DepartmentDetailDto, DepartmentsClient, EmployeeListDto, EmployeesClient, KeyValuePairOfGuidAndString } from 'src/app/client';
 import { UserService } from '../_services/user.service';
 
 @Component({
@@ -15,10 +16,11 @@ export class BoardAdminComponent implements OnInit, AfterViewInit {
   companyId: string;
   company: CompanyDetailDto;
   companies: KeyValuePairOfGuidAndString[] = [];
+  departments: DepartmentDetailDto[] = [];
 
   displayedColumns: string[] = ['firstName', 'middleName', 'lastName', 'jobTitle', 'workEmailAddress',
     'personalEmailAddress', 'workPhoneNumber', 'workMobileNumber', 'holidayAllowance', 'dateOfBirth', 'startOfEmployment', 'department'];
-  dataSource: MatTableDataSource<EmployeeListDto>;
+  dataSource = new MatTableDataSource<EmployeeListDto>();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -26,7 +28,9 @@ export class BoardAdminComponent implements OnInit, AfterViewInit {
   constructor(
     private userService: UserService,
     private readonly companyService: CompaniesClient,
-    private readonly employeesClient: EmployeesClient
+    private readonly employeesClient: EmployeesClient,
+    private readonly departmentClient: DepartmentsClient,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -37,8 +41,9 @@ export class BoardAdminComponent implements OnInit, AfterViewInit {
           this.company = result;
 
           this.employeesClient.getEmployeesForCompanyId(this.company.id!).subscribe((employees: EmployeeListDto[]) => {
-            this.dataSource = new MatTableDataSource(employees);
+            this.dataSource.data = employees;
           })
+          this.getDepartmentsForCompany(this.companyId);
         });
       }
     }));
@@ -56,6 +61,21 @@ export class BoardAdminComponent implements OnInit, AfterViewInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  getEmployeeRecord(row: any) {
+    console.log(JSON.stringify(row));
+    this.router.navigate(['/user/'+row.id]);
+  }
+
+  getDepartmentsForCompany(companyId: string){
+    this.departmentClient.getDepartmentsByCompanyId(companyId).subscribe((depts)=>{
+      this.departments = depts;
+    })
+  }
+
+  addDepartment(){
+    alert("Add in logic...a modal?");
   }
 
 }

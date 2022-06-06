@@ -3,7 +3,7 @@
 
   <mat-spinner color="accent" diameter="50" *ngIf="isLoading"></mat-spinner>
 
-  <div class='row' *ngIf="!isLoading">
+  <div class='row' *ngIf="!isLoading && company">
     <div class='column'>
       <mat-card class="image-card" *ngIf="company.logo">
         <img mat-card-image src="data:image/png;base64,{{company.logo}}" />

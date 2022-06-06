@@ -8,7 +8,7 @@ import { TokenStorageService } from '../_services/token-storage.service';
 export class AuthGuard implements CanActivate {
   constructor(private _tokenService: TokenStorageService, private _router: Router) { }
   canActivate(): boolean {
-    if (this._tokenService.getToken()) {
+    if (this._tokenService.isLoggedIn) {
       return true;
     } else {
       this._router.navigate(['/login'])

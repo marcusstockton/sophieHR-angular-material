@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { CompaniesClient, EmployeeAddress, EmployeeCreateDto, EmployeeDetailDto, EmployeeListDto, EmployeesClient, KeyValuePairOfGuidAndString } from 'src/app/client';
+import { CompaniesClient, DepartmentDetailDto, DepartmentsClient, EmployeeAddress, EmployeeCreateDto, EmployeeDetailDto, EmployeeListDto, EmployeesClient, KeyValuePairOfGuidAndString } from 'src/app/client';
 
 @Component({
   selector: 'app-user-form',
@@ -23,14 +23,14 @@ export class UserFormComponent implements OnInit {
     userName: [null, [Validators.required]],
     title: [null, [Validators.required]],
     gender: [null, [Validators.required]],
-    workEmailAddress: [null, [Validators.required]],
-    personalEmailAddress: [null],
+    workEmailAddress: [null, [Validators.required, Validators.email]],
+    personalEmailAddress: [null, [Validators.email]],
     workPhoneNumber: [null],
     workMobileNumber: [null],
     phoneNumber: [null],
     personalMobileNumber: [null],
     jobTitle: [null, [Validators.required]],
-    holidayAllowance: [null, [Validators.required]],
+    holidayAllowance: [null, [Validators.required, Validators.min(0), Validators.max(60)]],
     dateOfBirth: [null, [Validators.required]],
     startOfEmployment: [null, [Validators.required]],
     address: this.fb.group({
@@ -44,16 +44,20 @@ export class UserFormComponent implements OnInit {
     managerId: [null, [Validators.required]],
     avatar: [null, [Validators.required]],
     departmentId: [null],
-    companyId: [null, [Validators.required]]
+    companyId: [null, [Validators.required]],
+    passportNumber: [null],
+    nationalInsuranceNumber:[null]
   });
   titles: any;
   managers: EmployeeListDto[];
+  departments: DepartmentDetailDto[];
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private employeeService: EmployeesClient,
     private companyService: CompaniesClient,
+    private deptService: DepartmentsClient,
     private sanitizer: DomSanitizer
   ) { }
 
@@ -82,7 +86,7 @@ export class UserFormComponent implements OnInit {
     this.companyService.getCompanyNames().subscribe((result) => {
       this.companies = result;
       if (result.length === 1) {
-        this.userForm.controls['companyId'].setValue(result[0].value);
+        this.userForm.controls['companyId'].setValue(result[0].key);
         this.getManagersForComany(result[0].key!);
         this.loading=false;
       }
@@ -111,13 +115,19 @@ export class UserFormComponent implements OnInit {
     console.log("CompanyId:" + this.companyId);
 
     this.getManagersForComany(this.companyId);
+    this.getDepartmentsForCompany(this.companyId);
   }
 
   private getManagersForComany(companyId: string) {
     this.employeeService.getManagersForCompanyId(companyId).subscribe((result: EmployeeListDto[]) => {
       this.managers = result;
     });
+  }
 
+  private getDepartmentsForCompany(companyId:string): void{
+    this.deptService.getDepartmentsByCompanyId(companyId).subscribe((depts: DepartmentDetailDto[])=>{
+      this.departments = depts;
+    })
   }
 
   submit(form: FormGroup) {
@@ -129,7 +139,8 @@ export class UserFormComponent implements OnInit {
     var ef2 = new EmployeeCreateDto({...form.value});
     ef2.address = address;
     this.employeeService.postEmployee(ef2).subscribe((result)=>{
-      // redirect to page
+      // On success, add the avatar...
+      
       console.log(result);
     }, (err)=>{
       alert(err);
