@@ -1,0 +1,54 @@
+<span class="card-row" *ngIf="company">
+    <mat-card class="image-card" *ngIf="company.logo">
+      <img mat-card-image src="data:image/png;base64,{{company.logo}}" />
+    </mat-card>
+
+    <mat-card class="detail-card">
+      <mat-card-header>
+        <mat-card-title>{{company.name}}</mat-card-title>
+        <mat-card-content>
+
+        </mat-card-content>
+        <mat-card-subtitle>
+          <p>Created: <small>{{company.createdDate| date : 'long'}}</small></p>
+          <p>Updated: <small>{{company.updatedDate| date : 'long'}}</small></p>
+        </mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+
+    <mat-card class="detail-card">
+      <mat-card-header>
+        <mat-card-title>Address</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field floatLabel="always" class="static-text">
+          <input matInput disabled placeholder="Line 1" value="{{company.address?.line1}}" />
+        </mat-form-field>
+        <mat-form-field floatLabel="always" class="static-text">
+          <input matInput disabled placeholder="Line 2" value="{{company.address?.line2}}" />
+        </mat-form-field>
+        <mat-form-field floatLabel="always" class="static-text">
+          <input matInput disabled placeholder="Line 3" value="{{company.address?.line3}}" />
+        </mat-form-field>
+        <mat-form-field floatLabel="always" class="static-text">
+          <input matInput disabled placeholder="Line 4" value="{{company.address?.line4}}" />
+        </mat-form-field>
+        <mat-form-field floatLabel="always" class="static-text">
+          <input matInput disabled placeholder="County" value="{{company.address?.county}}" />
+        </mat-form-field>
+        <mat-form-field floatLabel="always" class="static-text">
+          <input matInput disabled placeholder="Postcode" value="{{company.address?.postcode}}" />
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+
+
+    <mat-card class="detail-card">
+      <mat-card-header>
+        <mat-card-title>Employees</mat-card-title>
+      </mat-card-header>
+      <mat-card-content style="font-size: 15vh; margin-top: 5vh;">
+        {{company.employeeCount}}
+      </mat-card-content>
+    </mat-card>
+  </span>

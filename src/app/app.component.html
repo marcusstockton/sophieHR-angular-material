@@ -1,6 +1,6 @@
 <div id="app">
   <mat-drawer-container>
-    <mat-toolbar color="primary" *ngIf="this.tokenStorageService.isLoggedIn | async" fullscreen>
+    <mat-toolbar color="primary" *ngIf="this.tokenStorageService.isLoggedIn2" fullscreen>
       <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
         <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
       </button>
@@ -25,7 +25,7 @@
     </mat-toolbar>
 
     <mat-sidenav-container autosize>
-      <mat-sidenav id="my-sidenav" mode="side" [opened]="(this.tokenStorageService.isLoggedIn | async)" >
+      <mat-sidenav id="my-sidenav" mode="side" [opened]="(this.tokenStorageService.isLoggedIn2)" >
         <mat-nav-list *ngIf="this.role==='Admin'">
           <mat-list-item>
             <button mat-button class="menu-button" routerLink="/admin">

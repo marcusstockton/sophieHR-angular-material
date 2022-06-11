@@ -18,6 +18,7 @@ import { MaterialModule } from './material/material.module';
 import { UserFormComponent } from './board-user/forms/user-form/user-form.component';
 import { CompaniesClient, EmployeesClient, AccountClient, DepartmentsClient } from './client';
 import { DeptCreateDialogComponent } from './dialogs/departments/dept-create-dialog/dept-create-dialog.component';
+import { CompanyDetailComponent } from './company/company-detail/company-detail.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { DeptCreateDialogComponent } from './dialogs/departments/dept-create-dia
     BoardManagerComponent,
     BoardUserComponent,
     UserFormComponent,
-    DeptCreateDialogComponent
+    DeptCreateDialogComponent,
+    CompanyDetailComponent
   ],
   imports: [
     BrowserModule,

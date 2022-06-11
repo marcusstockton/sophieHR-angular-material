@@ -7,7 +7,8 @@ const USER_KEY = 'auth-user';
   providedIn: 'root'
 })
 export class TokenStorageService {
-  public isLoggedIn = new BehaviorSubject(false);
+  //public isLoggedIn = new BehaviorSubject(false);
+  public isLoggedIn2:boolean = false;
   constructor() { }
   signOut(): void {
     window.sessionStorage.clear();
@@ -19,7 +20,8 @@ export class TokenStorageService {
   public getToken(): string | null {
     var token = window.sessionStorage.getItem(TOKEN_KEY);
     if(token != null){
-      this.isLoggedIn.next(true);
+      //this.isLoggedIn.next(true);
+      this.isLoggedIn2 = true;
       return token;
     }
     return null;

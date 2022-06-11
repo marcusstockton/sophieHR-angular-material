@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationStart, Router } from '@angular/router';
 import { TokenStorageService } from './_services/token-storage.service';
 import { UserService } from './_services/user.service';
 import { MatSidenav } from '@angular/material/sidenav';
@@ -22,21 +22,30 @@ export class AppComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private companyService: CompaniesClient
-    ) { }
+    ) {
+
+      router.events.subscribe(Event => {
+        if(Event instanceof NavigationStart) {
+             //you code for checking and navigation
+             if (this.tokenStorageService.getToken()) {
+              this.isExpanded = true;
+              const user = this.tokenStorageService.getUser();
+              this.role = user.role;
+              this.username = user.username;
+              if(this.role == "Admin"){
+                this.getCompanies();
+              }
+            }
+        }
+      });
+     }
 
   ngOnInit(): void {
-    this.tokenStorageService.isLoggedIn.subscribe(data => {
-      if (!!this.tokenStorageService.getToken()) {
-        this.isExpanded = true;
-        const user = this.tokenStorageService.getUser();
-        this.role = user.role;
-        this.username = user.username;
-      }
-    });
+    //this.tokenStorageService.isLoggedIn.subscribe(data => {
+      
+    //});
 
-    if(this.role == "Admin"){
-      this.getCompanies();
-    }
+    
   }
 
   logout(): void {

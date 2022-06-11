@@ -1,0 +1,22 @@
+.detail-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 15vw;
+    max-width: 20vw;
+    align-content: center;
+    align-items: center;
+}
+
+.image-card {
+    max-width: 20vh;
+    display: flex;
+    justify-content: center;
+}
+
+.card-row {
+    display: flex;
+    flex-direction: row;
+    padding-top: 2vh;
+    justify-content: space-between;
+    flex: 1 1 auto;
+}
