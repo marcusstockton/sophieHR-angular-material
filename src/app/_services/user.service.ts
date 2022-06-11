@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  public companyId = new BehaviorSubject("");
+  public companyId = new BehaviorSubject(localStorage.getItem('currentCompanyId') || '');
   constructor() { }
 
   updateCompanyId(companyId:string){

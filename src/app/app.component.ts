@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
   constructor(public tokenStorageService: TokenStorageService,
     private router: Router,
     private userService: UserService,
-    private companyService: CompaniesClient
+    private companyService: CompaniesClient,
     ) {
 
       router.events.subscribe(Event => {
@@ -41,11 +41,6 @@ export class AppComponent implements OnInit {
      }
 
   ngOnInit(): void {
-    //this.tokenStorageService.isLoggedIn.subscribe(data => {
-      
-    //});
-
-    
   }
 
   logout(): void {
@@ -58,14 +53,13 @@ export class AppComponent implements OnInit {
   }
 
   getCompanies(){
-    // console.log("Fetching companies");
     this.companyService.getCompanyNames().subscribe((companies)=>{
       this.companyNames.push(...companies);
     })
   }
 
   onCompanyChange(companyId: string) {
-    // console.log("You clicked on company id: " + companyId);
+    localStorage.setItem('currentCompanyId', companyId);
     this.userService.updateCompanyId(companyId);
   }
 
