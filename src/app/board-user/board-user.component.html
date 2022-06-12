@@ -11,7 +11,7 @@
             <mat-card-subtitle>{{employeeRecord.jobTitle}}</mat-card-subtitle>
             <mat-card-subtitle>Department: {{employeeRecord.department?.name}}</mat-card-subtitle>
           </mat-card-header>
-          <img mat-card-image [src]="userImage">
+          <img mat-card-image [src]="userImage" alt="{{employeeRecord.firstName}} {{employeeRecord.lastName}}">
           <mat-card-content>
             <div class="row">
               <div class="column">
@@ -24,8 +24,7 @@
                   <dd><a href="mailto:{{employeeRecord.workEmailAddress}}">{{employeeRecord.workEmailAddress}}</a></dd>
 
                   <dt *ngIf="employeeRecord.phoneNumber">Phone Number</dt>
-                  <dd *ngIf="employeeRecord.phoneNumber"><a
-                      href="tel:{{employeeRecord.phoneNumber}}">{{employeeRecord.phoneNumber}}</a></dd>
+                  <dd *ngIf="employeeRecord.phoneNumber"><a href="tel:{{employeeRecord.phoneNumber}}">{{employeeRecord.phoneNumber}}</a></dd>
 
                   <dt *ngIf="employeeRecord.workMobileNumber">Work Mobile Number</dt>
                   <dd *ngIf="employeeRecord.workMobileNumber">{{employeeRecord.workMobileNumber}}</dd>

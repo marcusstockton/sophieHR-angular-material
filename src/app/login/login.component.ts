@@ -58,25 +58,24 @@ export class LoginComponent implements OnInit {
     });
 
     this.authService.getToken(userlogin).subscribe({
-      next: (data)=>{
+      next: (data) => {
         this.loggingIn = false;
         this.tokenStorage.saveToken(data.token!);
         this.tokenStorage.saveUser(data);
         this.isLoginFailed = false;
         this.isLoggedIn = true;
         this.role = this.tokenStorage.getUser().role;
-        // this.tokenStorage.isLoggedIn.next(true);
-        this.tokenStorage.isLoggedIn2 = true;
+        this.tokenStorage.isLoggedIn = true;
         this.redirectUser(this.role);
       },
-      error: (err)=>{
+      error: (err) => {
         this.loggingIn = false;
         if (err instanceof HttpErrorResponse) {
           switch (err.status) {
             case HttpStatusCode.BadRequest:
               this.errorMessage = err.error;
               break;
-  
+
             default:
               this.errorMessage = err.error.message;
           }
@@ -86,33 +85,6 @@ export class LoginComponent implements OnInit {
         this.isLoginFailed = true;
       }
     })
-
-    // this.authService.getToken(userlogin).subscribe((data) => {
-    //   this.loggingIn = false;
-    //   this.tokenStorage.saveToken(data.token!);
-    //   this.tokenStorage.saveUser(data);
-    //   this.isLoginFailed = false;
-    //   this.isLoggedIn = true;
-    //   this.role = this.tokenStorage.getUser().role;
-    //   // this.tokenStorage.isLoggedIn.next(true);
-    //   this.tokenStorage.isLoggedIn2 = true;
-    //   this.redirectUser(this.role);
-    // }, (err) => {
-    //   this.loggingIn = false;
-    //   if (err instanceof HttpErrorResponse) {
-    //     switch (err.status) {
-    //       case HttpStatusCode.BadRequest:
-    //         this.errorMessage = err.error;
-    //         break;
-
-    //       default:
-    //         this.errorMessage = err.error.message;
-    //     }
-    //   } else {
-    //     this.errorMessage = err.error.message;
-    //   }
-    //   this.isLoginFailed = true;
-    // });
   }
 
   getManagers() {
@@ -137,5 +109,5 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/user'])
     }
   }
-  
+
 }

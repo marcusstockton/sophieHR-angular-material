@@ -1183,7 +1183,7 @@ export class EmployeesClient {
         return _observableOf(null as any);
     }
 
-    getEmployee(id: string): Observable<EmployeeListDto> {
+    getEmployee(id: string): Observable<EmployeeDetailDto> {
         let url_ = this.baseUrl + "/api/Employees/get-by-id/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1205,14 +1205,14 @@ export class EmployeesClient {
                 try {
                     return this.processGetEmployee(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<EmployeeListDto>;
+                    return _observableThrow(e) as any as Observable<EmployeeDetailDto>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<EmployeeListDto>;
+                return _observableThrow(response_) as any as Observable<EmployeeDetailDto>;
         }));
     }
 
-    protected processGetEmployee(response: HttpResponseBase): Observable<EmployeeListDto> {
+    protected processGetEmployee(response: HttpResponseBase): Observable<EmployeeDetailDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1223,7 +1223,7 @@ export class EmployeesClient {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = EmployeeListDto.fromJS(resultData200);
+            result200 = EmployeeDetailDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1494,6 +1494,341 @@ export class EmployeesClient {
                 result200 = [] as any;
                 for (let item of resultData200)
                     result200!.push(item);
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class NotesClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "https://localhost:7189";
+    }
+
+    getNotesForEmployee(employeeId: string): Observable<NoteDetailDto[]> {
+        let url_ = this.baseUrl + "/api/Notes/get-notes-for-employee/{employeeId}";
+        if (employeeId === undefined || employeeId === null)
+            throw new Error("The parameter 'employeeId' must be defined.");
+        url_ = url_.replace("{employeeId}", encodeURIComponent("" + employeeId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetNotesForEmployee(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetNotesForEmployee(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<NoteDetailDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<NoteDetailDto[]>;
+        }));
+    }
+
+    protected processGetNotesForEmployee(response: HttpResponseBase): Observable<NoteDetailDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(NoteDetailDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getNote(id: string): Observable<NoteDetailDto> {
+        let url_ = this.baseUrl + "/api/Notes/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetNote(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetNote(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<NoteDetailDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<NoteDetailDto>;
+        }));
+    }
+
+    protected processGetNote(response: HttpResponseBase): Observable<NoteDetailDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = NoteDetailDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    putNotes(id: string, noteDto: NoteDetailDto): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Notes/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(noteDto);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPutNotes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPutNotes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileResponse>;
+        }));
+    }
+
+    protected processPutNotes(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    deleteNotes(id: string): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Notes/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteNotes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteNotes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileResponse>;
+        }));
+    }
+
+    protected processDeleteNotes(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    postNotes(employeeId: string, noteInput: NoteCreateDto): Observable<NoteDetailDto> {
+        let url_ = this.baseUrl + "/api/Notes/{employeeId}";
+        if (employeeId === undefined || employeeId === null)
+            throw new Error("The parameter 'employeeId' must be defined.");
+        url_ = url_.replace("{employeeId}", encodeURIComponent("" + employeeId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(noteInput);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPostNotes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPostNotes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<NoteDetailDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<NoteDetailDto>;
+        }));
+    }
+
+    protected processPostNotes(response: HttpResponseBase): Observable<NoteDetailDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = NoteDetailDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getNoteTypes(): Observable<{ [key: string]: string; }> {
+        let url_ = this.baseUrl + "/api/Notes/GetNoteTypes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetNoteTypes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetNoteTypes(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<{ [key: string]: string; }>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<{ [key: string]: string; }>;
+        }));
+    }
+
+    protected processGetNoteTypes(response: HttpResponseBase): Observable<{ [key: string]: string; }> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200) {
+                result200 = {} as any;
+                for (let key in resultData200) {
+                    if (resultData200.hasOwnProperty(key))
+                        (<any>result200)![key] = resultData200[key] !== undefined ? resultData200[key] : <any>null;
+                }
             }
             else {
                 result200 = <any>null;
@@ -2419,6 +2754,7 @@ export class EmployeeDetailDto implements IEmployeeDetailDto {
     jobTitle?: string | undefined;
     dateOfBirth?: Date;
     startOfEmployment?: Date;
+    endOfEmployment?: Date | undefined;
     address?: EmployeeAddress | undefined;
     managerId?: string | undefined;
     avatar?: EmployeeAvatarDetail | undefined;
@@ -2455,6 +2791,7 @@ export class EmployeeDetailDto implements IEmployeeDetailDto {
             this.jobTitle = _data["jobTitle"];
             this.dateOfBirth = _data["dateOfBirth"] ? new Date(_data["dateOfBirth"].toString()) : <any>undefined;
             this.startOfEmployment = _data["startOfEmployment"] ? new Date(_data["startOfEmployment"].toString()) : <any>undefined;
+            this.endOfEmployment = _data["endOfEmployment"] ? new Date(_data["endOfEmployment"].toString()) : <any>undefined;
             this.address = _data["address"] ? EmployeeAddress.fromJS(_data["address"]) : <any>undefined;
             this.managerId = _data["managerId"];
             this.avatar = _data["avatar"] ? EmployeeAvatarDetail.fromJS(_data["avatar"]) : <any>undefined;
@@ -2491,6 +2828,7 @@ export class EmployeeDetailDto implements IEmployeeDetailDto {
         data["jobTitle"] = this.jobTitle;
         data["dateOfBirth"] = this.dateOfBirth ? this.dateOfBirth.toISOString() : <any>undefined;
         data["startOfEmployment"] = this.startOfEmployment ? this.startOfEmployment.toISOString() : <any>undefined;
+        data["endOfEmployment"] = this.endOfEmployment ? this.endOfEmployment.toISOString() : <any>undefined;
         data["address"] = this.address ? this.address.toJSON() : <any>undefined;
         data["managerId"] = this.managerId;
         data["avatar"] = this.avatar ? this.avatar.toJSON() : <any>undefined;
@@ -2520,6 +2858,7 @@ export interface IEmployeeDetailDto {
     jobTitle?: string | undefined;
     dateOfBirth?: Date;
     startOfEmployment?: Date;
+    endOfEmployment?: Date | undefined;
     address?: EmployeeAddress | undefined;
     managerId?: string | undefined;
     avatar?: EmployeeAvatarDetail | undefined;
@@ -2687,6 +3026,116 @@ export interface IEmployeeCreateDto {
     nationalInsuranceNumber?: string | undefined;
     managerId?: string | undefined;
     jobTitle?: string | undefined;
+}
+
+export class NoteDetailDto implements INoteDetailDto {
+    id?: string;
+    createdDate?: Date;
+    updatedDate?: Date;
+    employeeId?: string;
+    title?: string | undefined;
+    content?: string | undefined;
+    noteType?: NoteType;
+
+    constructor(data?: INoteDetailDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.createdDate = _data["createdDate"] ? new Date(_data["createdDate"].toString()) : <any>undefined;
+            this.updatedDate = _data["updatedDate"] ? new Date(_data["updatedDate"].toString()) : <any>undefined;
+            this.employeeId = _data["employeeId"];
+            this.title = _data["title"];
+            this.content = _data["content"];
+            this.noteType = _data["noteType"];
+        }
+    }
+
+    static fromJS(data: any): NoteDetailDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new NoteDetailDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
+        data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
+        data["employeeId"] = this.employeeId;
+        data["title"] = this.title;
+        data["content"] = this.content;
+        data["noteType"] = this.noteType;
+        return data;
+    }
+}
+
+export interface INoteDetailDto {
+    id?: string;
+    createdDate?: Date;
+    updatedDate?: Date;
+    employeeId?: string;
+    title?: string | undefined;
+    content?: string | undefined;
+    noteType?: NoteType;
+}
+
+export enum NoteType {
+    General = 0,
+    Leaving = 1,
+    Appraisal = 2,
+}
+
+export class NoteCreateDto implements INoteCreateDto {
+    title?: string | undefined;
+    content?: string | undefined;
+    noteType?: NoteType;
+
+    constructor(data?: INoteCreateDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.title = _data["title"];
+            this.content = _data["content"];
+            this.noteType = _data["noteType"];
+        }
+    }
+
+    static fromJS(data: any): NoteCreateDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new NoteCreateDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["title"] = this.title;
+        data["content"] = this.content;
+        data["noteType"] = this.noteType;
+        return data;
+    }
+}
+
+export interface INoteCreateDto {
+    title?: string | undefined;
+    content?: string | undefined;
+    noteType?: NoteType;
 }
 
 export interface FileParameter {
