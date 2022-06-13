@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { CompaniesClient } from 'src/app/client';
 
 import { CompanyDetailComponent } from './company-detail.component';
 
@@ -7,8 +8,13 @@ describe('CompanyDetailComponent', () => {
   let fixture: ComponentFixture<CompanyDetailComponent>;
 
   beforeEach(async () => {
+    const mockCompaniesClient = jasmine.createSpyObj('CompaniesClient', ['getCompany'])
+
     await TestBed.configureTestingModule({
-      declarations: [ CompanyDetailComponent ]
+      declarations: [ CompanyDetailComponent ],
+      providers:[
+        { provide: CompaniesClient, useValue: mockCompaniesClient },
+      ]
     })
     .compileComponents();
   });

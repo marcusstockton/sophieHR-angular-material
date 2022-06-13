@@ -18,7 +18,8 @@ export class AppComponent implements OnInit {
   companyId?: string;
 
   @ViewChild(MatSidenav) sidenav: MatSidenav;
-  constructor(public tokenStorageService: TokenStorageService,
+  constructor(
+    public tokenStorageService: TokenStorageService,
     private router: Router,
     private userService: UserService,
     private companyService: CompaniesClient,

@@ -14,6 +14,7 @@ export class RegisterComponent implements OnInit {
     email: null,
     password: null
   };
+  
   isSuccessful = false;
   isSignUpFailed = false;
   errorMessage = '';
@@ -30,14 +31,17 @@ export class RegisterComponent implements OnInit {
       password: password
     });
 
-    this.authService.registerNewAdminUser(userReg).subscribe((result) => {
-      console.log(result);
-      this.isSuccessful = true;
-      this.isSignUpFailed = false;
-    }, (err)=>{
-      this.errorMessage = err.error.message;
-      this.isSignUpFailed = true;
-    });
+    this.authService.registerNewAdminUser(userReg).subscribe(
+      {
+        next: (result) => {
+          console.log(result);
+          this.isSuccessful = true;
+          this.isSignUpFailed = false;
+        }, error: (err) => {
+          this.errorMessage = err.error.message;
+          this.isSignUpFailed = true;
+        }
+      });
   }
 
 }
