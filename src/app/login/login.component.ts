@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   role: string = '';
   hidePassword: boolean = true;
+  userId:string;
 
   managers: string[];
 
@@ -62,6 +63,7 @@ export class LoginComponent implements OnInit {
         this.loggingIn = false;
         this.tokenStorage.saveToken(data.token!);
         this.tokenStorage.saveUser(data);
+        this.userId = data.id!;
         this.isLoginFailed = false;
         this.isLoggedIn = true;
         this.role = this.tokenStorage.getUser().role;
@@ -106,7 +108,7 @@ export class LoginComponent implements OnInit {
     }
     if (role === 'User') {
       console.log("Logged in as User");
-      this.router.navigate(['/user'])
+      this.router.navigate(['/user',{userid: this.userId}])
     }
   }
 

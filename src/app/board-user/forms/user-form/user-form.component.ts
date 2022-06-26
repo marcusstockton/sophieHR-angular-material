@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -20,7 +21,7 @@ export class UserFormComponent implements OnInit {
     firstName: [null, [Validators.required]],
     middleName: [null],
     lastName: [null, [Validators.required]],
-    userName: [null, [Validators.required]],
+    userName: [null, [Validators.required, Validators.email]],
     title: [null, [Validators.required]],
     gender: [null, [Validators.required]],
     workEmailAddress: [null, [Validators.required, Validators.email]],
@@ -38,15 +39,15 @@ export class UserFormComponent implements OnInit {
       line2: [null],
       line3: [null],
       line4: [null],
-      postcode: [null, [Validators.required]],
+      postcode: [null, [Validators.required, Validators.pattern("^([A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}|GIR ?0A{2})$")]],
       county: [null, [Validators.required]],
     }),
     managerId: [null, [Validators.required]],
     avatar: [null, [Validators.required]],
     departmentId: [null],
     companyId: [null, [Validators.required]],
-    passportNumber: [null],
-    nationalInsuranceNumber:[null]
+    passportNumber: [null, [Validators.pattern("^[A-Z0-9<]{9}[0-9]{1}[A-Z]{3}[0-9]{7}[A-Z]{1}[0-9]{7}[A-Z0-9<]{14}[0-9]{2}$")]],
+    nationalInsuranceNumber: [null, [Validators.pattern("^[A-Za-z]{2}[0-9]{6}[A-Za-z]{1}$")]]
   });
   titles: any;
   managers: EmployeeListDto[];
@@ -58,7 +59,8 @@ export class UserFormComponent implements OnInit {
     private employeeService: EmployeesClient,
     private companyService: CompaniesClient,
     private deptService: DepartmentsClient,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private http: HttpClient
   ) { }
 
   onFileChange(event: any) {
@@ -88,7 +90,7 @@ export class UserFormComponent implements OnInit {
       if (result.length === 1) {
         this.userForm.controls['companyId'].setValue(result[0].key);
         this.getManagersForComany(result[0].key!);
-        this.loading=false;
+        this.loading = false;
       }
     })
     this.employeeService.getTitles().subscribe((result) => {
@@ -101,18 +103,47 @@ export class UserFormComponent implements OnInit {
     if (id) {
       this.loading = true;
       this.editing = true;
-      console.log(id);
-
+      
       this.employeeService.getEmployee(id).subscribe((user: EmployeeDetailDto) => {
         this.imageSrc = this.sanitizer.bypassSecurityTrustUrl("data:image/png;base64, " + user.avatar?.avatar);
-        this.userForm.patchValue({ ...user })
+
+        this.userForm.patchValue({ firstName: user.firstName });
+        this.userForm.patchValue({ middleName: user.middleName });
+        this.userForm.patchValue({ lastName: user.lastName });
+        this.userForm.patchValue({ userName: user.userName });
+        this.userForm.patchValue({ title: user.title });
+        this.userForm.patchValue({ gender: user.gender });
+        this.userForm.patchValue({ workEmailAddress: user.workEmailAddress });
+        this.userForm.patchValue({ personalEmailAddress: user.personalEmailAddress });
+        this.userForm.patchValue({ workPhoneNumber: user.workPhoneNumber });
+        this.userForm.patchValue({ workMobileNumber: user.workMobileNumber });
+        this.userForm.patchValue({ phoneNumber: user.phoneNumber });
+        this.userForm.patchValue({ personalMobileNumber: user.personalMobileNumber });
+        this.userForm.patchValue({ jobTitle: user.jobTitle });
+        this.userForm.patchValue({ holidayAllowance: user.holidayAllowance });
+        this.userForm.patchValue({ dateOfBirth: user.dateOfBirth });
+        this.userForm.patchValue({ startOfEmployment: user.startOfEmployment });
+
+        this.userForm.patchValue({ address: { line1: user.address?.line1 } });
+        this.userForm.patchValue({ address: { line2: user.address?.line2 } });
+        this.userForm.patchValue({ address: { line3: user.address?.line3 } });
+        this.userForm.patchValue({ address: { line4: user.address?.line4 } });
+        this.userForm.patchValue({ address: { postcode: user.address?.postcode } });
+        this.userForm.patchValue({ address: { county: user.address?.county } });
+
+        this.userForm.patchValue({ managerId: user.managerId });
+        this.userForm.patchValue({ avatar: user.avatar });
+        this.userForm.patchValue({ departmentId: user.departmentId });
+        this.userForm.patchValue({ companyId: user.companyId });
+        this.userForm.patchValue({ passportNumber: user.passportNumber });
+        this.userForm.patchValue({ nationalInsuranceNumber: user.nationalInsuranceNumber });
+        this.userForm.markAllAsTouched();
         this.loading = false;
       });
     }
   }
   companyChange() {
     this.userForm.controls['companyId'].setValue(this.companies.find(x => x.key == this.companyId));
-    console.log("CompanyId:" + this.companyId);
 
     this.getManagersForComany(this.companyId);
     this.getDepartmentsForCompany(this.companyId);
@@ -124,26 +155,47 @@ export class UserFormComponent implements OnInit {
     });
   }
 
-  private getDepartmentsForCompany(companyId:string): void{
-    this.deptService.getDepartmentsByCompanyId(companyId).subscribe((depts: DepartmentDetailDto[])=>{
+  private getDepartmentsForCompany(companyId: string): void {
+    this.deptService.getDepartmentsByCompanyId(companyId).subscribe((depts: DepartmentDetailDto[]) => {
       this.departments = depts;
     })
+  }
+
+  get userFormControl() {
+    return this.userForm.controls;
+  }
+  get addressControls() {
+    return ((this.userForm.get('address') as FormGroup).controls)
   }
 
   submit(form: FormGroup) {
     if (!form.valid) {
       return;
     }
-    console.log(form.value);
-    var address = new EmployeeAddress({...form.value.address});
-    var ef2 = new EmployeeCreateDto({...form.value});
+    var address = new EmployeeAddress({ ...form.value.address });
+    var ef2 = new EmployeeCreateDto({ ...form.value });
     ef2.address = address;
-    this.employeeService.postEmployee(ef2).subscribe((result)=>{
-      // On success, add the avatar...
-      
-      console.log(result);
-    }, (err)=>{
-      alert(err);
+
+    this.employeeService.postEmployee(ef2).subscribe({
+      next: result => {
+        if (result.id) {
+          const formData = new FormData();
+          formData.append('id', result.id);
+          formData.append('avatar', this.userForm.get('avatar')?.value);
+
+          this.http.post(`https://localhost:7189/api/Employees/${result.id}/upload-avatar`, formData).subscribe(
+            {
+              next: res => {
+                alert("I dunno...punt them back to user page?");
+              },
+              error: err => {
+                console.log(err);
+              }
+            })
+        }
+      }, error: err => {
+        console.log(err);
+      }
     });
   }
 

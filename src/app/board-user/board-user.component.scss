@@ -6,7 +6,7 @@
 
  mat-card{
     margin: 0 auto;
-    width: 40%;
+    width: 30%;
  }
 
 dl > dt{
@@ -15,8 +15,10 @@ dl > dt{
     text-transform: uppercase;
 }
 
-
-// .info{
-//     word-wrap: normal;
-//     width: 100%;
-// }
+.mat-card-image {
+    display: block;
+    width: 100%;
+    height: auto; /* maintain aspect ratio*/
+    margin: auto; /*optional centering of image*/
+    max-width: 60%;
+}

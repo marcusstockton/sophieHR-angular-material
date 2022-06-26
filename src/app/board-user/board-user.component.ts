@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { EmployeeDetailDto, EmployeesClient } from '../client';
 
@@ -18,7 +18,11 @@ export class BoardUserComponent implements OnInit {
   public employeeAge: string;
   public employmentLength: string;
 
-  constructor(private route: ActivatedRoute, private employeeService: EmployeesClient, private sanitizer: DomSanitizer) { }
+  constructor(
+    private route: ActivatedRoute, 
+    private employeeService: EmployeesClient, 
+    private sanitizer: DomSanitizer,
+    private router: Router ) { }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('userid');
@@ -71,5 +75,9 @@ export class BoardUserComponent implements OnInit {
     else {
       return undefined;
     }
+  }
+
+  editUser(){
+    this.router.navigate([`/user/${this.employeeId}/edit`]);
   }
 }

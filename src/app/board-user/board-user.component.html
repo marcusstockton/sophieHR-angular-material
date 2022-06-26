@@ -8,8 +8,14 @@
           <mat-card-header style="justify-content: center; text-align: center;">
             <mat-card-title>{{employeeRecord.title}} {{employeeRecord.firstName}} {{employeeRecord.lastName}}
             </mat-card-title>
+            <div>
+              <button mat-icon-button color="primary" (click)="editUser()">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
             <mat-card-subtitle>{{employeeRecord.jobTitle}}</mat-card-subtitle>
-            <mat-card-subtitle>Department: {{employeeRecord.department?.name}}</mat-card-subtitle>
+            <mat-card-subtitle *ngIf="employeeRecord.department?.name">Department: {{employeeRecord.department?.name}}
+            </mat-card-subtitle>
           </mat-card-header>
           <img mat-card-image [src]="userImage" alt="{{employeeRecord.firstName}} {{employeeRecord.lastName}}">
           <mat-card-content>
@@ -24,7 +30,8 @@
                   <dd><a href="mailto:{{employeeRecord.workEmailAddress}}">{{employeeRecord.workEmailAddress}}</a></dd>
 
                   <dt *ngIf="employeeRecord.phoneNumber">Phone Number</dt>
-                  <dd *ngIf="employeeRecord.phoneNumber"><a href="tel:{{employeeRecord.phoneNumber}}">{{employeeRecord.phoneNumber}}</a></dd>
+                  <dd *ngIf="employeeRecord.phoneNumber"><a
+                      href="tel:{{employeeRecord.phoneNumber}}">{{employeeRecord.phoneNumber}}</a></dd>
 
                   <dt *ngIf="employeeRecord.workMobileNumber">Work Mobile Number</dt>
                   <dd *ngIf="employeeRecord.workMobileNumber">{{employeeRecord.workMobileNumber}}</dd>
