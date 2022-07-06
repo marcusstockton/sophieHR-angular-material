@@ -1,11 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CompaniesClient, DepartmentDetailDto, DepartmentsClient, EmployeeAddress, EmployeeCreateDto, EmployeeDetailDto, EmployeeListDto, EmployeesClient, KeyValuePairOfGuidAndString } from 'src/app/client';
-import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { startWith, debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 
 
@@ -20,8 +19,8 @@ export class UserFormComponent implements OnInit {
   public loading: boolean = false;
   public companies: KeyValuePairOfGuidAndString[];
   public companyId: string = '';
-  jobTitleControl = new FormControl();
-  filteredOptions: Observable<any>;
+  filteredOptions: Observable<any> | undefined;
+  gettingTitles:boolean = false;
 
   public userForm: FormGroup = this.fb.group({
     firstName: [null, [Validators.required]],
@@ -66,30 +65,35 @@ export class UserFormComponent implements OnInit {
     private companyService: CompaniesClient,
     private deptService: DepartmentsClient,
     private sanitizer: DomSanitizer,
-    private http: HttpClient,
-    private token: TokenStorageService
+    private http: HttpClient
   ) {
-    this.filteredOptions = this.jobTitleControl.valueChanges.pipe(
+    this.onValueChanged();
+   }
+
+   public onValueChanged(){
+    this.filteredOptions = this.userForm.controls['jobTitle'].valueChanges.pipe(
       startWith(''),
       debounceTime(400),
       distinctUntilChanged(),
       switchMap(val => {
-          if(val){
+          if(val && this.userForm.controls['jobTitle'].dirty){
             return this.filter(val)
           }
           return "";
-       }) 
-    )
+       })
+    );
+    this.gettingTitles = false;
    }
 
    filter(val: string): Observable<any> {
-
+    this.gettingTitles = true;
     return this.employeeService.jobTitleAutoComplete(val)
      .pipe(
        map(response => response.filter(option => { 
          return option;
-       }))
-     )
+       }, this.gettingTitles = false))
+     );
+     
    }  
 
   onFileChange(event: any) {
@@ -166,7 +170,8 @@ export class UserFormComponent implements OnInit {
         this.userForm.patchValue({ companyId: user.company?.id });
         this.userForm.patchValue({ passportNumber: user.passportNumber });
         this.userForm.patchValue({ nationalInsuranceNumber: user.nationalInsuranceNumber });
-        this.userForm.markAllAsTouched();
+        // this.userForm.updateValueAndValidity();
+        // this.userForm.markAllAsTouched();
         this.loading = false;
       });
     }
@@ -179,17 +184,21 @@ export class UserFormComponent implements OnInit {
   }
 
   private getManagersForComany(companyId: string) {
+    this.loading = true;
     this.employeeService.getManagersForCompanyId(companyId).subscribe((result: EmployeeListDto[]) => {
       this.managers = result;
       if (result.length === 1) {
         this.userForm.patchValue({ managerId: result[0].id });
       }
+      this.loading = false;
     });
   }
 
   private getDepartmentsForCompany(companyId: string): void {
+    this.loading = true;
     this.deptService.getDepartmentsByCompanyId(companyId).subscribe((depts: DepartmentDetailDto[]) => {
       this.departments = depts;
+      this.loading = false;
     })
   }
 

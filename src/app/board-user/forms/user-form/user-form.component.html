@@ -4,14 +4,14 @@
             <form [formGroup]="userForm" (ngSubmit)="submit(userForm)">
                 <div>
                     <label for="avatar">Avatar: </label>
-                    <input formControlName="avatar" id="avatar" type="file" class="form-control" accept=".jpg,.png"
+                    <input id="avatar" type="file" class="form-control" accept=".jpg,.png"
                         (change)="onFileChange($event)">
                 </div>
                 <span *ngIf="imageSrc">
                     <img [src]="imageSrc" class="avatar">
                 </span>
                 <div class="row">
-                    <mat-form-field>
+                    <mat-form-field class="FiftyPercentInput">
                         <mat-label>Company</mat-label>
                         <mat-select formControlName="companyId" (selectionChange)="companyChange()">
                             <mat-option *ngFor="let company of companies" [value]="company?.key">
@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="row">
-                    <mat-form-field>
+                    <mat-form-field class="FiftyPercentInput">
                         <mat-label>Username</mat-label>
                         <span matPrefix>
                             <mat-icon>account_box</mat-icon>
@@ -33,14 +33,14 @@
                         <mat-error>Username is required</mat-error>
                     </mat-form-field>
 
-                    <mat-form-field width="100%">
+                    <mat-form-field class="FiftyPercentInput">
                         <input
                         type="text"
                         placeholder="Job Title"
                         formControlName="jobTitle"
-                        [formControl]="jobTitleControl"
                         matInput
                         [matAutocomplete]="auto">
+                        <mat-spinner *ngIf="gettingTitles" matSuffix diameter="16" style="display: inline-flex"></mat-spinner>
                         <mat-autocomplete #auto="matAutocomplete">
                             <mat-option
                                 *ngFor="let option of filteredOptions | async"
@@ -227,8 +227,8 @@
                     <button mat-raised-button onclick="history.back()">Cancel</button>
                 </div>
 
-                <div *ngFor="let err in userForm.errors">{{err}}</div>
-                <!-- <div>{{userForm?.value|json}}</div> -->
+                <div *ngFor="let err in userForm?.errors">{{err}}</div>
+                <!-- <pre class="row">{{userForm?.value|json}}</pre> -->
             </form>
         </div>
 
