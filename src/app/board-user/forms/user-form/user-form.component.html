@@ -34,10 +34,24 @@
                     </mat-form-field>
 
                     <mat-form-field width="100%">
-                        <mat-label>Job Title</mat-label>
+                        <input
+                        type="text"
+                        placeholder="Job Title"
+                        formControlName="jobTitle"
+                        [formControl]="jobTitleControl"
+                        matInput
+                        [matAutocomplete]="auto">
+                        <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option
+                                *ngFor="let option of filteredOptions | async"
+                                [value]="option">
+                                {{option}}
+                            </mat-option>
+                        </mat-autocomplete>
+                        <!-- <mat-label>Job Title</mat-label>
                         <input matInput placeholder="Job Title" formControlName="jobTitle" #jobTitleInput>
                         <mat-hint>Job Title</mat-hint>
-                        <mat-error>Job Title is required</mat-error>
+                        <mat-error>Job Title is required</mat-error> -->
                     </mat-form-field>
                 </div>
                 <div class="row">
@@ -209,6 +223,8 @@
                 </div>
                 <div class="row">
                     <button type="submit" mat-raised-button color="primary" [disabled]="userForm.touched && userForm.invalid">Save</button>
+                    <div style="flex: 1 1;"></div>
+                    <button mat-raised-button onclick="history.back()">Cancel</button>
                 </div>
 
                 <div *ngFor="let err in userForm.errors">{{err}}</div>

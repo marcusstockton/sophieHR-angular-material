@@ -1,9 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 import { CompaniesClient, DepartmentDetailDto, DepartmentsClient, EmployeeAddress, EmployeeCreateDto, EmployeeDetailDto, EmployeeListDto, EmployeesClient, KeyValuePairOfGuidAndString } from 'src/app/client';
+import { TokenStorageService } from 'src/app/_services/token-storage.service';
+import { startWith, debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-user-form',
@@ -16,6 +20,8 @@ export class UserFormComponent implements OnInit {
   public loading: boolean = false;
   public companies: KeyValuePairOfGuidAndString[];
   public companyId: string = '';
+  jobTitleControl = new FormControl();
+  filteredOptions: Observable<any>;
 
   public userForm: FormGroup = this.fb.group({
     firstName: [null, [Validators.required]],
@@ -50,7 +56,7 @@ export class UserFormComponent implements OnInit {
     nationalInsuranceNumber: [null, [Validators.pattern("^[A-Za-z]{2}[0-9]{6}[A-Za-z]{1}$")]]
   });
   titles: any;
-  managers: EmployeeListDto[];
+  managers: EmployeeListDto[] = [];
   departments: DepartmentDetailDto[];
 
   constructor(
@@ -60,8 +66,31 @@ export class UserFormComponent implements OnInit {
     private companyService: CompaniesClient,
     private deptService: DepartmentsClient,
     private sanitizer: DomSanitizer,
-    private http: HttpClient
-  ) { }
+    private http: HttpClient,
+    private token: TokenStorageService
+  ) {
+    this.filteredOptions = this.jobTitleControl.valueChanges.pipe(
+      startWith(''),
+      debounceTime(400),
+      distinctUntilChanged(),
+      switchMap(val => {
+          if(val){
+            return this.filter(val)
+          }
+          return "";
+       }) 
+    )
+   }
+
+   filter(val: string): Observable<any> {
+
+    return this.employeeService.jobTitleAutoComplete(val)
+     .pipe(
+       map(response => response.filter(option => { 
+         return option;
+       }))
+     )
+   }  
 
   onFileChange(event: any) {
     const reader = new FileReader();
@@ -103,7 +132,7 @@ export class UserFormComponent implements OnInit {
     if (id) {
       this.loading = true;
       this.editing = true;
-      
+
       this.employeeService.getEmployee(id).subscribe((user: EmployeeDetailDto) => {
         this.imageSrc = this.sanitizer.bypassSecurityTrustUrl("data:image/png;base64, " + user.avatar?.avatar);
 
@@ -133,8 +162,8 @@ export class UserFormComponent implements OnInit {
 
         this.userForm.patchValue({ managerId: user.managerId });
         this.userForm.patchValue({ avatar: user.avatar });
-        this.userForm.patchValue({ departmentId: user.departmentId });
-        this.userForm.patchValue({ companyId: user.companyId });
+        this.userForm.patchValue({ departmentId: user.department?.id });
+        this.userForm.patchValue({ companyId: user.company?.id });
         this.userForm.patchValue({ passportNumber: user.passportNumber });
         this.userForm.patchValue({ nationalInsuranceNumber: user.nationalInsuranceNumber });
         this.userForm.markAllAsTouched();
@@ -152,6 +181,9 @@ export class UserFormComponent implements OnInit {
   private getManagersForComany(companyId: string) {
     this.employeeService.getManagersForCompanyId(companyId).subscribe((result: EmployeeListDto[]) => {
       this.managers = result;
+      if (result.length === 1) {
+        this.userForm.patchValue({ managerId: result[0].id });
+      }
     });
   }
 

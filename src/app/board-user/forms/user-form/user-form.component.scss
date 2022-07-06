@@ -17,3 +17,10 @@ form{
     display: block;
     border: 1px solid black;
 }
+
+::ng-deep .cdk-overlay-pane {
+    width: 350px !important;
+    .mat-option{
+        font-size: small !important;
+    }
+}
