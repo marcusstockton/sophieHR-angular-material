@@ -1471,6 +1471,63 @@ export class EmployeesClient {
         }
         return _observableOf(null as any);
     }
+
+    jobTitleAutoComplete(jobTitle: string | null | undefined): Observable<string[]> {
+        let url_ = this.baseUrl + "/api/Employees/job-title-autocomplete?";
+        if (jobTitle !== undefined && jobTitle !== null)
+            url_ += "jobTitle=" + encodeURIComponent("" + jobTitle) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processJobTitleAutoComplete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processJobTitleAutoComplete(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<string[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<string[]>;
+        }));
+    }
+
+    protected processJobTitleAutoComplete(response: HttpResponseBase): Observable<string[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(item);
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -2721,13 +2778,10 @@ export class EmployeeDetailDto implements IEmployeeDetailDto {
     endOfEmployment?: Date | undefined;
     passportNumber?: string | undefined;
     nationalInsuranceNumber?: string | undefined;
-    addressId?: string;
     address?: EmployeeAddress | undefined;
     managerId?: string | undefined;
     avatar?: EmployeeAvatarDetail | undefined;
-    departmentId?: string | undefined;
     department?: DepartmentIdNameDto | undefined;
-    companyId?: string | undefined;
     company?: CompanyIdNameDto | undefined;
     notes?: Note[] | undefined;
 
@@ -2762,13 +2816,10 @@ export class EmployeeDetailDto implements IEmployeeDetailDto {
             this.endOfEmployment = _data["endOfEmployment"] ? new Date(_data["endOfEmployment"].toString()) : <any>undefined;
             this.passportNumber = _data["passportNumber"];
             this.nationalInsuranceNumber = _data["nationalInsuranceNumber"];
-            this.addressId = _data["addressId"];
             this.address = _data["address"] ? EmployeeAddress.fromJS(_data["address"]) : <any>undefined;
             this.managerId = _data["managerId"];
             this.avatar = _data["avatar"] ? EmployeeAvatarDetail.fromJS(_data["avatar"]) : <any>undefined;
-            this.departmentId = _data["departmentId"];
             this.department = _data["department"] ? DepartmentIdNameDto.fromJS(_data["department"]) : <any>undefined;
-            this.companyId = _data["companyId"];
             this.company = _data["company"] ? CompanyIdNameDto.fromJS(_data["company"]) : <any>undefined;
             if (Array.isArray(_data["notes"])) {
                 this.notes = [] as any;
@@ -2807,13 +2858,10 @@ export class EmployeeDetailDto implements IEmployeeDetailDto {
         data["endOfEmployment"] = this.endOfEmployment ? this.endOfEmployment.toISOString() : <any>undefined;
         data["passportNumber"] = this.passportNumber;
         data["nationalInsuranceNumber"] = this.nationalInsuranceNumber;
-        data["addressId"] = this.addressId;
         data["address"] = this.address ? this.address.toJSON() : <any>undefined;
         data["managerId"] = this.managerId;
         data["avatar"] = this.avatar ? this.avatar.toJSON() : <any>undefined;
-        data["departmentId"] = this.departmentId;
         data["department"] = this.department ? this.department.toJSON() : <any>undefined;
-        data["companyId"] = this.companyId;
         data["company"] = this.company ? this.company.toJSON() : <any>undefined;
         if (Array.isArray(this.notes)) {
             data["notes"] = [];
@@ -2845,13 +2893,10 @@ export interface IEmployeeDetailDto {
     endOfEmployment?: Date | undefined;
     passportNumber?: string | undefined;
     nationalInsuranceNumber?: string | undefined;
-    addressId?: string;
     address?: EmployeeAddress | undefined;
     managerId?: string | undefined;
     avatar?: EmployeeAvatarDetail | undefined;
-    departmentId?: string | undefined;
     department?: DepartmentIdNameDto | undefined;
-    companyId?: string | undefined;
     company?: CompanyIdNameDto | undefined;
     notes?: Note[] | undefined;
 }
