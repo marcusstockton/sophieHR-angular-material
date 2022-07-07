@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DepartmentCreateDto, DepartmentsClient } from 'src/app/client';
@@ -12,13 +12,13 @@ import { DepartmentCreateDto, DepartmentsClient } from 'src/app/client';
 export class DeptCreateDialogComponent {
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private _snackBar: MatSnackBar,
     private departmentClient: DepartmentsClient,
     public dialogRef: MatDialogRef<DeptCreateDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
-  public departmentForm: FormGroup = this.fb.group({
+  public departmentForm: UntypedFormGroup = this.fb.group({
     name: [null, [Validators.required]],
   });
 

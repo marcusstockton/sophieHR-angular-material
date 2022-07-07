@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AccountClient, UserLogins } from '../client';
 import { TokenStorageService } from '../_services/token-storage.service';
@@ -13,7 +13,7 @@ import { TokenStorageService } from '../_services/token-storage.service';
 export class LoginComponent implements OnInit {
   retrievingManagers: boolean = false;
 
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   isLoggedIn = false;
   loggingIn = false;
@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AccountClient,
     private tokenStorage: TokenStorageService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private router: Router) { }
 
   ngOnInit(): void {
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
   }
 
 
-  onSubmit(form: FormGroup): void {
+  onSubmit(form: UntypedFormGroup): void {
     if (!form.valid) {
       return;
     }

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { AccountClient } from '../client';
@@ -22,7 +22,7 @@ describe('LoginComponent', () => {
       providers: [
         {provide: AccountClient, useValue: mockAccountClient},
         {provide: TokenStorageService, useValue: mockTokenStorageService},
-        FormBuilder,
+        UntypedFormBuilder,
       ]
     })
     .compileComponents();

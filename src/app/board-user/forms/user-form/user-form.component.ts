@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -23,7 +23,7 @@ export class UserFormComponent implements OnInit {
   filteredOptions: Observable<any> | undefined;
   gettingTitles:boolean = false;
 
-  public userForm: FormGroup = this.fb.group({
+  public userForm: UntypedFormGroup = this.fb.group({
     firstName: [null, [Validators.required]],
     middleName: [null],
     lastName: [null, [Validators.required]],
@@ -60,7 +60,7 @@ export class UserFormComponent implements OnInit {
   departments: DepartmentDetailDto[];
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private route: ActivatedRoute,
     private employeeService: EmployeesClient,
     private companyService: CompaniesClient,
@@ -207,10 +207,10 @@ export class UserFormComponent implements OnInit {
     return this.userForm.controls;
   }
   get addressControls() {
-    return ((this.userForm.get('address') as FormGroup).controls)
+    return ((this.userForm.get('address') as UntypedFormGroup).controls)
   }
 
-  submit(form: FormGroup) {
+  submit(form: UntypedFormGroup) {
     if (!form.valid) {
       return;
     }

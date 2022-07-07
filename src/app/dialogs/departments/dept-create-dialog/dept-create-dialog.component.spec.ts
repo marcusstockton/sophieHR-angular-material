@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DepartmentsClient } from 'src/app/client';
@@ -19,7 +19,7 @@ describe('DeptCreateDialogComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ DeptCreateDialogComponent ],
       providers:[
-        FormBuilder,
+        UntypedFormBuilder,
         { provide: MatSnackBar, useValue: mockMatSnackBar },
         { provide: DepartmentsClient, useValue: mockDepartmentsClient },
         { provide: MatDialogRef, useValue: {} },

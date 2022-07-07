@@ -118,8 +118,9 @@
       }
     }
   },
-  "defaultProject": "sophieHR-angular-material",
   "cli": {
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }
