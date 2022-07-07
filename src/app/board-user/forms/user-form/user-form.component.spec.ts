@@ -2,10 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { CompaniesClient, DepartmentsClient, EmployeesClient, KeyValuePairOfGuidAndString } from 'src/app/client';
 
 import { UserFormComponent } from './user-form.component';
+import { BoardUserModule } from '../../board-user.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('UserFormComponent', () => {
   let component: UserFormComponent;
@@ -25,7 +28,7 @@ describe('UserFormComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [ UserFormComponent ],
-      imports:[RouterTestingModule],
+      imports:[RouterTestingModule, HttpClientTestingModule, BrowserAnimationsModule, BoardUserModule],
       providers:[
         FormBuilder,
         { provide: EmployeesClient, useValue: mockEmployeesClient },

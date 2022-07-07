@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CompaniesClient, DepartmentDetailDto, DepartmentsClient, EmployeeAddress, EmployeeCreateDto, EmployeeDetailDto, EmployeeListDto, EmployeesClient, KeyValuePairOfGuidAndString } from 'src/app/client';
 import { startWith, debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -224,7 +225,7 @@ export class UserFormComponent implements OnInit {
           formData.append('id', result.id);
           formData.append('avatar', this.userForm.get('avatar')?.value);
 
-          this.http.post(`https://localhost:7189/api/Employees/${result.id}/upload-avatar`, formData).subscribe(
+          this.http.post(`${environment.base_url}/Employees/${result.id}/upload-avatar`, formData).subscribe(
             {
               next: res => {
                 alert("I dunno...punt them back to user page?");
