@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CompaniesClient, CompanyDetailDto } from 'src/app/client';
 
 @Component({
@@ -6,7 +6,7 @@ import { CompaniesClient, CompanyDetailDto } from 'src/app/client';
   templateUrl: './company-detail.component.html',
   styleUrls: ['./company-detail.component.scss']
 })
-export class CompanyDetailComponent implements OnInit {
+export class CompanyDetailComponent {
   private _companyId: string;
   company: CompanyDetailDto;
   @Input() set companyId(value:string){
@@ -14,9 +14,6 @@ export class CompanyDetailComponent implements OnInit {
     this.getCompanyDetails(this._companyId);
   }
   constructor(private readonly companyService: CompaniesClient,) { }
-
-  ngOnInit(): void {
-  }
 
   getCompanyDetails(companyId:string){
     // do stuff

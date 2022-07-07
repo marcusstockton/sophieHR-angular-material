@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { Component } from '@angular/core';
 
 export interface PeriodicElement {
   name: string;
@@ -27,11 +25,11 @@ const ELEMENT_DATA: PeriodicElement[] = [
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = ELEMENT_DATA;
   content?: string;
   error?: string;
   constructor() { }
-  ngOnInit(): void { }
+
 }

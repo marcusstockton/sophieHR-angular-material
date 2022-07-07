@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AccountClient, RegisterUserDto } from '../client';
 
 @Component({
@@ -6,7 +6,7 @@ import { AccountClient, RegisterUserDto } from '../client';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
 
   form: any = {
     firstName: null,
@@ -19,8 +19,7 @@ export class RegisterComponent implements OnInit {
   isSignUpFailed = false;
   errorMessage = '';
   constructor(private authService: AccountClient) { }
-  ngOnInit(): void {
-  }
+
   onSubmit(): void {
     const { firstName, lastName, email, password } = this.form;
 

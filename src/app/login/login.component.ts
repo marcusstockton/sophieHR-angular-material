@@ -94,6 +94,9 @@ export class LoginComponent implements OnInit {
     this.authService.getListOfManagers().subscribe((managers) => {
       this.managers = managers;
       this.retrievingManagers = false;
+    }, (err) => {
+      this.retrievingManagers = false;
+      console.log("Unable to get Managers...")
     })
   }
 
