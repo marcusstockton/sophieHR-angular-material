@@ -11,13 +11,13 @@ import { AccountClient, CompaniesClient, DepartmentsClient, EmployeesClient } fr
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'login', component: LoginComponent},
-  { path: 'register', component: RegisterComponent},
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   {
     path: 'user',
     loadChildren: () => import('src/app/board-user/board-user.module').then(m => m.BoardUserModule),
-},
+  },
   { path: 'manager', component: BoardManagerComponent, canActivate: [AuthGuard] },
   { path: 'admin', component: BoardAdminComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: 'home', pathMatch: 'full' }
@@ -26,6 +26,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers:[CompaniesClient, EmployeesClient, AccountClient, DepartmentsClient]
+  providers: [CompaniesClient, EmployeesClient, AccountClient, DepartmentsClient]
 })
 export class AppRoutingModule { }
