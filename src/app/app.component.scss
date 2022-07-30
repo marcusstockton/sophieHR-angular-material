@@ -27,5 +27,7 @@
 router-outlet{
   overflow-y: auto;
 }
-
+::ng-deep .mat-sidenav-container{
+  height: 92vh !important;
+}
 

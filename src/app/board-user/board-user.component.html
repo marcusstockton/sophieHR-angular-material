@@ -76,10 +76,30 @@
         </mat-card>
       </div>
     </div>
+    <div class="column">
+      <div class="row" style="max-height: 50%;">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Notes</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div *ngFor="let note of employeeRecord.notes">
+              <div class="note-box">
+                <h4>{{note.title}}</h4>
+                <p>{{note.content}}</p>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="row">
+        <mat-card>Leave Data (not yet implemented)</mat-card>
+      </div>
+    </div>
+
+    <!-- <div class="row">
+      <span style="width: 100%;width: 100%; word-wrap: normal;">
+        <pre><small>{{employeeRecord|json}}</small></pre>
+      </span>
+    </div> -->
   </div>
-  <!-- <div class="row">
-    <span style="width: 100%;width: 100%; word-wrap: normal;">
-      <pre><small>{{employeeRecord|json}}</small></pre>
-    </span>
-  </div> -->
-</div>

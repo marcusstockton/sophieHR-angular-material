@@ -45,6 +45,7 @@ export class BoardUserComponent implements OnInit {
 
         this.userImage = this.sanitizer.bypassSecurityTrustUrl("data:image/png;base64, " + results.avatar?.avatar);
         this.employeeRecord.nationalInsuranceNumber = this.employeeRecord?.nationalInsuranceNumber?.replace(/(.{2})/g, '$1 ') // Splits out the string into 2's
+        this.employeeRecord.notes?.sort((a, b) => b!.createdDate!.getTime() - a!.createdDate!.getTime())
       });
     }
   }

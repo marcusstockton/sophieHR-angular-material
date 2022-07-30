@@ -21,7 +21,7 @@ export class UserFormComponent implements OnInit {
   public companies: KeyValuePairOfGuidAndString[];
   public companyId: string = '';
   filteredOptions: Observable<any> | undefined;
-  gettingTitles:boolean = false;
+  gettingTitles: boolean = false;
 
   public userForm: UntypedFormGroup = this.fb.group({
     firstName: [null, [Validators.required]],
@@ -69,33 +69,33 @@ export class UserFormComponent implements OnInit {
     private http: HttpClient
   ) {
     this.onValueChanged();
-   }
+  }
 
-   public onValueChanged(){
+  public onValueChanged() {
     this.filteredOptions = this.userForm.controls['jobTitle'].valueChanges.pipe(
       startWith(''),
       debounceTime(400),
       distinctUntilChanged(),
       switchMap(val => {
-          if(val && this.userForm.controls['jobTitle'].dirty){
-            return this.filter(val)
-          }
-          return "";
-       })
+        if (val && this.userForm.controls['jobTitle'].dirty) {
+          return this.filter(val)
+        }
+        return "";
+      })
     );
     this.gettingTitles = false;
-   }
+  }
 
-   filter(val: string): Observable<any> {
+  filter(val: string): Observable<any> {
     this.gettingTitles = true;
     return this.employeeService.jobTitleAutoComplete(val)
-     .pipe(
-       map(response => response.filter(option => { 
-         return option;
-       }, this.gettingTitles = false))
-     );
-     
-   }  
+      .pipe(
+        map(response => response.filter(option => {
+          return option;
+        }, this.gettingTitles = false))
+      );
+
+  }
 
   onFileChange(event: any) {
     const reader = new FileReader();
@@ -218,24 +218,24 @@ export class UserFormComponent implements OnInit {
     var ef2 = new EmployeeCreateDto({ ...form.value });
     ef2.address = address;
 
-    this.employeeService.postEmployee(ef2).subscribe({
-      next: result => {
+    this.employeeService.createEmployee(null, ef2).subscribe({
+      next: (result: EmployeeDetailDto) => {
         if (result.id) {
           const formData = new FormData();
           formData.append('id', result.id);
           formData.append('avatar', this.userForm.get('avatar')?.value);
-
           this.http.post(`${environment.base_url}/Employees/${result.id}/upload-avatar`, formData).subscribe(
             {
               next: res => {
                 alert("I dunno...punt them back to user page?");
-              },
-              error: err => {
+              }, error: err => {
                 console.log(err);
               }
-            })
+            }
+          );
         }
-      }, error: err => {
+      },
+      error: (err: any) => {
         console.log(err);
       }
     });

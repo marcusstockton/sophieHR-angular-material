@@ -253,6 +253,61 @@ export class AccountClient {
         }
         return _observableOf(null as any);
     }
+
+    getListOfCompanyAdmins(): Observable<string[]> {
+        let url_ = this.baseUrl + "/api/Account/GetListOfCompanyAdmin";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListOfCompanyAdmins(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListOfCompanyAdmins(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<string[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<string[]>;
+        }));
+    }
+
+    protected processGetListOfCompanyAdmins(response: HttpResponseBase): Observable<string[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(item);
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -1358,8 +1413,10 @@ export class EmployeesClient {
         return _observableOf(null as any);
     }
 
-    postEmployee(employeeDto: EmployeeCreateDto): Observable<EmployeeDetailDto> {
-        let url_ = this.baseUrl + "/api/Employees";
+    createEmployee(role: string | null | undefined, employeeDto: EmployeeCreateDto): Observable<EmployeeDetailDto> {
+        let url_ = this.baseUrl + "/api/Employees/create-employee?";
+        if (role !== undefined && role !== null)
+            url_ += "role=" + encodeURIComponent("" + role) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(employeeDto);
@@ -1375,11 +1432,11 @@ export class EmployeesClient {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processPostEmployee(response_);
+            return this.processCreateEmployee(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processPostEmployee(response_ as any);
+                    return this.processCreateEmployee(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<EmployeeDetailDto>;
                 }
@@ -1388,7 +1445,7 @@ export class EmployeesClient {
         }));
     }
 
-    protected processPostEmployee(response: HttpResponseBase): Observable<EmployeeDetailDto> {
+    protected processCreateEmployee(response: HttpResponseBase): Observable<EmployeeDetailDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1401,6 +1458,13 @@ export class EmployeesClient {
             let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result201 = EmployeeDetailDto.fromJS(resultData201);
             return _observableOf(result201);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
             }));
         } else if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -3076,7 +3140,7 @@ export class EmployeeCreateDto implements IEmployeeCreateDto {
         data["workMobileNumber"] = this.workMobileNumber;
         data["personalMobileNumber"] = this.personalMobileNumber;
         data["holidayAllowance"] = this.holidayAllowance;
-        data["dateOfBirth"] = this.dateOfBirth ? this.dateOfBirth.toISOString() : <any>undefined;
+        data["dateOfBirth"] = this.dateOfBirth ? formatDate(this.dateOfBirth) : <any>undefined;
         data["startOfEmployment"] = this.startOfEmployment ? formatDate(this.startOfEmployment) : <any>undefined;
         data["address"] = this.address ? this.address.toJSON() : <any>undefined;
         data["departmentId"] = this.departmentId;

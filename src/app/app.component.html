@@ -24,7 +24,7 @@
       </button>
     </mat-toolbar>
 
-    <mat-sidenav-container autosize>
+    <mat-sidenav-container>
       <mat-sidenav id="my-sidenav" mode="side" [opened]="(this.tokenStorageService.isLoggedIn)" >
         <mat-nav-list *ngIf="this.role==='Admin'">
           <mat-list-item>
@@ -70,7 +70,7 @@
           </footer>
         </mat-nav-list>
       </mat-sidenav>
-      <mat-sidenav-content>
+      <mat-sidenav-content style="height:100%;">
         <router-outlet></router-outlet>
       </mat-sidenav-content>
     </mat-sidenav-container>

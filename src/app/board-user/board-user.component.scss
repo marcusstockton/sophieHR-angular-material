@@ -4,10 +4,6 @@
     justify-content: center;
  }
 
- mat-card{
-    margin: 0 auto;
-    width: 30%;
- }
 
 dl > dt{
     color:gray;
@@ -20,5 +16,13 @@ dl > dt{
     width: 100%;
     height: auto; /* maintain aspect ratio*/
     margin: auto; /*optional centering of image*/
-    max-width: 60%;
+    max-width: 50%;
+}
+mat-card{
+    margin: 10px;
+    max-width: 90%;
+}
+
+.note-box{
+    border-bottom: 1px lightgray dashed;
 }
