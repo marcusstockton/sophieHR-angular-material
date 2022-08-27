@@ -16,8 +16,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import { CompaniesClient, EmployeesClient, AccountClient, DepartmentsClient } from './client';
 import { DeptCreateDialogComponent } from './dialogs/departments/dept-create-dialog/dept-create-dialog.component';
-import { CompanyDetailComponent } from './company/company-detail/company-detail.component';
 import { BoardUserModule } from './board-user/board-user.module';
+import { CompanyModule } from './company/company.module';
 
 
 @NgModule({
@@ -30,7 +30,6 @@ import { BoardUserModule } from './board-user/board-user.module';
     BoardAdminComponent,
     BoardManagerComponent,
     DeptCreateDialogComponent,
-    CompanyDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +39,8 @@ import { BoardUserModule } from './board-user/board-user.module';
     BrowserAnimationsModule,
     MaterialModule,
     ReactiveFormsModule,
-    BoardUserModule
+    BoardUserModule,
+    CompanyModule
   ],
   providers: [
     {

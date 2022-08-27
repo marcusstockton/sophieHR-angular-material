@@ -8,6 +8,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './_helpers/auth.guard';
 import { AccountClient, CompaniesClient, DepartmentsClient, EmployeesClient } from './client';
+import { CompanyDetailComponent } from './company/company-detail/company-detail.component';
+import { CompanyFormComponent } from './company/forms/company-form/company-form.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -15,11 +17,15 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   {
-    path: 'user',
+    path: 'user', canActivate: [AuthGuard],
     loadChildren: () => import('src/app/board-user/board-user.module').then(m => m.BoardUserModule),
   },
   { path: 'manager', component: BoardManagerComponent, canActivate: [AuthGuard] },
   { path: 'admin', component: BoardAdminComponent, canActivate: [AuthGuard] },
+  {
+    path: 'company', canActivate: [AuthGuard],
+    loadChildren: () => import('src/app/company/company.module').then(m => m.CompanyModule),
+  },
   { path: '', redirectTo: 'home', pathMatch: 'full' }
 ];
 

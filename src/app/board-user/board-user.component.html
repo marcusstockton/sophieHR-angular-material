@@ -86,6 +86,7 @@
             <div *ngFor="let note of employeeRecord.notes">
               <div class="note-box">
                 <h4>{{note.title}}</h4>
+                <p><small>{{note.createdDate | date:'medium'}}</small></p>
                 <p>{{note.content}}</p>
               </div>
             </div>

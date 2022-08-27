@@ -1,5 +1,10 @@
 import { Component, Input } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { CompaniesClient, CompanyDetailDto } from 'src/app/client';
+import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import { HttpStatusCode } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-company-detail',
@@ -9,17 +14,41 @@ import { CompaniesClient, CompanyDetailDto } from 'src/app/client';
 export class CompanyDetailComponent {
   private _companyId: string;
   company: CompanyDetailDto;
+  errors:string | undefined;
   @Input() set companyId(value:string){
     this._companyId = value;
+  }
+  constructor(private readonly companyService: CompaniesClient, private route: ActivatedRoute, private _snackBar: MatSnackBar) { }
+
+  ngOnInit() {
+    if(!this._companyId){
+      this.route.params.subscribe(params => {
+        this.companyId = params['companyid'];
+      });
+    }
     this.getCompanyDetails(this._companyId);
   }
-  constructor(private readonly companyService: CompaniesClient,) { }
 
   getCompanyDetails(companyId:string){
-    // do stuff
-    this.companyService.getCompany(this.companyId).subscribe((result: CompanyDetailDto) => {
-      this.company = result;
-    });
+    // this.companyService.getCompany(this.companyId).subscribe((result: CompanyDetailDto) => {
+    //   this.company = result;
+    // }, err =>{
+    //   if(err.status == HttpStatusCode.NotFound){
+    //     err.title = `Unable to find a company with the Id of ${companyId}`
+    //   }
+    //   this._snackBar.open(err.title, "Ok");
+    //   console.log(err);
+    // });
+    this.companyService.getCompany(this.companyId).subscribe({
+      next: (result: CompanyDetailDto) =>{
+        this.company = result;
+      },
+      error: (err)=>{
+        if(err.status == HttpStatusCode.NotFound){
+              err.title = `Unable to find a company with the Id of ${companyId}`
+            }
+      }
+    })
   }
   get companyId(): string {
     return this._companyId;
