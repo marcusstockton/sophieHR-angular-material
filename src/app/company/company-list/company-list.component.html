@@ -1,6 +1,10 @@
 <p>company-list works!</p>
+<button mat-raised-button color="primary" [routerLink]="['create']">
+    <mat-icon>add</mat-icon>
+    <span> Create</span>
+</button>
 
-<div *ngFor="let company in companies">
+<div *ngFor="let company of companies">
     <p>{{company | json}}</p>
 
 </div>

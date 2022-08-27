@@ -31,7 +31,7 @@ export class CompanyListComponent implements OnInit {
               errorMessage = "Something went wrong on the server....";
               break;
             default:
-              errorMessage = "Something went wrong :-(";
+              errorMessage = "Something unforeseen went wrong :-(";
           }
           this._snackBar.open(errorMessage, "Ok");
         }

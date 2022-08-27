@@ -30,15 +30,6 @@ export class CompanyDetailComponent {
   }
 
   getCompanyDetails(companyId:string){
-    // this.companyService.getCompany(this.companyId).subscribe((result: CompanyDetailDto) => {
-    //   this.company = result;
-    // }, err =>{
-    //   if(err.status == HttpStatusCode.NotFound){
-    //     err.title = `Unable to find a company with the Id of ${companyId}`
-    //   }
-    //   this._snackBar.open(err.title, "Ok");
-    //   console.log(err);
-    // });
     this.companyService.getCompany(this.companyId).subscribe({
       next: (result: CompanyDetailDto) =>{
         this.company = result;

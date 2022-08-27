@@ -1,1 +1,7 @@
 <p>company-form works!</p>
+
+
+<div *ngIf="editing;else creating">
+    Editing Company
+</div>
+<ng-template #creating>Creating Company</ng-template>

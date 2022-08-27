@@ -2657,6 +2657,9 @@ export class CompanyDetailNoLogo implements ICompanyDetailNoLogo {
     createdDate?: Date;
     updatedDate?: Date;
     name?: string | undefined;
+    postcode?: string | undefined;
+    lat?: number;
+    lon?: number;
     address?: CompanyAddress | undefined;
 
     constructor(data?: ICompanyDetailNoLogo) {
@@ -2674,6 +2677,9 @@ export class CompanyDetailNoLogo implements ICompanyDetailNoLogo {
             this.createdDate = _data["createdDate"] ? new Date(_data["createdDate"].toString()) : <any>undefined;
             this.updatedDate = _data["updatedDate"] ? new Date(_data["updatedDate"].toString()) : <any>undefined;
             this.name = _data["name"];
+            this.postcode = _data["postcode"];
+            this.lat = _data["lat"];
+            this.lon = _data["lon"];
             this.address = _data["address"] ? CompanyAddress.fromJS(_data["address"]) : <any>undefined;
         }
     }
@@ -2691,6 +2697,9 @@ export class CompanyDetailNoLogo implements ICompanyDetailNoLogo {
         data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
         data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
         data["name"] = this.name;
+        data["postcode"] = this.postcode;
+        data["lat"] = this.lat;
+        data["lon"] = this.lon;
         data["address"] = this.address ? this.address.toJSON() : <any>undefined;
         return data;
     }
@@ -2701,6 +2710,9 @@ export interface ICompanyDetailNoLogo {
     createdDate?: Date;
     updatedDate?: Date;
     name?: string | undefined;
+    postcode?: string | undefined;
+    lat?: number;
+    lon?: number;
     address?: CompanyAddress | undefined;
 }
 
