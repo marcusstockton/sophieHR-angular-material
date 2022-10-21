@@ -45,15 +45,15 @@ export class UserFormComponent implements OnInit {
       line2: [null],
       line3: [null],
       line4: [null],
-      postcode: [null, [Validators.required, Validators.pattern("^([A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}|GIR ?0A{2})$")]],
+      postcode: [null, [Validators.required, {}]],
       county: [null, [Validators.required]],
     }),
     managerId: [null, [Validators.required]],
     avatar: [null, [Validators.required]],
     departmentId: [null],
     companyId: [null, [Validators.required]],
-    passportNumber: [null, [Validators.pattern("^[A-Z0-9<]{9}[0-9]{1}[A-Z]{3}[0-9]{7}[A-Z]{1}[0-9]{7}[A-Z0-9<]{14}[0-9]{2}$")]],
-    nationalInsuranceNumber: [null, [Validators.pattern("^[A-Za-z]{2}[0-9]{6}[A-Za-z]{1}$")]]
+    passportNumber: [null, []],
+    nationalInsuranceNumber: [null, [Validators.pattern("^\s*[a-zA-Z]{2}(?:\s*\d\s*){6}[a-zA-Z]?\s*$")]]
   });
   titles: any;
   managers: EmployeeListDto[] = [];
@@ -171,8 +171,8 @@ export class UserFormComponent implements OnInit {
         this.userForm.patchValue({ companyId: user.company?.id });
         this.userForm.patchValue({ passportNumber: user.passportNumber });
         this.userForm.patchValue({ nationalInsuranceNumber: user.nationalInsuranceNumber });
-        // this.userForm.updateValueAndValidity();
-        // this.userForm.markAllAsTouched();
+        this.userForm.updateValueAndValidity();
+        this.userForm.markAllAsTouched();
         this.loading = false;
       });
     }
@@ -240,6 +240,9 @@ export class UserFormComponent implements OnInit {
       }
     });
   }
-
+  updateTitle(event: any){
+    console.log(event);
+    this.userForm.patchValue({ title: event.value });
+  }
 
 }

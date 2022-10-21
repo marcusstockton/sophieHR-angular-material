@@ -77,7 +77,7 @@
                     <!-- Drop downs -->
                     <mat-form-field>
                         <mat-label>Title</mat-label>
-                        <mat-select formControlName="title">
+                        <mat-select formControlName="title" (selectionChange)="updateTitle($event)">
                             <mat-option *ngFor="let title of titles" [value]="title">
                                 {{title}}
                             </mat-option>
@@ -222,7 +222,7 @@
                     </mat-form-field>
                 </div>
                 <div class="row">
-                    <button type="submit" mat-raised-button color="primary" [disabled]="userForm.touched && userForm.invalid">Save</button>
+                    <button type="submit" mat-raised-button color="primary" [disabled]="userForm.invalid">Save {{userForm.invalid}}</button>
                     <div style="flex: 1 1;"></div>
                     <button mat-raised-button onclick="history.back()">Cancel</button>
                 </div>

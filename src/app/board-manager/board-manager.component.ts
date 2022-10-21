@@ -55,7 +55,6 @@ export class BoardManagerComponent implements OnInit, AfterViewInit {
   }
 
   getEmployeeRecord(row: any) {
-    console.log(JSON.stringify(row));
     this.router.navigate(['/user/'+row.id]);
   }
 }

@@ -9,15 +9,16 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
-import { BoardAdminComponent } from './board-admin/board-admin.component';
 import { BoardManagerComponent } from './board-manager/board-manager.component';
 import { AuthInterceptor } from './_helpers/auth.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
-import { CompaniesClient, EmployeesClient, AccountClient, DepartmentsClient } from './client';
+// import { CompaniesClient, EmployeesClient, AccountClient, DepartmentsClient, NotesClient } from './client';
 import { DeptCreateDialogComponent } from './dialogs/departments/dept-create-dialog/dept-create-dialog.component';
 import { BoardUserModule } from './board-user/board-user.module';
 import { CompanyModule } from './company/company.module';
+import { BoardAdminModule } from './board-admin/board-admin.module';
+import { HttpErrorInterceptor } from './_helpers/http-error.interceptor';
 
 
 @NgModule({
@@ -27,7 +28,6 @@ import { CompanyModule } from './company/company.module';
     RegisterComponent,
     HomeComponent,
     ProfileComponent,
-    BoardAdminComponent,
     BoardManagerComponent,
     DeptCreateDialogComponent,
   ],
@@ -40,14 +40,20 @@ import { CompanyModule } from './company/company.module';
     MaterialModule,
     ReactiveFormsModule,
     BoardUserModule,
-    CompanyModule
+    CompanyModule,
+    BoardAdminModule
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-  }
+  },
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: HttpErrorInterceptor,
+    multi: true
+}
   ,],
   bootstrap: [AppComponent]
 })

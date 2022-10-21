@@ -5,19 +5,21 @@ import { UserFormComponent } from './forms/user-form/user-form.component';
 import { MaterialModule } from '../material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BoardUserRoutingModule } from './board-user-routing.module';
+import { NoteFormDialogComponent } from '../dialogs/notes/note-form-dialog/note-form-dialog.component';
 
 
 
 @NgModule({
   declarations: [
     BoardUserComponent,
-    UserFormComponent
+    UserFormComponent,
+    NoteFormDialogComponent
   ],
   imports: [
     CommonModule,
-    MaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    MaterialModule,
     BoardUserRoutingModule
   ]
 })

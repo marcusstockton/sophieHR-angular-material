@@ -1,10 +1,12 @@
 import { HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { EmployeeDetailDto, EmployeesClient } from '../client';
+import { NoteFormDialogComponent } from '../dialogs/notes/note-form-dialog/note-form-dialog.component';
 
 @Component({
   selector: 'app-board-user',
@@ -25,6 +27,7 @@ export class BoardUserComponent implements OnInit {
     private employeeService: EmployeesClient,
     private sanitizer: DomSanitizer,
     private _snackBar: MatSnackBar,
+    readonly dialog: MatDialog,
     private router: Router) { }
 
   ngOnInit(): void {
@@ -98,5 +101,9 @@ export class BoardUserComponent implements OnInit {
 
   editUser() {
     this.router.navigate([`/user/${this.employeeId}/edit`]);
-  }
+  };
+
+  openNoteDialog(note:any){
+    const dialogRef = this.dialog.open(NoteFormDialogComponent, { width: '600px', data: {note, employeeId: this.employeeId}});
+  };
 }

@@ -51,7 +51,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatNativeDateModule,
     MatChipsModule,
     MatDialogModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
   ],
   exports: [
     MatSliderModule,
@@ -76,7 +76,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatNativeDateModule,
     MatChipsModule,
     MatDialogModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
   ]
 })
 export class MaterialModule { }
