@@ -1,4 +1,4 @@
-<mat-card-title>{{noteData?.title}}</mat-card-title>
+<mat-card-title>{{noteData.title}}</mat-card-title>
 <mat-dialog-content>
     <form [formGroup]="form">
         <div>
@@ -25,9 +25,9 @@
             </mat-form-field>
         </div>
     </form>
-    <small *ngIf="this.noteData">Created on {{noteData?.createdDate | date:'medium'}}</small>
+    <small *ngIf="this.noteData">Created on {{noteData.createdDate | date:'medium'}}</small>
 </mat-dialog-content>
 <mat-dialog-actions>
     <button mat-raised-button mat-dialog-close>Cancel</button>
-    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="!form.valid || !form.dirty">Ok</button>
+    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="!form.valid || !form.dirty || submitted">Ok</button>
 </mat-dialog-actions>

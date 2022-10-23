@@ -3057,7 +3057,7 @@ export class EmployeeDetailDto implements IEmployeeDetailDto {
     avatar?: EmployeeAvatarDetail | undefined;
     department?: DepartmentIdNameDto | undefined;
     company?: CompanyIdNameDto | undefined;
-    notes?: Note[] | undefined;
+    notes?: NoteDetailDto[] | undefined;
 
     constructor(data?: IEmployeeDetailDto) {
         if (data) {
@@ -3098,7 +3098,7 @@ export class EmployeeDetailDto implements IEmployeeDetailDto {
             if (Array.isArray(_data["notes"])) {
                 this.notes = [] as any;
                 for (let item of _data["notes"])
-                    this.notes!.push(Note.fromJS(item));
+                    this.notes!.push(NoteDetailDto.fromJS(item));
             }
         }
     }
@@ -3172,7 +3172,7 @@ export interface IEmployeeDetailDto {
     avatar?: EmployeeAvatarDetail | undefined;
     department?: DepartmentIdNameDto | undefined;
     company?: CompanyIdNameDto | undefined;
-    notes?: Note[] | undefined;
+    notes?: NoteDetailDto[] | undefined;
 }
 
 export class EmployeeAvatarDetail implements IEmployeeAvatarDetail {
@@ -3223,19 +3223,29 @@ export interface IEmployeeAvatarDetail {
     updatedDate?: Date;
 }
 
-export class Note extends Base implements INote {
+export class NoteDetailDto implements INoteDetailDto {
+    id?: string;
+    createdDate?: Date;
+    updatedDate?: Date;
     employeeId?: string;
     title?: string | undefined;
     content?: string | undefined;
     noteType?: NoteType;
 
-    constructor(data?: INote) {
-        super(data);
+    constructor(data?: INoteDetailDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
     }
 
-    override init(_data?: any) {
-        super.init(_data);
+    init(_data?: any) {
         if (_data) {
+            this.id = _data["id"];
+            this.createdDate = _data["createdDate"] ? new Date(_data["createdDate"].toString()) : <any>undefined;
+            this.updatedDate = _data["updatedDate"] ? new Date(_data["updatedDate"].toString()) : <any>undefined;
             this.employeeId = _data["employeeId"];
             this.title = _data["title"];
             this.content = _data["content"];
@@ -3243,25 +3253,30 @@ export class Note extends Base implements INote {
         }
     }
 
-    static override fromJS(data: any): Note {
+    static fromJS(data: any): NoteDetailDto {
         data = typeof data === 'object' ? data : {};
-        let result = new Note();
+        let result = new NoteDetailDto();
         result.init(data);
         return result;
     }
 
-    override toJSON(data?: any) {
+    toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
+        data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
         data["employeeId"] = this.employeeId;
         data["title"] = this.title;
         data["content"] = this.content;
         data["noteType"] = this.noteType;
-        super.toJSON(data);
         return data;
     }
 }
 
-export interface INote extends IBase {
+export interface INoteDetailDto {
+    id?: string;
+    createdDate?: Date;
+    updatedDate?: Date;
     employeeId?: string;
     title?: string | undefined;
     content?: string | undefined;
@@ -3384,66 +3399,6 @@ export interface IEmployeeCreateDto {
     nationalInsuranceNumber?: string | undefined;
     managerId?: string | undefined;
     jobTitle?: string | undefined;
-}
-
-export class NoteDetailDto implements INoteDetailDto {
-    id?: string;
-    createdDate?: Date;
-    updatedDate?: Date;
-    employeeId?: string;
-    title?: string | undefined;
-    content?: string | undefined;
-    noteType?: NoteType;
-
-    constructor(data?: INoteDetailDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.createdDate = _data["createdDate"] ? new Date(_data["createdDate"].toString()) : <any>undefined;
-            this.updatedDate = _data["updatedDate"] ? new Date(_data["updatedDate"].toString()) : <any>undefined;
-            this.employeeId = _data["employeeId"];
-            this.title = _data["title"];
-            this.content = _data["content"];
-            this.noteType = _data["noteType"];
-        }
-    }
-
-    static fromJS(data: any): NoteDetailDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new NoteDetailDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
-        data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
-        data["employeeId"] = this.employeeId;
-        data["title"] = this.title;
-        data["content"] = this.content;
-        data["noteType"] = this.noteType;
-        return data;
-    }
-}
-
-export interface INoteDetailDto {
-    id?: string;
-    createdDate?: Date;
-    updatedDate?: Date;
-    employeeId?: string;
-    title?: string | undefined;
-    content?: string | undefined;
-    noteType?: NoteType;
 }
 
 export class NoteCreateDto implements INoteCreateDto {

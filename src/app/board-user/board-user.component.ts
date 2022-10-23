@@ -6,7 +6,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { EmployeeDetailDto, EmployeesClient } from '../client';
-import { NoteFormDialogComponent } from '../dialogs/notes/note-form-dialog/note-form-dialog.component';
 
 @Component({
   selector: 'app-board-user',
@@ -103,7 +102,4 @@ export class BoardUserComponent implements OnInit {
     this.router.navigate([`/user/${this.employeeId}/edit`]);
   };
 
-  openNoteDialog(note:any){
-    const dialogRef = this.dialog.open(NoteFormDialogComponent, { width: '600px', data: {note, employeeId: this.employeeId}});
-  };
 }

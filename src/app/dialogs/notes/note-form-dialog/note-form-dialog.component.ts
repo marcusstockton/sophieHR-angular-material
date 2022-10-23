@@ -2,7 +2,7 @@ import { keyframes } from '@angular/animations';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Note, NoteCreateDto, NoteDetailDto, NotesClient } from 'src/app/client';
+import { NoteCreateDto, NoteDetailDto, NotesClient } from 'src/app/client';
 
 @Component({
   selector: 'app-note-form-dialog',
@@ -11,7 +11,7 @@ import { Note, NoteCreateDto, NoteDetailDto, NotesClient } from 'src/app/client'
 })
 export class NoteFormDialogComponent implements OnInit {
 
-  public noteData: Note;
+  public noteData: NoteDetailDto;
   public submitted: boolean;
   public noteTypes: { key: string; value: string; }[];
 
@@ -64,18 +64,25 @@ export class NoteFormDialogComponent implements OnInit {
       createdDate: this.noteData.createdDate,
       employeeId: this.noteData.employeeId,
       id: this.noteData.id,
-      noteType: this.form.get('noteTypeId')?.value,
+      noteType: Number.parseInt(this.form.get('noteTypeId')?.value),
       title: this.form.get('title')?.value,
       updatedDate: this.noteData.updatedDate
     } as NoteDetailDto;
-      this.notesClient.putNotes(this.noteData.id, data).subscribe((success)=>{
+      this.notesClient.putNotes(this.noteData.id, data).subscribe(
+        (success)=>{
         this.dialogRef.close();
+      }, (error)=>{
+        this.submitted = false;
       })
       // edit
     } else {
       // create
-      this.notesClient.postNotes(this.data.employeeId, this.noteData).subscribe((success)=>{
+      var noteCreate:NoteCreateDto = {...this.form.value};
+      this.notesClient.postNotes(this.data.employeeId, noteCreate).subscribe(
+        (success)=>{
         this.dialogRef.close();
+      }, (error)=>{
+        this.submitted = false; 
       })
     }
   }

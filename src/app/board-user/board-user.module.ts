@@ -6,6 +6,7 @@ import { MaterialModule } from '../material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BoardUserRoutingModule } from './board-user-routing.module';
 import { NoteFormDialogComponent } from '../dialogs/notes/note-form-dialog/note-form-dialog.component';
+import { NotesComponent } from './components/notes/notes.component';
 
 
 
@@ -13,7 +14,8 @@ import { NoteFormDialogComponent } from '../dialogs/notes/note-form-dialog/note-
   declarations: [
     BoardUserComponent,
     UserFormComponent,
-    NoteFormDialogComponent
+    NoteFormDialogComponent,
+    NotesComponent
   ],
   imports: [
     CommonModule,
