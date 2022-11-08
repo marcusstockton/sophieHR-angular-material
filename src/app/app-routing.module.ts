@@ -6,7 +6,7 @@ import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './_helpers/auth.guard';
-import { AccountClient, CompaniesClient, DepartmentsClient, EmployeesClient, NotesClient } from './client';
+import { AccountClient, CompaniesClient, DepartmentsClient, EmployeesClient, LeaveRequestsClient, NotesClient } from './client';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -32,6 +32,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [CompaniesClient, EmployeesClient, AccountClient, DepartmentsClient, NotesClient]
+  providers: [CompaniesClient, EmployeesClient, AccountClient, DepartmentsClient, NotesClient, LeaveRequestsClient]
 })
 export class AppRoutingModule { }

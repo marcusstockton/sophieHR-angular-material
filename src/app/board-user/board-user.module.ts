@@ -7,6 +7,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BoardUserRoutingModule } from './board-user-routing.module';
 import { NoteFormDialogComponent } from '../dialogs/notes/note-form-dialog/note-form-dialog.component';
 import { NotesComponent } from './components/notes/notes.component';
+import { LeaveListComponent } from './components/leave-list/leave-list.component';
+import { LeaveRequestFormComponent } from './dialogs/leave/leave-request-form/leave-request-form.component';
 
 
 
@@ -15,7 +17,9 @@ import { NotesComponent } from './components/notes/notes.component';
     BoardUserComponent,
     UserFormComponent,
     NoteFormDialogComponent,
-    NotesComponent
+    NotesComponent,
+    LeaveListComponent,
+    LeaveRequestFormComponent
   ],
   imports: [
     CommonModule,

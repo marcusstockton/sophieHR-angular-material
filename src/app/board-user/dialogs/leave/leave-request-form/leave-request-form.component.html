@@ -1,0 +1,50 @@
+<mat-card-title>Leave Request</mat-card-title>
+<mat-dialog-content>
+    <form [formGroup]="form">
+        <div class="row">
+          <mat-form-field appearance="fill">
+            <mat-label>Start Date</mat-label>
+            <input matInput [matDatepicker]="sdpicker" formControlName="startDate" (dateChange)="startDateChange($event.value)">
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="sdpicker"></mat-datepicker-toggle>
+            <mat-datepicker #sdpicker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-slide-toggle style="padding-left:10px;" (change)="startDatePartial($event.checked)">Half Day</mat-slide-toggle>
+
+          <mat-form-field appearance="fill" *ngIf="startDatePartialDay">
+            <mat-label>Length</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let dateOption of dateOptions" [value]="dateOption">
+                {{dateOption}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        </div>
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label>End Date</mat-label>
+            <input matInput [matDatepicker]="edpicker" formControlName="endDate" (dateChange)="endDateChange($event.value)">
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="edpicker"></mat-datepicker-toggle>
+            <mat-datepicker #edpicker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-slide-toggle style="padding-left:10px;" (change)="endDatePartial($event.checked)">Half Day</mat-slide-toggle>
+          
+          <mat-form-field appearance="fill" *ngIf="endDatePartialDay">
+            <mat-label>Length</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let dateOption of dateOptions" [value]="dateOption">
+                {{dateOption}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+    </form>y
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="!form.valid || !form.dirty || submitted">Ok</button>
+</mat-dialog-actions>

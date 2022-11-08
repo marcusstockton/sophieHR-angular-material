@@ -1793,6 +1793,281 @@ export class EmployeesClient {
 }
 
 @Injectable()
+export class LeaveRequestsClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "https://localhost:7189";
+    }
+
+    getLeaveRequestsForEmployee(employeeId: string): Observable<LeaveRequest[]> {
+        let url_ = this.baseUrl + "/api/LeaveRequests/GetLeaveRequestsForEmployee/{employeeId}";
+        if (employeeId === undefined || employeeId === null)
+            throw new Error("The parameter 'employeeId' must be defined.");
+        url_ = url_.replace("{employeeId}", encodeURIComponent("" + employeeId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLeaveRequestsForEmployee(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLeaveRequestsForEmployee(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<LeaveRequest[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<LeaveRequest[]>;
+        }));
+    }
+
+    protected processGetLeaveRequestsForEmployee(response: HttpResponseBase): Observable<LeaveRequest[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(LeaveRequest.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getLeaveRequest(id: string): Observable<LeaveRequest> {
+        let url_ = this.baseUrl + "/api/LeaveRequests/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLeaveRequest(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLeaveRequest(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<LeaveRequest>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<LeaveRequest>;
+        }));
+    }
+
+    protected processGetLeaveRequest(response: HttpResponseBase): Observable<LeaveRequest> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = LeaveRequest.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    putLeaveRequest(id: string, leaveRequest: LeaveRequest): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/LeaveRequests/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(leaveRequest);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPutLeaveRequest(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPutLeaveRequest(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileResponse>;
+        }));
+    }
+
+    protected processPutLeaveRequest(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    deleteLeaveRequest(id: string): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/LeaveRequests/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteLeaveRequest(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteLeaveRequest(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileResponse>;
+        }));
+    }
+
+    protected processDeleteLeaveRequest(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    postLeaveRequest(leaveRequest: LeaveRequest): Observable<LeaveRequest> {
+        let url_ = this.baseUrl + "/api/LeaveRequests";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(leaveRequest);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPostLeaveRequest(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPostLeaveRequest(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<LeaveRequest>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<LeaveRequest>;
+        }));
+    }
+
+    protected processPostLeaveRequest(response: HttpResponseBase): Observable<LeaveRequest> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = LeaveRequest.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class NotesClient {
     private http: HttpClient;
     private baseUrl: string;
@@ -3057,7 +3332,6 @@ export class EmployeeDetailDto implements IEmployeeDetailDto {
     avatar?: EmployeeAvatarDetail | undefined;
     department?: DepartmentIdNameDto | undefined;
     company?: CompanyIdNameDto | undefined;
-    notes?: NoteDetailDto[] | undefined;
 
     constructor(data?: IEmployeeDetailDto) {
         if (data) {
@@ -3095,11 +3369,6 @@ export class EmployeeDetailDto implements IEmployeeDetailDto {
             this.avatar = _data["avatar"] ? EmployeeAvatarDetail.fromJS(_data["avatar"]) : <any>undefined;
             this.department = _data["department"] ? DepartmentIdNameDto.fromJS(_data["department"]) : <any>undefined;
             this.company = _data["company"] ? CompanyIdNameDto.fromJS(_data["company"]) : <any>undefined;
-            if (Array.isArray(_data["notes"])) {
-                this.notes = [] as any;
-                for (let item of _data["notes"])
-                    this.notes!.push(NoteDetailDto.fromJS(item));
-            }
         }
     }
 
@@ -3137,11 +3406,6 @@ export class EmployeeDetailDto implements IEmployeeDetailDto {
         data["avatar"] = this.avatar ? this.avatar.toJSON() : <any>undefined;
         data["department"] = this.department ? this.department.toJSON() : <any>undefined;
         data["company"] = this.company ? this.company.toJSON() : <any>undefined;
-        if (Array.isArray(this.notes)) {
-            data["notes"] = [];
-            for (let item of this.notes)
-                data["notes"].push(item.toJSON());
-        }
         return data;
     }
 }
@@ -3172,7 +3436,6 @@ export interface IEmployeeDetailDto {
     avatar?: EmployeeAvatarDetail | undefined;
     department?: DepartmentIdNameDto | undefined;
     company?: CompanyIdNameDto | undefined;
-    notes?: NoteDetailDto[] | undefined;
 }
 
 export class EmployeeAvatarDetail implements IEmployeeAvatarDetail {
@@ -3221,72 +3484,6 @@ export interface IEmployeeAvatarDetail {
     avatar?: string | undefined;
     createdDate?: Date;
     updatedDate?: Date;
-}
-
-export class NoteDetailDto implements INoteDetailDto {
-    id?: string;
-    createdDate?: Date;
-    updatedDate?: Date;
-    employeeId?: string;
-    title?: string | undefined;
-    content?: string | undefined;
-    noteType?: NoteType;
-
-    constructor(data?: INoteDetailDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.createdDate = _data["createdDate"] ? new Date(_data["createdDate"].toString()) : <any>undefined;
-            this.updatedDate = _data["updatedDate"] ? new Date(_data["updatedDate"].toString()) : <any>undefined;
-            this.employeeId = _data["employeeId"];
-            this.title = _data["title"];
-            this.content = _data["content"];
-            this.noteType = _data["noteType"];
-        }
-    }
-
-    static fromJS(data: any): NoteDetailDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new NoteDetailDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
-        data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
-        data["employeeId"] = this.employeeId;
-        data["title"] = this.title;
-        data["content"] = this.content;
-        data["noteType"] = this.noteType;
-        return data;
-    }
-}
-
-export interface INoteDetailDto {
-    id?: string;
-    createdDate?: Date;
-    updatedDate?: Date;
-    employeeId?: string;
-    title?: string | undefined;
-    content?: string | undefined;
-    noteType?: NoteType;
-}
-
-export enum NoteType {
-    General = 0,
-    Leaving = 1,
-    Appraisal = 2,
 }
 
 export class EmployeeCreateDto implements IEmployeeCreateDto {
@@ -3399,6 +3596,137 @@ export interface IEmployeeCreateDto {
     nationalInsuranceNumber?: string | undefined;
     managerId?: string | undefined;
     jobTitle?: string | undefined;
+}
+
+export class LeaveRequest extends Base implements ILeaveRequest {
+    employeeId?: string;
+    approvedById?: string | undefined;
+    startDate?: Date;
+    endDate?: Date;
+    startDateFirstHalf?: boolean;
+    startDateSecondHalf?: boolean;
+    endDateFirstHalf?: boolean;
+    endDateSecondHalf?: boolean;
+    approved?: boolean;
+
+    constructor(data?: ILeaveRequest) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.approvedById = _data["approvedById"];
+            this.startDate = _data["startDate"] ? new Date(_data["startDate"].toString()) : <any>undefined;
+            this.endDate = _data["endDate"] ? new Date(_data["endDate"].toString()) : <any>undefined;
+            this.startDateFirstHalf = _data["startDateFirstHalf"];
+            this.startDateSecondHalf = _data["startDateSecondHalf"];
+            this.endDateFirstHalf = _data["endDateFirstHalf"];
+            this.endDateSecondHalf = _data["endDateSecondHalf"];
+            this.approved = _data["approved"];
+        }
+    }
+
+    static override fromJS(data: any): LeaveRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new LeaveRequest();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["approvedById"] = this.approvedById;
+        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
+        data["startDateFirstHalf"] = this.startDateFirstHalf;
+        data["startDateSecondHalf"] = this.startDateSecondHalf;
+        data["endDateFirstHalf"] = this.endDateFirstHalf;
+        data["endDateSecondHalf"] = this.endDateSecondHalf;
+        data["approved"] = this.approved;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface ILeaveRequest extends IBase {
+    employeeId?: string;
+    approvedById?: string | undefined;
+    startDate?: Date;
+    endDate?: Date;
+    startDateFirstHalf?: boolean;
+    startDateSecondHalf?: boolean;
+    endDateFirstHalf?: boolean;
+    endDateSecondHalf?: boolean;
+    approved?: boolean;
+}
+
+export class NoteDetailDto implements INoteDetailDto {
+    id?: string;
+    createdDate?: Date;
+    updatedDate?: Date;
+    employeeId?: string;
+    title?: string | undefined;
+    content?: string | undefined;
+    noteType?: NoteType;
+
+    constructor(data?: INoteDetailDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.createdDate = _data["createdDate"] ? new Date(_data["createdDate"].toString()) : <any>undefined;
+            this.updatedDate = _data["updatedDate"] ? new Date(_data["updatedDate"].toString()) : <any>undefined;
+            this.employeeId = _data["employeeId"];
+            this.title = _data["title"];
+            this.content = _data["content"];
+            this.noteType = _data["noteType"];
+        }
+    }
+
+    static fromJS(data: any): NoteDetailDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new NoteDetailDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
+        data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
+        data["employeeId"] = this.employeeId;
+        data["title"] = this.title;
+        data["content"] = this.content;
+        data["noteType"] = this.noteType;
+        return data;
+    }
+}
+
+export interface INoteDetailDto {
+    id?: string;
+    createdDate?: Date;
+    updatedDate?: Date;
+    employeeId?: string;
+    title?: string | undefined;
+    content?: string | undefined;
+    noteType?: NoteType;
+}
+
+export enum NoteType {
+    General = 0,
+    Leaving = 1,
+    Appraisal = 2,
 }
 
 export class NoteCreateDto implements INoteCreateDto {

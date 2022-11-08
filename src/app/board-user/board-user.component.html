@@ -80,12 +80,12 @@
       </div>
     </div>
     <div class="column">
-      <div class="row">
-        <app-notes [employeeId]="employeeRecord.id" [notes]="employeeRecord.notes" style="max-height: 50%; padding: 15px 10px; overflow-x: auto;"></app-notes>
+      <div class="row-50">
+        <app-notes [employeeId]="employeeRecord.id" (noteChangedEvent)="onNotesChanged($event)"></app-notes>
         
       </div>
-      <div class="row">
-        <mat-card>Leave Data (not yet implemented)</mat-card>
+      <div class="row-50">
+        <app-leave-list [employeeId]="employeeRecord.id"></app-leave-list>
       </div>
     </div>
 

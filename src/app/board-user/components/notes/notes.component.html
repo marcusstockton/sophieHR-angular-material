@@ -10,6 +10,7 @@
         <div class="note-box">
         <div class="noteTitle">
             <h4 class="text">{{note.title}}</h4>
+            <h5>{{getNoteTypeNameByValue(note.noteType!)}}</h5>
             <button mat-icon-button disabled aria-label="Edit">
             <mat-icon (click)="openNoteDialog(note)" style="cursor: pointer;">edit icon</mat-icon>
             </button>

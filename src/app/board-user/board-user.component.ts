@@ -48,16 +48,15 @@ export class BoardUserComponent implements OnInit {
             let employmentLength = this.dateDiff(employee.startOfEmployment);
             this.employmentLength = `${employmentLength?.years} years, ${employmentLength?.months} months, ${employmentLength?.days} days`
           }
-          if(employee.avatar){
+          if (employee.avatar) {
             this.userImage = this.sanitizer.bypassSecurityTrustUrl("data:image/png;base64, " + employee.avatar?.avatar);
           }
-          
+
           this.employeeRecord.nationalInsuranceNumber = this.employeeRecord?.nationalInsuranceNumber?.replace(/(.{2})/g, '$1 ') // Splits out the string into 2's
-          this.employeeRecord.notes?.sort((a, b) => b!.createdDate!.getTime() - a!.createdDate!.getTime())
         },
         error: (err) => {
-          let message:string;
-          switch(err.status){
+          let message: string;
+          switch (err.status) {
             case HttpStatusCode.NotFound:
               message = `Unable to find user with id ${this.employeeId}`;
               break;
@@ -101,5 +100,12 @@ export class BoardUserComponent implements OnInit {
   editUser() {
     this.router.navigate([`/user/${this.employeeId}/edit`]);
   };
+
+
+  onNotesChanged(val: any) {
+    if (val) {
+      this.ngOnInit();
+    }
+  }
 
 }

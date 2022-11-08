@@ -1,4 +1,3 @@
-import { keyframes } from '@angular/animations';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -70,7 +69,7 @@ export class NoteFormDialogComponent implements OnInit {
     } as NoteDetailDto;
       this.notesClient.putNotes(this.noteData.id, data).subscribe(
         (success)=>{
-        this.dialogRef.close();
+        this.dialogRef.close({data:"updated"});
       }, (error)=>{
         this.submitted = false;
       })
@@ -80,7 +79,7 @@ export class NoteFormDialogComponent implements OnInit {
       var noteCreate:NoteCreateDto = {...this.form.value};
       this.notesClient.postNotes(this.data.employeeId, noteCreate).subscribe(
         (success)=>{
-        this.dialogRef.close();
+        this.dialogRef.close({data:"created"});
       }, (error)=>{
         this.submitted = false; 
       })
