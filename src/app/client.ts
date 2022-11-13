@@ -698,7 +698,7 @@ export class CompaniesClient {
     }
 
     getAutoSuggestion(search: string | null | undefined): Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/Companies/getautosuggestion?";
+        let url_ = this.baseUrl + "/api/Companies/get-location-autosuggestion?";
         if (search !== undefined && search !== null)
             url_ += "search=" + encodeURIComponent("" + search) + "&";
         url_ = url_.replace(/[?&]$/, "");
@@ -2014,11 +2014,11 @@ export class LeaveRequestsClient {
         return _observableOf(null as any);
     }
 
-    postLeaveRequest(leaveRequest: LeaveRequest): Observable<LeaveRequest> {
+    postLeaveRequest(leaveRequestDto: CreateLeaveRequest): Observable<LeaveRequest> {
         let url_ = this.baseUrl + "/api/LeaveRequests";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(leaveRequest);
+        const content_ = JSON.stringify(leaveRequestDto);
 
         let options_ : any = {
             body: content_,
@@ -3661,6 +3661,66 @@ export interface ILeaveRequest extends IBase {
     endDateFirstHalf?: boolean;
     endDateSecondHalf?: boolean;
     approved?: boolean;
+}
+
+export class CreateLeaveRequest implements ICreateLeaveRequest {
+    employeeId?: string;
+    startDate?: Date;
+    endDate?: Date;
+    startDateFirstHalf?: boolean;
+    startDateSecondHalf?: boolean;
+    endDateFirstHalf?: boolean;
+    endDateSecondHalf?: boolean;
+
+    constructor(data?: ICreateLeaveRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.employeeId = _data["employeeId"];
+            this.startDate = _data["startDate"] ? new Date(_data["startDate"].toString()) : <any>undefined;
+            this.endDate = _data["endDate"] ? new Date(_data["endDate"].toString()) : <any>undefined;
+            this.startDateFirstHalf = _data["startDateFirstHalf"];
+            this.startDateSecondHalf = _data["startDateSecondHalf"];
+            this.endDateFirstHalf = _data["endDateFirstHalf"];
+            this.endDateSecondHalf = _data["endDateSecondHalf"];
+        }
+    }
+
+    static fromJS(data: any): CreateLeaveRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateLeaveRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeId"] = this.employeeId;
+        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
+        data["startDateFirstHalf"] = this.startDateFirstHalf;
+        data["startDateSecondHalf"] = this.startDateSecondHalf;
+        data["endDateFirstHalf"] = this.endDateFirstHalf;
+        data["endDateSecondHalf"] = this.endDateSecondHalf;
+        return data;
+    }
+}
+
+export interface ICreateLeaveRequest {
+    employeeId?: string;
+    startDate?: Date;
+    endDate?: Date;
+    startDateFirstHalf?: boolean;
+    startDateSecondHalf?: boolean;
+    endDateFirstHalf?: boolean;
+    endDateSecondHalf?: boolean;
 }
 
 export class NoteDetailDto implements INoteDetailDto {

@@ -10,13 +10,13 @@
             <mat-datepicker #sdpicker></mat-datepicker>
           </mat-form-field>
 
-          <mat-slide-toggle style="padding-left:10px;" (change)="startDatePartial($event.checked)">Half Day</mat-slide-toggle>
+          <mat-slide-toggle style="padding-left:10px;" *ngIf="isMultiDay" (change)="startDatePartial($event.checked)">Half Day</mat-slide-toggle>
 
           <mat-form-field appearance="fill" *ngIf="startDatePartialDay">
             <mat-label>Length</mat-label>
             <mat-select>
-              <mat-option *ngFor="let dateOption of dateOptions" [value]="dateOption">
-                {{dateOption}}
+              <mat-option *ngFor="let dateOption of dateOptions" [value]="dateOption.id">
+                {{dateOption.name}}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -31,18 +31,28 @@
             <mat-datepicker #edpicker></mat-datepicker>
           </mat-form-field>
 
-          <mat-slide-toggle style="padding-left:10px;" (change)="endDatePartial($event.checked)">Half Day</mat-slide-toggle>
+          <mat-slide-toggle style="padding-left:10px;" *ngIf="isMultiDay" (change)="endDatePartial($event.checked)">Half Day</mat-slide-toggle>
           
           <mat-form-field appearance="fill" *ngIf="endDatePartialDay">
             <mat-label>Length</mat-label>
             <mat-select>
-              <mat-option *ngFor="let dateOption of dateOptions" [value]="dateOption">
+              <mat-option *ngFor="let dateOption of dateOptions" [value]="dateOption.id">
+                {{dateOption.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="fill" *ngIf="!isMultiDay">
+            <mat-label>Length</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let dateOption of oneDateOptions" [value]="dateOption">
                 {{dateOption}}
               </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
-    </form>y
+    </form>
 </mat-dialog-content>
 <mat-dialog-actions>
     <button mat-raised-button mat-dialog-close>Cancel</button>

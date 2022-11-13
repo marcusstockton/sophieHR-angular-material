@@ -15,8 +15,10 @@ export class LeaveRequestFormComponent implements OnInit {
   public employeeId: any;
   public startDatePartialDay: boolean;
   public endDatePartialDay: boolean;
+  public isMultiDay:boolean;
 
-  public dateOptions = ["First Half", "Second Half"]
+  public dateOptions: { id: number, name: string }[] = [{id: 0, name:"First Half"}, {id: 1, name: "Second Half"}];
+  public oneDateOptions = ["All Day", "First Half", "Second Half"];
 
   public form: FormGroup = this.fb.group({
     employeeId: [null, [Validators.required]],
@@ -45,11 +47,20 @@ export class LeaveRequestFormComponent implements OnInit {
 
 
   startDateChange(event:Date){
+    this.form.controls['startDate'].setValue(event);
     console.log(event);
   }
 
   endDateChange(event: Date){
-    console.log(event);
+    var startDate = this.form.controls['startDate'].value;
+    
+    if(startDate.toLocaleDateString() === event.toLocaleDateString()){
+      console.log("same day");
+      this.isMultiDay = false;
+    }else{
+      this.isMultiDay = true;
+    }
+    
   }
 
   startDatePartial(event:boolean){
@@ -60,6 +71,11 @@ export class LeaveRequestFormComponent implements OnInit {
   }
 
   onSubmit(){
-
+    if(!this.form.valid){
+      return this.form.errors;
+    }
+    var data = this.form.value();
+    console.log("You are attempting to submit the following...");
+    console.log(data);
   }
 }

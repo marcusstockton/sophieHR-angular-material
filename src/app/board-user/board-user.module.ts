@@ -9,6 +9,7 @@ import { NoteFormDialogComponent } from '../dialogs/notes/note-form-dialog/note-
 import { NotesComponent } from './components/notes/notes.component';
 import { LeaveListComponent } from './components/leave-list/leave-list.component';
 import { LeaveRequestFormComponent } from './dialogs/leave/leave-request-form/leave-request-form.component';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 
 
@@ -27,6 +28,9 @@ import { LeaveRequestFormComponent } from './dialogs/leave/leave-request-form/le
     ReactiveFormsModule,
     MaterialModule,
     BoardUserRoutingModule
-  ]
+  ],
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+  ],
 })
 export class BoardUserModule { }
