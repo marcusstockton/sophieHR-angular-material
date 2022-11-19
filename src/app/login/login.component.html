@@ -24,10 +24,15 @@
             <mat-error>Password is required</mat-error>
           </mat-form-field>
           <mat-error *ngIf="errorMessage">{{errorMessage}}</mat-error>
-          <button mat-raised-button color="primary" [disabled]="!form.valid || loggingIn" type="submit">
-            <mat-spinner color="accent" [diameter]="25" style="float:left; margin-top: 5px;" *ngIf="loggingIn">
-            </mat-spinner> Login
-          </button>
+          <div class="row" style="align-items:center;">
+            <button mat-raised-button color="primary" [disabled]="!form.valid || loggingIn" type="submit">
+              Login
+           </button>
+           <div class="example-spacer"></div>
+           <mat-spinner color="accent" [diameter]="25" *ngIf="loggingIn"> 
+             </mat-spinner>
+          </div>
+          
         </form>
         <mat-card-subtitle>
           <p *ngIf="retrievingManagers">Getting some manager usernames...</p>

@@ -44,6 +44,6 @@ mat-form-field {
     padding: 15px !important;
 }
 .example-spacer {
-    flex: 1 1 auto;
+    flex-grow:0.1;
     text-align: center;
   }
