@@ -11,13 +11,14 @@ dl > dt{
     text-transform: uppercase;
 }
 
-.mat-card-image {
+.mat-mdc-card-image {
     display: block;
     width: 100%;
     height: auto; /* maintain aspect ratio*/
     margin: auto; /*optional centering of image*/
     max-width: 50%;
 }
+/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version.*/
 mat-card{
     margin: 10px;
     max-width: 90%;

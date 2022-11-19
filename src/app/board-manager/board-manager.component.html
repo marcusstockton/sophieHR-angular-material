@@ -5,12 +5,12 @@
 
   <div class='row' *ngIf="!isLoading && company">
     <div class='column'>
-      <mat-card class="image-card" *ngIf="company.logo">
+      <mat-card appearance="outlined" class="image-card" *ngIf="company.logo">
         <img mat-card-image src="data:image/png;base64,{{company.logo}}" />
       </mat-card>
     </div>
     <div class='column'>
-      <mat-card class="card">
+      <mat-card appearance="outlined" class="card">
         <mat-card-title>
           {{company.name}}
         </mat-card-title>
@@ -25,7 +25,7 @@
   </div>
   <div class="row">
     <div class="table">
-      <mat-form-field appearance="standard">
+      <mat-form-field>
         <mat-label>Filter</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="Search" #input>
       </mat-form-field>

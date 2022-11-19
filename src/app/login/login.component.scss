@@ -23,7 +23,7 @@ mat-form-field {
     display: block;
 }
 
-.mat-card-header {
+.mat-mdc-card-header {
     background-color: #00843d;
     text-shadow: black 2px 2px 2px;
     color: white;
@@ -32,12 +32,12 @@ mat-form-field {
     align-items: center;
 }
 
-.mat-card {
+.mat-mdc-card {
     width: 20%;
     padding: 0 !important;
 }
 
-.mat-card-content {
+.mat-mdc-card-content {
     padding: 15px !important;
 }
 .example-spacer {
