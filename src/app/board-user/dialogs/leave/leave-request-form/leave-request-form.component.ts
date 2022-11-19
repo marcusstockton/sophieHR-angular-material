@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { LeaveRequest, LeaveRequestsClient } from 'src/app/client';
 
@@ -70,7 +70,7 @@ export class LeaveRequestFormComponent implements OnInit {
     this.endDatePartialDay = event;
   }
 
-  onSubmit(){
+  onSubmit(): any{
     if(!this.form.valid){
       return this.form.errors;
     }

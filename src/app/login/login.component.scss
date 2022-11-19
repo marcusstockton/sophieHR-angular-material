@@ -7,13 +7,13 @@
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    height: 100vh;
-    position: relative;
-    overflow-x: hidden !important;
+    // height: 100vh;
+    // position: relative;
+    // overflow-x: hidden !important;
 }
 
 .flex-container {
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -30,11 +30,14 @@ mat-form-field {
     padding: 13px 5px 0 5px !important;
     justify-content: center;
     align-items: center;
+    border-top-left-radius:10px;
+    border-top-right-radius:10px;
 }
 
 .mat-mdc-card {
     width: 20%;
     padding: 0 !important;
+    border-radius:10px;
 }
 
 .mat-mdc-card-content {
