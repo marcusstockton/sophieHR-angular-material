@@ -1,26 +1,22 @@
-/* You can add global styles to this file, and also import other style files */
-// Import material theming functions
-@import '~@angular/material/theming';
+// /* You can add global styles to this file, and also import other style files */
+// // Import material theming functions
+// @use '@angular/material' as mat;
 
-// Copy the palettes from your selected theme (usually theme.scss).
-$app-primary: mat-palette($mat-grey);
-$app-accent:  mat-palette($mat-light-blue);
-$app-warn:    mat-palette($mat-pink);
+// // Copy the palettes from your selected theme (usually theme.scss).
+// $app-primary: mat-palette($mat-grey);
+// $app-accent:  mat-palette($mat-light-blue);
+// $app-warn:    mat-palette($mat-pink);
 
-// Create your Sass color vars (will be available in all the project)
-$primary: mat-color($app-primary);
-$accent: mat-color($app-accent);
-$warn: mat-color($app-warn);
+// // Create your Sass color vars (will be available in all the project)
+// $primary: mat-color($app-primary);
+// $accent: mat-color($app-accent);
+// $warn: mat-color($app-warn);
 
-html,
-body {
-    height: 100%;
-}
-
-body {
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-}
+// html,
+// body {
+//     height: 100%;
+// }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
 
 .row {
     display: flex;
@@ -37,12 +33,12 @@ body {
     flex: 1;
 }
 
-.errorsnackbar {
-    background-color: $warn;
-    color: #f7f7f7;
-  }
+// .errorsnackbar {
+//     background-color: $warn;
+//     color: #f7f7f7;
+//   }
 
-.successsnackbar {
-    background-color: $primary;
-    color: #f7f7f7;
-  }
+// .successsnackbar {
+//     background-color: $primary;
+//     color: #f7f7f7;
+//   }
