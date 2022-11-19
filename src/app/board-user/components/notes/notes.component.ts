@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { NoteDetailDto, NotesClient, NoteType } from 'src/app/client';
 import { NoteFormDialogComponent } from 'src/app/dialogs/notes/note-form-dialog/note-form-dialog.component';
 

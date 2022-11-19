@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CompaniesClient, CompanyDetailDto } from 'src/app/client';
-import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatLegacySnackBar as MatSnackBar, MatLegacySnackBarModule as MatSnackBarModule} from '@angular/material/legacy-snack-bar';
 import { HttpStatusCode } from '@angular/common/http';
 
 

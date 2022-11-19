@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { LeaveRequest, LeaveRequestsClient } from 'src/app/client';
 import { LeaveRequestFormComponent } from '../../dialogs/leave/leave-request-form/leave-request-form.component';
 
