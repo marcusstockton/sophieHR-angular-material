@@ -15,11 +15,10 @@ export class BoardManagerComponent implements OnInit, AfterViewInit {
 
   user: any;
   company: CompanyDetailDto;
-  employees: EmployeeListDto[];
   isLoading: boolean;
   dataSource = new MatTableDataSource<EmployeeListDto>();
   displayedColumns: string[] = ['firstName', 'lastName','jobTitle', 'workEmailAddress', 'workPhoneNumber', 'holidayAllowance', 'dateOfBirth', 'startOfEmployment'];
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator) private paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
@@ -34,19 +33,14 @@ export class BoardManagerComponent implements OnInit, AfterViewInit {
       this.router.navigate(['/login/']);
     }
     this.isLoading = true;
-    this.companyService.getCompany(this.user['companyId']).subscribe((result: CompanyDetailDto)=>{
-      this.company = result;
-    })
-    this.employeeService.getEmployeesForManager(this.user['id']).subscribe((results: EmployeeListDto[]) => {
-      this.employees = results;
-      this.dataSource.data = this.employees;
-    });
+    this.getCompany();
+    this.getEmployees();
     this.isLoading = false;
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   applyFilter(event: Event) {
@@ -56,5 +50,17 @@ export class BoardManagerComponent implements OnInit, AfterViewInit {
 
   getEmployeeRecord(row: any) {
     this.router.navigate(['/user/'+row.id]);
+  }
+
+  getCompany() {
+    this.companyService.getCompany(this.user['companyId']).subscribe((result: CompanyDetailDto) => {
+      this.company = result;
+    });
+  }
+
+  getEmployees(){
+    this.employeeService.getEmployeesForManager(this.user['id']).subscribe((results: EmployeeListDto[]) => {
+      this.dataSource.data = results;
+    });
   }
 }

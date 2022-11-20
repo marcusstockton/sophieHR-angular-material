@@ -74,6 +74,9 @@ export class LeaveRequestFormComponent implements OnInit {
     if(!this.form.valid){
       return this.form.errors;
     }
+
+    
+
     var data = this.form.value();
     console.log("You are attempting to submit the following...");
     console.log(data);

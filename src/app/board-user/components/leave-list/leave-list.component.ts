@@ -18,17 +18,21 @@ export class LeaveListComponent implements OnInit {
 
   ngOnInit(): void {
     this.leaveRequestClient.getLeaveRequestsForEmployee(this.employeeId!).subscribe(
-      { next: (result: LeaveRequest[]) => { 
-        this.leaveRequests = result;
-      }
-      , error: (err: any) => { 
-        console.log(err);
-      }
-    });
+      {
+        next: (result: LeaveRequest[]) => {
+          this.leaveRequests = result;
+        }
+        , error: (err: any) => {
+          console.log(err);
+        }
+      });
   }
 
 
-  openLeaveDialog(leaveRequest:any){
-    const dialogRef = this.dialog.open(LeaveRequestFormComponent, { width: '600px', data: {leaveRequest, employeeId: this.employeeId}});
+  openLeaveDialog(leaveRequest: any) {
+    let dialogRef = this.dialog.open(LeaveRequestFormComponent, {
+      width: '600px',
+      data: { leaveRequest, employeeId: this.employeeId }
+    });
   }
 }

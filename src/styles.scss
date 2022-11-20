@@ -33,12 +33,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
     flex: 1;
 }
 
-// .errorsnackbar {
-//     background-color: $warn;
-//     color: #f7f7f7;
-//   }
+.errorsnackbar {
+    background-color: green;
+    color: #f7f7f7;
+  }
 
-// .successsnackbar {
-//     background-color: $primary;
-//     color: #f7f7f7;
-//   }
+.successsnackbar {
+    background-color: red;
+    color: #f7f7f7;
+  }
