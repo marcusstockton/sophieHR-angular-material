@@ -15,7 +15,7 @@
           <mat-form-field appearance="fill" *ngIf="startDatePartialDay">
             <mat-label>Length</mat-label>
             <mat-select>
-              <mat-option *ngFor="let dateOption of dateOptions" [value]="dateOption.id">
+              <mat-option *ngFor="let dateOption of startDateOptions" [value]="dateOption.id">
                 {{dateOption.name}}
               </mat-option>
             </mat-select>
@@ -36,7 +36,7 @@
           <mat-form-field appearance="fill" *ngIf="endDatePartialDay">
             <mat-label>Length</mat-label>
             <mat-select>
-              <mat-option *ngFor="let dateOption of dateOptions" [value]="dateOption.id">
+              <mat-option *ngFor="let dateOption of endDateOptions" [value]="dateOption.id">
                 {{dateOption.name}}
               </mat-option>
             </mat-select>
