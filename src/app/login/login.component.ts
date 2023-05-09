@@ -72,18 +72,6 @@ export class LoginComponent implements OnInit {
       },
       error: (err) => {
         this.loggingIn = false;
-        if (err instanceof HttpErrorResponse) {
-          switch (err.status) {
-            case HttpStatusCode.BadRequest:
-              this.errorMessage = err.error;
-              break;
-
-            default:
-              this.errorMessage = err.error.message;
-          }
-        } else {
-          this.errorMessage = err.error.message;
-        }
         this.isLoginFailed = true;
       }
     })
