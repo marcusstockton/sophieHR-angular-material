@@ -12,18 +12,21 @@
 // $accent: mat-color($app-accent);
 // $warn: mat-color($app-warn);
 
-// html,
-// body {
-//     height: 100%;
-// }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .row {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
-    height:fit-content;
 }
 
 .column {

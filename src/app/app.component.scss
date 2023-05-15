@@ -12,22 +12,28 @@
   color: #00843d;
 }
 
-.example-button-row {
-  display: table-cell;
+// .example-button-row {
+//   display: table-cell;
+// }
+
+// .example-button-row .mat-mdc-button-base {
+//   margin: 8px 8px 8px 0;
+// }
+
+.sidenav-container {
+  height: calc(100vh - 64px);
 }
 
-.example-button-row .mat-mdc-button-base {
-  margin: 8px 8px 8px 0;
+// .sidenav {
+//   width: 200px;
+// }
+
+.sidenav .mat-toolbar {
+  background: inherit;
 }
 
-#my-sidenav{
-  display: flex;
-  align-content: space-between;
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
-router-outlet{
-  overflow-y: auto;
-}
-::ng-deep .mat-sidenav-container{
-  height: 98%;
-}
-
