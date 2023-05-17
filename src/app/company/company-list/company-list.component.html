@@ -4,7 +4,56 @@
     <span> Create</span>
 </button>
 
-<div *ngFor="let company of companies">
-    <p>{{company | json}}</p>
+<mat-table class="companys-table mat-elevation-z8" [dataSource]="dataSource" matSort>
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> # </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
 
-</div>
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <!-- Created Column -->
+    <ng-container matColumnDef="createdDate">
+        <th mat-header-cell *matHeaderCellDef> Created </th>
+        <td mat-cell *matCellDef="let element"> {{element.createdDate}} </td>
+    </ng-container>
+
+    <!-- Updated Column -->
+    <ng-container matColumnDef="updatedDate">
+        <th mat-header-cell *matHeaderCellDef> Updated </th>
+        <td mat-cell *matCellDef="let element"> {{element.updatedDate}} </td>
+    </ng-container>
+
+
+    <!-- Postcode Column -->
+    <ng-container matColumnDef="postcode">
+        <th mat-header-cell *matHeaderCellDef> Postcode </th>
+        <td mat-cell *matCellDef="let element"> {{element.postcode}} </td>
+    </ng-container>
+
+    <!-- Latitude Column -->
+    <ng-container matColumnDef="lat">
+        <th mat-header-cell *matHeaderCellDef> Latitude </th>
+        <td mat-cell *matCellDef="let element"> {{element.lat}} </td>
+    </ng-container>
+
+    <!-- Longitude Column -->
+    <ng-container matColumnDef="lon">
+        <th mat-header-cell *matHeaderCellDef> Longitude </th>
+        <td mat-cell *matCellDef="let element"> {{element.lon}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</mat-table>
+<mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons aria-label="Select page of customers">
+</mat-paginator>
+<!-- <div *ngFor="let company of companies">
+    <p>{{company | json}}</p>
+</div> -->
