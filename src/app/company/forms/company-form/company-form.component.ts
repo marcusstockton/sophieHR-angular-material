@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class CompanyFormComponent implements OnInit {
 
-  private companyId:string|null;
+  public companyId:string|null;
   public editing:boolean;
   constructor(private route: ActivatedRoute) { }
 

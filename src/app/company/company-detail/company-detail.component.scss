@@ -1,22 +1,24 @@
-.detail-card {
-    display: flex;
-    flex-direction: column;
-    min-width: 15vw;
-    max-width: 20vw;
-    align-content: center;
-    align-items: center;
+.example-card {
+    max-width: 90%;
+  }
+  
+  .example-header-image {
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+  }
+
+
+//   .card-row{
+//     display: flex;
+//     justify-content: space-around;
+//   }
+
+.company-detail{
+    margin: 15px;
+    height: 100%;
 }
 
-.image-card {
-    max-width: 20vh;
-    display: flex;
-    justify-content: center;
-}
-
-.card-row {
-    display: flex;
-    flex-direction: row;
-    padding-top: 2vh;
-    justify-content: space-between;
-    flex: 1 1 auto;
-}
+.example-button-row {
+    display: table-cell;
+    max-width: 600px;
+  }

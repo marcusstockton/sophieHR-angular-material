@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { CompaniesClient, CompanyDetailNoLogo } from 'src/app/client';
-import { PeriodicElement } from 'src/app/home/home.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-company-list',
@@ -20,7 +20,7 @@ export class CompanyListComponent implements OnInit, AfterViewInit {
   
   displayedColumns: string[] = ['id', 'name', 'createdDate', 'updatedDate', 'postcode', 'lat', 'lon'];
 
-  constructor(private readonly companyService: CompaniesClient, private _snackBar: MatSnackBar) { }
+  constructor(private readonly companyService: CompaniesClient, private _snackBar: MatSnackBar, private router: Router) { }
   dataSource = new MatTableDataSource<CompanyDetailNoLogo>();
   
   ngAfterViewInit(): void {
@@ -52,6 +52,10 @@ export class CompanyListComponent implements OnInit, AfterViewInit {
         }
       }
     )
+  }
+
+  companyDetails(company: CompanyDetailNoLogo) {
+    this.router.navigate([`/company/${company.id}`]);
   }
 
 }
