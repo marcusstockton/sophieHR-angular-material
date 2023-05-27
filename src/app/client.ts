@@ -329,7 +329,7 @@ export interface ICompaniesClient {
     getAutoSuggestion(search: string | null | undefined): Observable<FileResponse>;
     getMapFromLatLong(lat: number | undefined, lon: number | undefined, zoomLevel: number | undefined, mapType: number | undefined, width: number | undefined, viewType: number | undefined): Observable<FileResponse>;
     postcodeAutoComplete(postcode: string | null | undefined): Observable<string[]>;
-    postcodeLookup(postcode: string | null | undefined): Observable<FileResponse>;
+    postcodeLookup(postcode: string | null | undefined): Observable<PostcodeLookup>;
 }
 
 @Injectable()
@@ -924,7 +924,7 @@ export class CompaniesClient implements ICompaniesClient {
         return _observableOf(null as any);
     }
 
-    postcodeLookup(postcode: string | null | undefined): Observable<FileResponse> {
+    postcodeLookup(postcode: string | null | undefined): Observable<PostcodeLookup> {
         let url_ = this.baseUrl + "/api/Companies/postcode-lookup?";
         if (postcode !== undefined && postcode !== null)
             url_ += "postcode=" + encodeURIComponent("" + postcode) + "&";
@@ -934,7 +934,7 @@ export class CompaniesClient implements ICompaniesClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -945,31 +945,27 @@ export class CompaniesClient implements ICompaniesClient {
                 try {
                     return this.processPostcodeLookup(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<FileResponse>;
+                    return _observableThrow(e) as any as Observable<PostcodeLookup>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<FileResponse>;
+                return _observableThrow(response_) as any as Observable<PostcodeLookup>;
         }));
     }
 
-    protected processPostcodeLookup(response: HttpResponseBase): Observable<FileResponse> {
+    protected processPostcodeLookup(response: HttpResponseBase): Observable<PostcodeLookup> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
-            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
-            if (fileName) {
-                fileName = decodeURIComponent(fileName);
-            } else {
-                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            }
-            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PostcodeLookup.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -2924,6 +2920,8 @@ export abstract class Address extends Base implements IAddress {
     line4?: string | undefined;
     postcode?: string | undefined;
     county?: string | undefined;
+    lat?: number;
+    lon?: number;
     addressType?: AddressType;
 
     constructor(data?: IAddress) {
@@ -2939,6 +2937,8 @@ export abstract class Address extends Base implements IAddress {
             this.line4 = _data["line4"];
             this.postcode = _data["postcode"];
             this.county = _data["county"];
+            this.lat = _data["lat"];
+            this.lon = _data["lon"];
             this.addressType = _data["addressType"];
         }
     }
@@ -2956,6 +2956,8 @@ export abstract class Address extends Base implements IAddress {
         data["line4"] = this.line4;
         data["postcode"] = this.postcode;
         data["county"] = this.county;
+        data["lat"] = this.lat;
+        data["lon"] = this.lon;
         data["addressType"] = this.addressType;
         super.toJSON(data);
         return data;
@@ -2969,6 +2971,8 @@ export interface IAddress extends IBase {
     line4?: string | undefined;
     postcode?: string | undefined;
     county?: string | undefined;
+    lat?: number;
+    lon?: number;
     addressType?: AddressType;
 }
 
@@ -3089,9 +3093,6 @@ export class CompanyDetailNoLogo implements ICompanyDetailNoLogo {
     createdDate?: Date;
     updatedDate?: Date;
     name?: string | undefined;
-    postcode?: string | undefined;
-    lat?: number;
-    lon?: number;
     address?: CompanyAddress | undefined;
 
     constructor(data?: ICompanyDetailNoLogo) {
@@ -3109,9 +3110,6 @@ export class CompanyDetailNoLogo implements ICompanyDetailNoLogo {
             this.createdDate = _data["createdDate"] ? new Date(_data["createdDate"].toString()) : <any>undefined;
             this.updatedDate = _data["updatedDate"] ? new Date(_data["updatedDate"].toString()) : <any>undefined;
             this.name = _data["name"];
-            this.postcode = _data["postcode"];
-            this.lat = _data["lat"];
-            this.lon = _data["lon"];
             this.address = _data["address"] ? CompanyAddress.fromJS(_data["address"]) : <any>undefined;
         }
     }
@@ -3129,9 +3127,6 @@ export class CompanyDetailNoLogo implements ICompanyDetailNoLogo {
         data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
         data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
         data["name"] = this.name;
-        data["postcode"] = this.postcode;
-        data["lat"] = this.lat;
-        data["lon"] = this.lon;
         data["address"] = this.address ? this.address.toJSON() : <any>undefined;
         return data;
     }
@@ -3142,9 +3137,6 @@ export interface ICompanyDetailNoLogo {
     createdDate?: Date;
     updatedDate?: Date;
     name?: string | undefined;
-    postcode?: string | undefined;
-    lat?: number;
-    lon?: number;
     address?: CompanyAddress | undefined;
 }
 
@@ -3375,6 +3367,254 @@ export interface IAddressCreateDto {
     line4?: string | undefined;
     postcode?: string | undefined;
     county?: string | undefined;
+}
+
+export class PostcodeLookup implements IPostcodeLookup {
+    status?: number;
+    result?: Result | undefined;
+
+    constructor(data?: IPostcodeLookup) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.status = _data["status"];
+            this.result = _data["result"] ? Result.fromJS(_data["result"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): PostcodeLookup {
+        data = typeof data === 'object' ? data : {};
+        let result = new PostcodeLookup();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["status"] = this.status;
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IPostcodeLookup {
+    status?: number;
+    result?: Result | undefined;
+}
+
+export class Result implements IResult {
+    postcode?: string | undefined;
+    quality?: number;
+    eastings?: number;
+    northings?: number;
+    country?: string | undefined;
+    nhs_ha?: string | undefined;
+    longitude?: number;
+    latitude?: number;
+    european_electoral_region?: string | undefined;
+    primary_care_trust?: string | undefined;
+    region?: string | undefined;
+    lsoa?: string | undefined;
+    msoa?: string | undefined;
+    incode?: string | undefined;
+    outcode?: string | undefined;
+    parliamentary_constituency?: string | undefined;
+    admin_district?: string | undefined;
+    parish?: string | undefined;
+    admin_county?: string | undefined;
+    admin_ward?: string | undefined;
+    ced?: string | undefined;
+    ccg?: string | undefined;
+    nuts?: string | undefined;
+    codes?: Codes | undefined;
+
+    constructor(data?: IResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.postcode = _data["postcode"];
+            this.quality = _data["quality"];
+            this.eastings = _data["eastings"];
+            this.northings = _data["northings"];
+            this.country = _data["country"];
+            this.nhs_ha = _data["nhs_ha"];
+            this.longitude = _data["longitude"];
+            this.latitude = _data["latitude"];
+            this.european_electoral_region = _data["european_electoral_region"];
+            this.primary_care_trust = _data["primary_care_trust"];
+            this.region = _data["region"];
+            this.lsoa = _data["lsoa"];
+            this.msoa = _data["msoa"];
+            this.incode = _data["incode"];
+            this.outcode = _data["outcode"];
+            this.parliamentary_constituency = _data["parliamentary_constituency"];
+            this.admin_district = _data["admin_district"];
+            this.parish = _data["parish"];
+            this.admin_county = _data["admin_county"];
+            this.admin_ward = _data["admin_ward"];
+            this.ced = _data["ced"];
+            this.ccg = _data["ccg"];
+            this.nuts = _data["nuts"];
+            this.codes = _data["codes"] ? Codes.fromJS(_data["codes"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): Result {
+        data = typeof data === 'object' ? data : {};
+        let result = new Result();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["postcode"] = this.postcode;
+        data["quality"] = this.quality;
+        data["eastings"] = this.eastings;
+        data["northings"] = this.northings;
+        data["country"] = this.country;
+        data["nhs_ha"] = this.nhs_ha;
+        data["longitude"] = this.longitude;
+        data["latitude"] = this.latitude;
+        data["european_electoral_region"] = this.european_electoral_region;
+        data["primary_care_trust"] = this.primary_care_trust;
+        data["region"] = this.region;
+        data["lsoa"] = this.lsoa;
+        data["msoa"] = this.msoa;
+        data["incode"] = this.incode;
+        data["outcode"] = this.outcode;
+        data["parliamentary_constituency"] = this.parliamentary_constituency;
+        data["admin_district"] = this.admin_district;
+        data["parish"] = this.parish;
+        data["admin_county"] = this.admin_county;
+        data["admin_ward"] = this.admin_ward;
+        data["ced"] = this.ced;
+        data["ccg"] = this.ccg;
+        data["nuts"] = this.nuts;
+        data["codes"] = this.codes ? this.codes.toJSON() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IResult {
+    postcode?: string | undefined;
+    quality?: number;
+    eastings?: number;
+    northings?: number;
+    country?: string | undefined;
+    nhs_ha?: string | undefined;
+    longitude?: number;
+    latitude?: number;
+    european_electoral_region?: string | undefined;
+    primary_care_trust?: string | undefined;
+    region?: string | undefined;
+    lsoa?: string | undefined;
+    msoa?: string | undefined;
+    incode?: string | undefined;
+    outcode?: string | undefined;
+    parliamentary_constituency?: string | undefined;
+    admin_district?: string | undefined;
+    parish?: string | undefined;
+    admin_county?: string | undefined;
+    admin_ward?: string | undefined;
+    ced?: string | undefined;
+    ccg?: string | undefined;
+    nuts?: string | undefined;
+    codes?: Codes | undefined;
+}
+
+export class Codes implements ICodes {
+    admin_district?: string | undefined;
+    admin_county?: string | undefined;
+    admin_ward?: string | undefined;
+    parish?: string | undefined;
+    parliamentary_constituency?: string | undefined;
+    ccg?: string | undefined;
+    ccg_id?: string | undefined;
+    ced?: string | undefined;
+    nuts?: string | undefined;
+    lsoa?: string | undefined;
+    msoa?: string | undefined;
+    lau2?: string | undefined;
+
+    constructor(data?: ICodes) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.admin_district = _data["admin_district"];
+            this.admin_county = _data["admin_county"];
+            this.admin_ward = _data["admin_ward"];
+            this.parish = _data["parish"];
+            this.parliamentary_constituency = _data["parliamentary_constituency"];
+            this.ccg = _data["ccg"];
+            this.ccg_id = _data["ccg_id"];
+            this.ced = _data["ced"];
+            this.nuts = _data["nuts"];
+            this.lsoa = _data["lsoa"];
+            this.msoa = _data["msoa"];
+            this.lau2 = _data["lau2"];
+        }
+    }
+
+    static fromJS(data: any): Codes {
+        data = typeof data === 'object' ? data : {};
+        let result = new Codes();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["admin_district"] = this.admin_district;
+        data["admin_county"] = this.admin_county;
+        data["admin_ward"] = this.admin_ward;
+        data["parish"] = this.parish;
+        data["parliamentary_constituency"] = this.parliamentary_constituency;
+        data["ccg"] = this.ccg;
+        data["ccg_id"] = this.ccg_id;
+        data["ced"] = this.ced;
+        data["nuts"] = this.nuts;
+        data["lsoa"] = this.lsoa;
+        data["msoa"] = this.msoa;
+        data["lau2"] = this.lau2;
+        return data;
+    }
+}
+
+export interface ICodes {
+    admin_district?: string | undefined;
+    admin_county?: string | undefined;
+    admin_ward?: string | undefined;
+    parish?: string | undefined;
+    parliamentary_constituency?: string | undefined;
+    ccg?: string | undefined;
+    ccg_id?: string | undefined;
+    ced?: string | undefined;
+    nuts?: string | undefined;
+    lsoa?: string | undefined;
+    msoa?: string | undefined;
+    lau2?: string | undefined;
 }
 
 export class DepartmentDetailDto implements IDepartmentDetailDto {
