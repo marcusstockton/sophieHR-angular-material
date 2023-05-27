@@ -5,3 +5,43 @@
     Editing Company {{companyId}}
 </div>
 <ng-template #creating>Creating Company</ng-template>
+
+<!-- <div>
+    <pre>{{companyDetails | json}}</pre>
+</div> -->
+<form (ngSubmit)="submitCompany()"> 
+<ng-container [formGroup]="this.companyForm">
+    <mat-form-field>
+        <mat-label>Company Name</mat-label>
+        <input matInput formControlName="name" required />
+    </mat-form-field>
+    <ng-container formGroupName="address">
+        <mat-form-field>
+            <mat-label>Line 1</mat-label>
+            <input matInput formControlName="line1" required />
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Line 2</mat-label>
+            <input matInput formControlName="line2" required />
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Line 3</mat-label>
+            <input matInput formControlName="line3" required />
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Line 4</mat-label>
+            <input matInput formControlName="line4" required />
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Post code</mat-label>
+            <input matInput formControlName="postcode" required />
+            
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>County</mat-label>
+            <input matInput formControlName="county" required />
+        </mat-form-field>
+    </ng-container>
+</ng-container>
+<button mat-raised-button color="primary" type="submit">Submit</button>
+</form>
