@@ -1,6 +1,6 @@
 <div id="company-form">
 
-    <div *ngIf="editing;else creating">
+    <div *ngIf="editing && companyDetails;else creating">
         <p>
             Editing Company {{companyDetails.name}}
         </p>
@@ -11,11 +11,15 @@
         <pre>{{companyDetails | json}}</pre>
     </div> -->
 
+    <div *ngIf="companyDetails?.address?.mapImage != null">
+        <img [src]="'data:image/jpg;base64,'+ companyDetails!.address!.mapImage" style="height:200px;" />
+    </div>
+
     <form (ngSubmit)="submitCompany()" id="companyForm">
         <ng-container [formGroup]="this.companyForm">
             <mat-form-field>
                 <mat-label>Company Name</mat-label>
-                <input matInput formControlName="name" required />
+                <input matInput formControlName="name" required autoComplete='none'/>
             </mat-form-field>
             <ng-container formGroupName="address">
                 <mat-form-field>
@@ -28,11 +32,11 @@
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Line 3</mat-label>
-                    <input matInput formControlName="line3" required />
+                    <input matInput formControlName="line3" />
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Line 4</mat-label>
-                    <input matInput formControlName="line4" required />
+                    <input matInput formControlName="line4"/>
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Post code</mat-label>
@@ -43,6 +47,7 @@
                             {{option}}
                         </mat-option>
                     </mat-autocomplete>
+                    
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>County</mat-label>
@@ -50,7 +55,7 @@
                 </mat-form-field>
             </ng-container>
         </ng-container>
-        <button mat-raised-button color="primary" type="submit">Submit</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!companyForm.valid">Submit</button>
     </form>
 
 
