@@ -15,6 +15,10 @@
         <img [src]="'data:image/jpg;base64,'+ companyDetails!.address!.mapImage" style="height:200px;" />
     </div>
 
+    <div *ngIf="companyDetails?.logo">
+        <img [src]="'data:image/jpg;base64,'+ companyDetails!.logo" style="height:200px;" />
+    </div>
+
     <form (ngSubmit)="submitCompany()" id="companyForm">
         <ng-container [formGroup]="this.companyForm">
             <mat-form-field>

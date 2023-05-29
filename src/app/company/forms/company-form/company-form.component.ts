@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, debounceTime, distinctUntilChanged, filter, finalize, map, pipe, startWith, switchMap, tap } from 'rxjs';
-import { CompaniesClient, CompanyCreateDto, CompanyDetailDto, CompanyDetailNoLogo, Result } from 'src/app/client';
+import { Address, CompaniesClient, CompanyCreateDto, CompanyDetailDto, CompanyDetailNoLogo, Result } from 'src/app/client';
 
 @Component({
   selector: 'app-company-form',
@@ -19,11 +20,21 @@ export class CompanyFormComponent implements OnInit {
   private minPostcodeLengthLookup: number = 3;
   filteredOptions: Observable<any>;
 
-  constructor(private route: ActivatedRoute, private _companyService: CompaniesClient, private readonly formBuilder: FormBuilder) {
+  constructor(private route: ActivatedRoute, 
+    private _companyService: CompaniesClient, 
+    private readonly formBuilder: FormBuilder,
+    private _snackBar: MatSnackBar
+    ) {
 
     this.companyForm = this.formBuilder.group({
+      id:[],
+      createdDate:[],
+      updatedDate:[],
       name: [],
       address: this.formBuilder.group({
+        id:[],
+        createdDate:[],
+        updatedDate:[],
         line1: ["", { validators: [Validators.required, Validators.minLength(2)] }],
         line2: ["",],
         line3: [],
@@ -32,8 +43,8 @@ export class CompanyFormComponent implements OnInit {
         lat: [],
         lon: [],
         county: [],
+        mapImage:[]
       }),
-      myRequiredField: ['', Validators.required],
     });
 
     this.filteredOptions = this.companyForm.get('address.postcode')!.valueChanges
@@ -55,26 +66,24 @@ export class CompanyFormComponent implements OnInit {
     this.route.params.subscribe(params => {
       if (params['companyid']) {
         this.editing = true;
-      }
-      this.companyId = params['companyid'];
-      this._companyService.getCompany(this.companyId!).subscribe(
-        {
-          next: (res) => {
-            this.companyDetails = res;
-            this.companyForm.patchValue(res);
-          },
-          error: (err) => {
-            console.log('HTTP Error', err)
-          },
-          complete: () => {
-            console.log('HTTP request completed.');
+        this.companyId = params['companyid'];
+        this._companyService.getCompany(this.companyId!).subscribe(
+          {
+            next: (res) => {
+              this.companyDetails = res;
+              this.companyForm.patchValue(res);
+            },
+            error: (err) => {
+              console.log('HTTP Error', err)
+            },
+            complete: () => {
+              console.log('HTTP request completed.');
+            }
           }
-        }
-      )
+        )
+      }
+
     });
-
-
-
   }
 
 
@@ -88,7 +97,10 @@ export class CompanyFormComponent implements OnInit {
 
         this._companyService.getMapFromLatLong(this.postcodeLookupData.latitude!, this.postcodeLookupData.longitude!, undefined, undefined, undefined, undefined)
           .subscribe((mapStr) => {
-            this.companyDetails!.address!.mapImage = mapStr
+            this.companyForm.get("address.mapImage")?.patchValue(mapStr);
+            if(this.editing){
+              this.companyDetails!.address!.mapImage = mapStr  
+            }
           })
       })
     }
@@ -98,10 +110,12 @@ export class CompanyFormComponent implements OnInit {
     console.log(this.companyForm)
     if (this.companyForm.valid) {
       if (this.editing) {
-        var updatedCompany = new CompanyDetailNoLogo(this.companyForm.value);
+        this.companyDetails = this.companyForm.value; // Update existing model with changes
+        let updatedCompany: CompanyDetailNoLogo = this.companyDetails; // Change the type for the post
         this._companyService.putCompany(this.companyId!, updatedCompany).subscribe({
           next: (res) => {
-            console.log(res);
+            console.log(res.data);
+            this._snackBar.open("Successfully updated the company details");
           },
           error: (err) => {
             console.log("Error updating company" + err);
@@ -129,7 +143,7 @@ export class CompanyFormComponent implements OnInit {
   }
 
   private _filter(value: string): Observable<string[]> | undefined {
-    if (value == null || value.length < this.minPostcodeLengthLookup || value == this.companyDetails.address?.postcode) {
+    if (value == null || value.length < this.minPostcodeLengthLookup || value == this.companyDetails?.address?.postcode) {
       return undefined;
     }
 

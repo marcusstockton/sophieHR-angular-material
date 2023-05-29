@@ -33,19 +33,19 @@
     <!-- Postcode Column -->
     <ng-container matColumnDef="postcode">
         <th mat-header-cell *matHeaderCellDef> Postcode </th>
-        <td mat-cell *matCellDef="let element"> {{element.postcode}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.address.postcode}} </td>
     </ng-container>
 
     <!-- Latitude Column -->
     <ng-container matColumnDef="lat">
         <th mat-header-cell *matHeaderCellDef> Latitude </th>
-        <td mat-cell *matCellDef="let element"> {{element.lat}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.address.lat}} </td>
     </ng-container>
 
     <!-- Longitude Column -->
     <ng-container matColumnDef="lon">
         <th mat-header-cell *matHeaderCellDef> Longitude </th>
-        <td mat-cell *matCellDef="let element"> {{element.lon}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.address.lon}} </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
