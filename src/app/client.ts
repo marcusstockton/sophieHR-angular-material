@@ -326,7 +326,7 @@ export interface ICompaniesClient {
     putCompany(id: string, companyDetail: CompanyDetailNoLogo): Observable<FileResponse>;
     deleteCompany(id: string): Observable<FileResponse>;
     uploadLogo(id: string, logo: FileParameter | null | undefined): Observable<FileResponse>;
-    getAutoSuggestion(search: string | null | undefined): Observable<FileResponse>;
+    getAutoSuggestion(search: string | null | undefined): Observable<string[]>;
     getMapFromLatLong(lat: number | undefined, lon: number | undefined, zoomLevel: number | undefined, mapType: number | undefined, width: number | undefined, viewType: number | undefined): Observable<string>;
     postcodeAutoComplete(postcode: string | null | undefined): Observable<string[]>;
     postcodeLookup(postcode: string | null | undefined): Observable<PostcodeLookup>;
@@ -435,12 +435,19 @@ export class CompaniesClient implements ICompaniesClient {
             (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
+        if (status === 201) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = CompanyDetailDto.fromJS(resultData200);
-            return _observableOf(result200);
+            let result201: any = null;
+            let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result201 = CompanyDetailDto.fromJS(resultData201);
+            return _observableOf(result201);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -737,7 +744,7 @@ export class CompaniesClient implements ICompaniesClient {
         return _observableOf(null as any);
     }
 
-    getAutoSuggestion(search: string | null | undefined): Observable<FileResponse> {
+    getAutoSuggestion(search: string | null | undefined): Observable<string[]> {
         let url_ = this.baseUrl + "/api/Companies/get-location-autosuggestion?";
         if (search !== undefined && search !== null)
             url_ += "search=" + encodeURIComponent("" + search) + "&";
@@ -747,7 +754,7 @@ export class CompaniesClient implements ICompaniesClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             })
         };
 
@@ -758,31 +765,34 @@ export class CompaniesClient implements ICompaniesClient {
                 try {
                     return this.processGetAutoSuggestion(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<FileResponse>;
+                    return _observableThrow(e) as any as Observable<string[]>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<FileResponse>;
+                return _observableThrow(response_) as any as Observable<string[]>;
         }));
     }
 
-    protected processGetAutoSuggestion(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetAutoSuggestion(response: HttpResponseBase): Observable<string[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
-            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
-            if (fileName) {
-                fileName = decodeURIComponent(fileName);
-            } else {
-                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(item);
             }
-            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -1892,8 +1902,8 @@ export class EmployeesClient implements IEmployeesClient {
 export interface ILeaveRequestsClient {
     getLeaveRequestsForEmployee(employeeId: string): Observable<LeaveRequest[]>;
     getLeaveRequest(id: string): Observable<LeaveRequest>;
-    putLeaveRequest(id: string, leaveRequest: LeaveRequest): Observable<FileResponse>;
-    deleteLeaveRequest(id: string): Observable<FileResponse>;
+    putLeaveRequest(id: string, leaveRequest: LeaveRequest): Observable<void>;
+    deleteLeaveRequest(id: string): Observable<void>;
     postLeaveRequest(leaveRequestDto: CreateLeaveRequest): Observable<LeaveRequest>;
 }
 
@@ -2017,7 +2027,7 @@ export class LeaveRequestsClient implements ILeaveRequestsClient {
         return _observableOf(null as any);
     }
 
-    putLeaveRequest(id: string, leaveRequest: LeaveRequest): Observable<FileResponse> {
+    putLeaveRequest(id: string, leaveRequest: LeaveRequest): Observable<void> {
         let url_ = this.baseUrl + "/api/LeaveRequests/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2032,7 +2042,6 @@ export class LeaveRequestsClient implements ILeaveRequestsClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
             })
         };
 
@@ -2043,31 +2052,31 @@ export class LeaveRequestsClient implements ILeaveRequestsClient {
                 try {
                     return this.processPutLeaveRequest(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<FileResponse>;
+                    return _observableThrow(e) as any as Observable<void>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<FileResponse>;
+                return _observableThrow(response_) as any as Observable<void>;
         }));
     }
 
-    protected processPutLeaveRequest(response: HttpResponseBase): Observable<FileResponse> {
+    protected processPutLeaveRequest(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
-            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
-            if (fileName) {
-                fileName = decodeURIComponent(fileName);
-            } else {
-                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            }
-            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -2076,7 +2085,7 @@ export class LeaveRequestsClient implements ILeaveRequestsClient {
         return _observableOf(null as any);
     }
 
-    deleteLeaveRequest(id: string): Observable<FileResponse> {
+    deleteLeaveRequest(id: string): Observable<void> {
         let url_ = this.baseUrl + "/api/LeaveRequests/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2087,7 +2096,6 @@ export class LeaveRequestsClient implements ILeaveRequestsClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/octet-stream"
             })
         };
 
@@ -2098,31 +2106,31 @@ export class LeaveRequestsClient implements ILeaveRequestsClient {
                 try {
                     return this.processDeleteLeaveRequest(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<FileResponse>;
+                    return _observableThrow(e) as any as Observable<void>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<FileResponse>;
+                return _observableThrow(response_) as any as Observable<void>;
         }));
     }
 
-    protected processDeleteLeaveRequest(response: HttpResponseBase): Observable<FileResponse> {
+    protected processDeleteLeaveRequest(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
-            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
-            if (fileName) {
-                fileName = decodeURIComponent(fileName);
-            } else {
-                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            }
-            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -2187,7 +2195,7 @@ export class LeaveRequestsClient implements ILeaveRequestsClient {
 export interface INotesClient {
     getNotesForEmployee(employeeId: string): Observable<NoteDetailDto[]>;
     getNote(id: string): Observable<NoteDetailDto>;
-    putNotes(id: string, noteDto: NoteDetailDto): Observable<FileResponse>;
+    putNotes(id: string, noteDto: NoteDetailDto): Observable<void>;
     deleteNotes(id: string): Observable<FileResponse>;
     postNotes(employeeId: string, noteInput: NoteCreateDto): Observable<NoteDetailDto>;
     getNoteTypes(): Observable<{ [key: string]: string; }>;
@@ -2305,6 +2313,13 @@ export class NotesClient implements INotesClient {
             result200 = NoteDetailDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -2313,7 +2328,7 @@ export class NotesClient implements INotesClient {
         return _observableOf(null as any);
     }
 
-    putNotes(id: string, noteDto: NoteDetailDto): Observable<FileResponse> {
+    putNotes(id: string, noteDto: NoteDetailDto): Observable<void> {
         let url_ = this.baseUrl + "/api/Notes/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2328,7 +2343,6 @@ export class NotesClient implements INotesClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
             })
         };
 
@@ -2339,31 +2353,31 @@ export class NotesClient implements INotesClient {
                 try {
                     return this.processPutNotes(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<FileResponse>;
+                    return _observableThrow(e) as any as Observable<void>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<FileResponse>;
+                return _observableThrow(response_) as any as Observable<void>;
         }));
     }
 
-    protected processPutNotes(response: HttpResponseBase): Observable<FileResponse> {
+    protected processPutNotes(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
-            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
-            if (fileName) {
-                fileName = decodeURIComponent(fileName);
-            } else {
-                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            }
-            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -3317,6 +3331,7 @@ export class AddressCreateDto implements IAddressCreateDto {
     line4?: string | undefined;
     postcode?: string | undefined;
     county?: string | undefined;
+    mapImage?: string | undefined;
 
     constructor(data?: IAddressCreateDto) {
         if (data) {
@@ -3335,6 +3350,7 @@ export class AddressCreateDto implements IAddressCreateDto {
             this.line4 = _data["line4"];
             this.postcode = _data["postcode"];
             this.county = _data["county"];
+            this.mapImage = _data["mapImage"];
         }
     }
 
@@ -3353,6 +3369,7 @@ export class AddressCreateDto implements IAddressCreateDto {
         data["line4"] = this.line4;
         data["postcode"] = this.postcode;
         data["county"] = this.county;
+        data["mapImage"] = this.mapImage;
         return data;
     }
 }
@@ -3364,6 +3381,7 @@ export interface IAddressCreateDto {
     line4?: string | undefined;
     postcode?: string | undefined;
     county?: string | undefined;
+    mapImage?: string | undefined;
 }
 
 export class PostcodeLookup implements IPostcodeLookup {

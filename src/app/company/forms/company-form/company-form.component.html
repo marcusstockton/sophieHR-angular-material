@@ -11,6 +11,10 @@
         <pre>{{companyDetails | json}}</pre>
     </div> -->
 
+    <!-- <div *ngIf="companyForm.get('address.mapImage') != null">
+        <img [src]="'data:image/jpg;base64,'+ companyForm.get('address.mapImage')" style="height:200px;" />
+    </div> -->
+
     <div *ngIf="companyDetails?.address?.mapImage != null">
         <img [src]="'data:image/jpg;base64,'+ companyDetails!.address!.mapImage" style="height:200px;" />
     </div>
@@ -23,7 +27,7 @@
         <ng-container [formGroup]="this.companyForm">
             <mat-form-field>
                 <mat-label>Company Name</mat-label>
-                <input matInput formControlName="name" required autoComplete='none'/>
+                <input matInput formControlName="name" required/>
             </mat-form-field>
             <ng-container formGroupName="address">
                 <mat-form-field>
@@ -32,7 +36,7 @@
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Line 2</mat-label>
-                    <input matInput formControlName="line2" required />
+                    <input matInput formControlName="line2" />
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Line 3</mat-label>
