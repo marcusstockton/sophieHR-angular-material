@@ -26,7 +26,7 @@ const routes: Routes = [
     path: 'company', canActivate: [AuthGuard],
     loadChildren: () => import('src/app/company/company.module').then(m => m.CompanyModule),
   },
-  { path: '', redirectTo: 'home', pathMatch: 'full' }
+  { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
 
 @NgModule({

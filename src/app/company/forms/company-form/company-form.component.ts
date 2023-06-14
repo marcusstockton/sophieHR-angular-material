@@ -4,6 +4,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, debounceTime, distinctUntilChanged, filter, finalize, map, pipe, startWith, switchMap, tap } from 'rxjs';
 import { Address, AddressCreateDto, CompaniesClient, CompanyAddress, CompanyCreateDto, CompanyDetailDto, CompanyDetailNoLogo, Result } from 'src/app/client';
+import { CompanyLogoDialogComponent } from '../../dialogs/company-logo-dialog/company-logo-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-company-form',
@@ -24,7 +26,8 @@ export class CompanyFormComponent implements OnInit {
     private router: Router,
     private _companyService: CompaniesClient,
     private readonly formBuilder: FormBuilder,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    public dialog: MatDialog
   ) {
 
     this.companyForm = this.formBuilder.group({
@@ -68,25 +71,29 @@ export class CompanyFormComponent implements OnInit {
       if (params['companyid']) {
         this.editing = true;
         this.companyId = params['companyid'];
-        this._companyService.getCompany(this.companyId!).subscribe(
-          {
-            next: (res) => {
-              this.companyDetails = res;
-              this.companyForm.patchValue(res);
-            },
-            error: (err) => {
-              console.log('HTTP Error', err)
-            },
-            complete: () => {
-              console.log('HTTP request completed.');
-            }
-          }
-        )
+        this.GetCompanyById();
       }
 
     });
   }
 
+
+  private GetCompanyById() {
+    this._companyService.getCompany(this.companyId!).subscribe(
+      {
+        next: (res) => {
+          this.companyDetails = res;
+          this.companyForm.patchValue(res);
+        },
+        error: (err) => {
+          console.log('HTTP Error', err);
+        },
+        complete: () => {
+          console.log('HTTP request completed.');
+        }
+      }
+    );
+  }
 
   getPostcodeInfo(value: string) {
     if (value != '') {
@@ -145,6 +152,17 @@ export class CompanyFormComponent implements OnInit {
       }
 
     }
+  }
+
+  public openLogoDialog(){
+    let dialogRef = this.dialog.open(CompanyLogoDialogComponent, {
+      data: { companyId: this.companyId },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+      this.GetCompanyById();
+    });
   }
 
   private _filter(value: string): Observable<string[]> | undefined {

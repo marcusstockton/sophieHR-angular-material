@@ -6,6 +6,7 @@ import { CompanyRoutingModule } from './company-routing.module';
 import { CompanyDetailComponent } from './company-detail/company-detail.component';
 import { CompanyFormComponent } from './forms/company-form/company-form.component';
 import { CompanyListComponent } from './company-list/company-list.component';
+import { CompanyLogoDialogComponent } from './dialogs/company-logo-dialog/company-logo-dialog.component';
 
 
 
@@ -13,7 +14,8 @@ import { CompanyListComponent } from './company-list/company-list.component';
   declarations: [
     CompanyDetailComponent,
     CompanyFormComponent,
-    CompanyListComponent
+    CompanyListComponent,
+    CompanyLogoDialogComponent
   ],
   imports: [
     CommonModule,

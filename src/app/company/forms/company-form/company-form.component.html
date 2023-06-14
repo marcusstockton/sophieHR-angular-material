@@ -7,21 +7,18 @@
     </div>
     <ng-template #creating>Creating Company</ng-template>
 
-    <!-- <div>
-        <pre>{{companyDetails | json}}</pre>
-    </div> -->
-
-    <!-- <div *ngIf="companyForm.get('address.mapImage') != null">
-        <img [src]="'data:image/jpg;base64,'+ companyForm.get('address.mapImage')" style="height:200px;" />
-    </div> -->
-
     <div *ngIf="companyDetails?.address?.mapImage != null">
         <img [src]="'data:image/jpg;base64,'+ companyDetails!.address!.mapImage" style="height:200px;" />
     </div>
 
-    <div *ngIf="companyDetails?.logo">
-        <img [src]="'data:image/jpg;base64,'+ companyDetails!.logo" style="height:200px;" />
+    <div>
+        <img *ngIf="companyDetails?.logo" [src]="'data:image/jpg;base64,'+ companyDetails!.logo" style="height:200px;" />
+        <button mat-mini-fab color="primary" aria-label="Company Logo Add/Edit" (click)="openLogoDialog()">
+            <mat-icon *ngIf="!editing" matTooltip="Add company logo">add</mat-icon>
+            <mat-icon *ngIf="editing" matTooltip="Change company logo">create</mat-icon>
+        </button>
     </div>
+    
 
     <form (ngSubmit)="submitCompany()" id="companyForm">
         <ng-container [formGroup]="this.companyForm">
@@ -63,7 +60,7 @@
                 </mat-form-field>
             </ng-container>
         </ng-container>
-        <button mat-raised-button color="primary" type="submit" [disabled]="!companyForm.valid">Submit</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!companyForm.valid || !companyForm.dirty">Submit</button>
     </form>
 
 

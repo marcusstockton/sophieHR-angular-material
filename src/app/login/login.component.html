@@ -16,7 +16,8 @@
           <mat-form-field>
             <mat-label>Password</mat-label>
             <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'">
-            <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+            <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hidePassword">
               <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
             <!-- <input matInput placeholder="Password" type="password" formControlName="password" #nameInput> -->
@@ -27,12 +28,12 @@
           <div class="row" style="align-items:center;">
             <button mat-raised-button color="primary" [disabled]="!form.valid || loggingIn" type="submit">
               Login
-           </button>
-           <div class="example-spacer"></div>
-           <mat-spinner color="accent" [diameter]="25" *ngIf="loggingIn"> 
-             </mat-spinner>
+            </button>
+            <div class="example-spacer"></div>
+            <mat-spinner color="accent" [diameter]="25" *ngIf="loggingIn">
+            </mat-spinner>
           </div>
-          
+
         </form>
         <mat-card-subtitle>
           <p *ngIf="retrievingManagers">Getting some manager usernames...</p>
