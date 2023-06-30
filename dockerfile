@@ -22,8 +22,14 @@ RUN npm run build
 # Use official nginx image as the base image
 FROM nginx:latest
 
-# Copy the build output to replace the default nginx contents.
-COPY --from=build /usr/local/app/dist/sophie-hr-angular-material /usr/share/nginx/html
+# Set working directory to nginx asset directory
+WORKDIR /usr/share/nginx/html
 
-# Expose port 80
-EXPOSE 8080
+# Remove default nginx static assets
+RUN rm -rf ./*
+
+# Copy static assets from builder stage
+COPY --from=build /usr/local/app/dist/sophie-hr-angular-material .
+
+# Containers run nginx with global directives and daemon off
+ENTRYPOINT ["nginx", "-g", "daemon off;"]

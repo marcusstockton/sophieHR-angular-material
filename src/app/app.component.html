@@ -4,12 +4,12 @@
   </button>
   <span>Sophies Human Resources</span>
   <span *ngIf="this.role==='Admin' && companyNames">
-    <button mat-button (click)="sidenav.toggle()">Companies <mat-icon>expand_more</mat-icon></button>
-    <mat-menu #menu="matMenu">
+    <!-- <button mat-button (click)="sidenav.toggle()">Companies <mat-icon>expand_more</mat-icon></button> -->
+    <!-- <mat-menu #menu="matMenu">
       <span *ngFor="let company of companyNames">
         <button mat-menu-item (click)="onCompanyChange(company.key!)">{{company.value}}</button>
       </span>
-    </mat-menu>
+    </mat-menu> -->
   </span>
   <span class="example-spacer"></span>
   <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" (click)="viewProfile()">

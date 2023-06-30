@@ -120,18 +120,18 @@ export class CompanyFormComponent implements OnInit {
     console.log(this.companyForm)
     if (this.companyForm.valid) {
       if (this.editing) {
-        this.companyDetails = this.companyForm.value; // Update existing model with changes
-        let updatedCompany: CompanyDetailNoLogo = this.companyDetails; // Change the type for the post
+        let updatedCompany: CompanyDetailNoLogo = this.companyForm.value; // Change the type for the post
         this._companyService.putCompany(this.companyId!, updatedCompany).subscribe({
           next: (res) => {
             console.log(res.data);
-            this._snackBar.open("Successfully updated the company details", "OK", { duration: 2000 });
+            this.router.navigate(['/company']);
           },
           error: (err) => {
             console.log("Error updating company" + err);
           },
           complete: () => {
             console.log("Update Company Completed");
+            this._snackBar.open("Successfully updated the company details", "OK", { duration: 2000 });
           }
         });
       } else {
