@@ -1,13 +1,14 @@
 .user-form{
-    display: flex; 
-    align-items: center; 
-    justify-content: center;
+    width: 90%;
+    padding: 10px;
+    // display: flex; 
+    // align-items: center; 
+    // justify-content: center;
 }
 
-form{
-    margin: 0 auto;
-
-}
+// form{
+//     margin: 0 auto;
+// }
 
 .avatar{
     padding:2px;
@@ -23,8 +24,4 @@ form{
     .mat-mdc-option{
         font-size: small !important;
     }
-}
-
-.FiftyPercentInput{
-    min-width:50%;
 }
