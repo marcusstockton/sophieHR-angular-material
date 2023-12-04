@@ -11,11 +11,17 @@
       {{ currentUser.token.substr(currentUser.token.length - 20) }}
     </p>
     <p>
+      <strong>Token Expiry: </strong> {{tokenExpiry}}
+    </p>
+    <p>
       <strong>Email: </strong>
       <a href="mailto:{{ currentUser.email }}">{{ currentUser.email }}</a>
     </p>
-    <strong>Role: </strong>
-    {{currentUser.role}}
+    <p>
+      <strong>Role: </strong> {{currentUser.role}}
+    </p>
+
+
   </div>
   <ng-template #loggedOut>
     Please login.

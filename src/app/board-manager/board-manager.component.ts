@@ -15,24 +15,26 @@ export class BoardManagerComponent implements OnInit, AfterViewInit {
 
   user: any;
   company: CompanyDetailDto;
+  companyMap: string;
   isLoading: boolean;
   dataSource = new MatTableDataSource<EmployeeListDto>();
-  displayedColumns: string[] = ['firstName', 'lastName','jobTitle', 'workEmailAddress', 'workPhoneNumber', 'holidayAllowance', 'dateOfBirth', 'startOfEmployment'];
+  displayedColumns: string[] = ['firstName', 'lastName', 'jobTitle', 'workEmailAddress', 'workPhoneNumber', 'holidayAllowance', 'dateOfBirth', 'startOfEmployment'];
   @ViewChild(MatPaginator) private paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
-    private companyService: CompaniesClient, 
-    private tokenStorageService: TokenStorageService, 
+    private companyService: CompaniesClient,
+    private tokenStorageService: TokenStorageService,
     private employeeService: EmployeesClient,
     private router: Router) { }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.user = this.tokenStorageService.getUser();
-    if(!this.user){
+    if (!this.user) {
       this.router.navigate(['/login/']);
     }
-    this.isLoading = true;
+
     this.getCompany();
     this.getEmployees();
     this.isLoading = false;
@@ -49,16 +51,21 @@ export class BoardManagerComponent implements OnInit, AfterViewInit {
   }
 
   getEmployeeRecord(row: any) {
-    this.router.navigate(['/user/'+row.id]);
+    this.router.navigate(['/user/' + row.id]);
   }
 
   getCompany() {
     this.companyService.getCompany(this.user['companyId']).subscribe((result: CompanyDetailDto) => {
       this.company = result;
+      this.companyService.getMapFromLatLong(this.company.address?.lat, this.company.address?.lon, undefined, undefined, undefined, undefined).subscribe({
+        next: img => {
+          this.companyMap = img;
+        }
+      })
     });
   }
 
-  getEmployees(){
+  getEmployees() {
     this.employeeService.getEmployeesForManager(this.user['id']).subscribe((results: EmployeeListDto[]) => {
       this.dataSource.data = results;
     });

@@ -4,8 +4,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as moment from 'moment';
 import { EmployeeDetailDto, EmployeesClient } from '../client';
+import * as dayjs from 'dayjs';
+
 
 @Component({
   selector: 'app-board-user',
@@ -71,8 +72,8 @@ export class BoardUserComponent implements OnInit {
 
   private dateDiff(startdate: Date) {
     //define moments for the startdate and enddate
-    var startdateMoment = moment(startdate);
-    var enddateMoment = moment(new Date());
+    var startdateMoment = dayjs(startdate);
+    var enddateMoment = dayjs(new Date());
 
     if (startdateMoment.isValid() === true && enddateMoment.isValid() === true) {
       //getting the difference in years

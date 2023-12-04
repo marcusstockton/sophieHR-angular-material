@@ -30,6 +30,7 @@ RUN rm -rf ./*
 
 # Copy static assets from builder stage
 COPY --from=build /usr/local/app/dist/sophie-hr-angular-material .
+COPY --from=build src/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Containers run nginx with global directives and daemon off
 ENTRYPOINT ["nginx", "-g", "daemon off;"]

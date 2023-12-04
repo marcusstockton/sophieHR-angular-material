@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CreateLeaveRequest, LeaveRequest, LeaveRequestsClient } from 'src/app/client';
 
@@ -89,14 +89,18 @@ export class LeaveRequestFormComponent implements OnInit {
       startDate: startDate,
       endDate: endDate,
       endDateFirstHalf: this.form.controls['endDateFirstHalf'].value,
-      endDateSecondHalf:this.form.controls['endDateSecondHalf'].value,
+      endDateSecondHalf: this.form.controls['endDateSecondHalf'].value,
       startDateFirstHalf: this.form.controls['startDateFirstHalf'].value,
       startDateSecondHalf: this.form.controls['startDateSecondHalf'].value
     });
 
+    // var data = this.form.value;
+    // console.log("You are attempting to submit the following...");
+    // console.log(data);
 
-    var data = this.form.value;
-    console.log("You are attempting to submit the following...");
-    console.log(data);
+    this.leaveRequestClient.postLeaveRequest(createRequest).subscribe({
+      next: x => console.log(x),
+      error: err => console.log(err)
+    })
   }
 }

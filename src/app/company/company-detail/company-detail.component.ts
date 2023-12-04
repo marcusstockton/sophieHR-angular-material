@@ -47,6 +47,6 @@ export class CompanyDetailComponent {
 
   editCompany(companyid: string | undefined) {
     console.log(`CompanyID clicked: ${companyid}`);
-    this.router.navigate([`/company/${companyid}/edit`, {companyid: companyid}]);
+    this.router.navigate([`/company/${companyid}/edit`, { companyid: companyid }]);
   }
 }
