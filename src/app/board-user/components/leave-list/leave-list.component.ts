@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { LeaveRequest, LeaveRequestsClient } from 'src/app/client';
 import { LeaveRequestFormComponent } from '../../dialogs/leave/leave-request-form/leave-request-form.component';
+import { LeaveType } from 'src/app/client';
 
 @Component({
   selector: 'app-leave-list',
@@ -11,6 +12,7 @@ import { LeaveRequestFormComponent } from '../../dialogs/leave/leave-request-for
 export class LeaveListComponent implements OnInit {
 
   @Input() employeeId: string | undefined;
+  LeaveType: typeof LeaveType = LeaveType;
 
   public leaveRequests: LeaveRequest[];
 
@@ -34,5 +36,21 @@ export class LeaveListComponent implements OnInit {
       width: '600px',
       data: { leaveRequest, employeeId: this.employeeId }
     });
+  }
+
+  public getLeaveApproval(leaveRequest: LeaveRequest) {
+    if (leaveRequest.approved && leaveRequest.approvedById) {
+      // approved
+      return "check";
+    }
+    else if (!leaveRequest.approved && leaveRequest.approvedById == null) {
+      // In progress
+      return "pending"
+    }
+    else if (!leaveRequest.approved) {
+      // denied
+      return "clear";
+    }
+    return "";
   }
 }

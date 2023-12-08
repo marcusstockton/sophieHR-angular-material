@@ -1,23 +1,23 @@
 <mat-card appearance="outlined">
     <mat-card-header class="noteTitle">
-    <mat-card-title>Notes</mat-card-title>
-    <button mat-icon-button disabled aria-label="Edit">
-        <mat-icon (click)="openNoteDialog(null)" style="cursor: pointer;">add</mat-icon>
-    </button>
+        <mat-card-title>Notes</mat-card-title>
+        <button mat-icon-button aria-label="Edit" (click)="openNoteDialog(null)">
+            <mat-icon style="cursor: pointer;">add</mat-icon>
+        </button>
     </mat-card-header>
     <mat-card-content>
-    <div *ngFor="let note of notes">
-        <div class="note-box">
-        <div class="noteTitle">
-            <h4 class="text">{{note.title}}</h4>
-            <h5>{{getNoteTypeNameByValue(note.noteType!)}}</h5>
-            <button mat-icon-button disabled aria-label="Edit">
-            <mat-icon (click)="openNoteDialog(note)" style="cursor: pointer;">edit icon</mat-icon>
-            </button>
+        <div *ngFor="let note of notes">
+            <div class="note-box">
+                <div class="noteTitle">
+                    <h4 class="text">{{note.title}}</h4>
+                    <h5>{{getNoteTypeNameByValue(note.noteType!)}}</h5>
+                    <button mat-icon-button aria-label="Edit" (click)="openNoteDialog(note)">
+                        <mat-icon style="cursor: pointer;">edit icon</mat-icon>
+                    </button>
+                </div>
+                <p><small>{{note.createdDate | date:'medium'}}</small></p>
+                <p>{{note.content}}</p>
+            </div>
         </div>
-        <p><small>{{note.createdDate | date:'medium'}}</small></p>
-        <p>{{note.content}}</p>
-        </div>
-    </div>
     </mat-card-content>
 </mat-card>

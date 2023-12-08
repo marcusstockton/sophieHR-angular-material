@@ -10,23 +10,24 @@ import { NoteFormDialogComponent } from 'src/app/dialogs/notes/note-form-dialog/
 })
 export class NotesComponent implements OnInit {
 
-  notes: NoteDetailDto[]=[];
+  notes: NoteDetailDto[] = [];
 
   constructor(readonly dialog: MatDialog, private notesClient: NotesClient) { }
   @Input() employeeId: string | undefined;
   @Output() noteChangedEvent = new EventEmitter<boolean>();
 
   ngOnInit(): void {
-    if(this.employeeId != null){
+    if (this.employeeId != null) {
       this.getEmployeeNotes(this.employeeId);
     }
   }
 
-  openNoteDialog(note: any) {
+  public openNoteDialog(note: any) {
+    console.log("Open Note Dialog hit");
     const dialogRef = this.dialog.open(NoteFormDialogComponent, { width: '600px', data: { note, employeeId: this.employeeId } });
     dialogRef.afterClosed().subscribe({
-      next: (res:any) => { 
-        if(res.data === 'created' || res.data === 'updated'){
+      next: (res: any) => {
+        if (res.data === 'created' || res.data === 'updated') {
           this.getEmployeeNotes(this.employeeId);
         }
       },
@@ -42,7 +43,7 @@ export class NotesComponent implements OnInit {
     });
   }
 
-  getNoteTypeNameByValue(value: number){
+  getNoteTypeNameByValue(value: number) {
     return NoteType[value];
   }
 
