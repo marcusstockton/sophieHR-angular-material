@@ -1,7 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { CreateLeaveRequest, LeaveRequest, LeaveRequestsClient } from 'src/app/client';
+import { CreateLeaveRequest, LeaveRequest, LeaveRequestsClient, LeaveType } from 'src/app/client';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-leave-request-form',
@@ -21,7 +22,10 @@ export class LeaveRequestFormComponent implements OnInit {
   public endDateOptions: { id: number, name: string }[] = [{ id: 0, name: "Middle Of Working Day" }, { id: 1, name: "End Of Working Day" }];
   public oneDateOptions = ["All Day", "First Half", "Second Half"];
 
+  leaveTypes: { [key: string]: string; };
+
   public form: FormGroup = this.fb.group({
+    leaveType: [LeaveType, [Validators.required]],
     employeeId: [null, [Validators.required]],
     approvedById: [null],
     startDate: [Date, [Validators.required]],
@@ -31,7 +35,11 @@ export class LeaveRequestFormComponent implements OnInit {
     endDateFirstHalf: [Boolean, [Validators.required]],
     endDateSecondHalf: [Boolean, [Validators.required]],
     approved: [null],
+    comments: [null]
   });
+
+
+
 
 
   constructor(
@@ -39,7 +47,13 @@ export class LeaveRequestFormComponent implements OnInit {
     private readonly leaveRequestClient: LeaveRequestsClient,
     public dialogRef: MatDialogRef<LeaveRequestFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
+  ) {
+
+    this.leaveRequestClient.getLeaveTypes().subscribe({
+      next: leaveTypes => this.leaveTypes = leaveTypes,
+      error: x => console.log(x)
+    });
+  }
 
   ngOnInit(): void {
     this.employeeId = this.data.employeeId;
@@ -83,23 +97,23 @@ export class LeaveRequestFormComponent implements OnInit {
 
     var startDate = this.form.controls['startDate'].value;
     var endDate = this.form.controls['endDate'].value;
+    var ltid = Number.parseInt(this.form.controls['leaveType'].value);
+    var lt: LeaveType = ltid as LeaveType;
 
     var createRequest = new CreateLeaveRequest({
       employeeId: this.employeeId,
       startDate: startDate,
       endDate: endDate,
+      leaveType: lt,
+      comments: this.form.controls['comments'].value,
       endDateFirstHalf: this.form.controls['endDateFirstHalf'].value,
       endDateSecondHalf: this.form.controls['endDateSecondHalf'].value,
       startDateFirstHalf: this.form.controls['startDateFirstHalf'].value,
       startDateSecondHalf: this.form.controls['startDateSecondHalf'].value
     });
 
-    // var data = this.form.value;
-    // console.log("You are attempting to submit the following...");
-    // console.log(data);
-
     this.leaveRequestClient.postLeaveRequest(createRequest).subscribe({
-      next: x => console.log(x),
+      next: x => this.dialogRef.close(x),
       error: err => console.log(err)
     })
   }

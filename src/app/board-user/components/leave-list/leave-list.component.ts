@@ -15,14 +15,17 @@ export class LeaveListComponent implements OnInit {
   LeaveType: typeof LeaveType = LeaveType;
 
   public leaveRequests: LeaveRequest[];
+  leaveTypes: (string | LeaveType)[];
 
-  constructor(private leaveRequestClient: LeaveRequestsClient, readonly dialog: MatDialog) { }
+  constructor(private leaveRequestClient: LeaveRequestsClient, readonly dialog: MatDialog) {
+
+  }
 
   ngOnInit(): void {
     this.leaveRequestClient.getLeaveRequestsForEmployee(this.employeeId!).subscribe(
       {
         next: (result: LeaveRequest[]) => {
-          this.leaveRequests = result;
+          this.leaveRequests = result.sort((b, a) => new Date(b.startDate!).getDate() - new Date(a.startDate!).getDate());
         }
         , error: (err: any) => {
           console.log(err);
@@ -33,8 +36,13 @@ export class LeaveListComponent implements OnInit {
 
   openLeaveDialog(leaveRequest: any) {
     let dialogRef = this.dialog.open(LeaveRequestFormComponent, {
-      width: '600px',
+      width: '800px',
       data: { leaveRequest, employeeId: this.employeeId }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result instanceof LeaveRequest) {
+        this.leaveRequests.push(result);
+      }
     });
   }
 
