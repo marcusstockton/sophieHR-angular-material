@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { CompaniesClient, DepartmentDetailDto, DepartmentsClient, EmployeeAddress, EmployeeCreateDto, EmployeeDetailDto, EmployeeListDto, EmployeesClient, KeyValuePairOfGuidAndString } from 'src/app/client';
 import { startWith, debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -35,7 +36,8 @@ export class UserFormComponent implements OnInit {
     private companyService: CompaniesClient,
     private deptService: DepartmentsClient,
     private sanitizer: DomSanitizer,
-    private http: HttpClient
+    private http: HttpClient,
+    private _snackBar: MatSnackBar
   ) {
 
   }
@@ -89,6 +91,7 @@ export class UserFormComponent implements OnInit {
   ngOnInit(): void {
 
     this.userForm = this.formBuilder.group({
+      id: [null],
       firstName: [null, [Validators.required]],
       middleName: [null],
       lastName: [null, [Validators.required]],
@@ -147,6 +150,7 @@ export class UserFormComponent implements OnInit {
         next: user => {
           this.imageSrc = this.sanitizer.bypassSecurityTrustUrl("data:image/png;base64, " + user.avatar?.avatar);
           this.userForm.patchValue({
+            id: user.id,
             firstName: user.firstName,
             middleName: user.middleName,
             lastName: user.lastName,
@@ -173,6 +177,7 @@ export class UserFormComponent implements OnInit {
             },
             managerId: user.managerId,
             avatar: user.avatar,
+            employeeAvatarId: user.avatar?.id,
             departmentId: user.department?.id,
             companyId: user.company?.id,
             passportNumber: user.passportNumber,
@@ -181,91 +186,6 @@ export class UserFormComponent implements OnInit {
           this.loading = false;
         }
       })
-
-      // this.employeeService.getEmployee(id).subscribe((user: EmployeeDetailDto) => {
-
-      //   // this.imageSrc = this.sanitizer.bypassSecurityTrustUrl("data:image/png;base64, " + user.avatar?.avatar);
-
-      //   // this.userForm.controls['jobTitle'].patchValue(user.jobTitle)
-      //   // this.userForm.controls['title'].patchValue(user.title);
-      //   // this.userForm.controls['gender'].patchValue(user.gender);
-      //   // this.userForm.controls['workEmailAddress'].patchValue(user.workEmailAddress);
-      //   // this.userForm.controls['holidayAllowance'].patchValue(user.holidayAllowance);
-
-      //   this.userForm.setValue({
-      //     // firstName: user.firstName,
-      //     // middleName: user.middleName,
-      //     // lastName: user.lastName,
-      //     // userName: user.userName,
-      //     // title: user.title,
-      //     // gender: user.gender,
-      //     // workEmailAddress: user.workEmailAddress,
-      //     // personalEmailAddress: user.personalEmailAddress,
-      //     // workPhoneNumber: user.workPhoneNumber,
-      //     // workMobileNumber: user.workMobileNumber,
-      //     // phoneNumber: user.phoneNumber,
-      //     // personalMobileNumber: user.personalMobileNumber,
-      //     // jobTitle: user.jobTitle,
-      //     // holidayAllowance: user.holidayAllowance,
-      //     // dateOfBirth: user.dateOfBirth,
-      //     // startOfEmployment: user.startOfEmployment,
-      //     address: {
-      //       line1: user.address?.line1,
-      //       line2: user.address?.line2,
-      //       line3: user.address?.line3,
-      //       line4: user.address?.line4,
-      //       postcode: user.address?.postcode,
-      //       county: user.address?.county,
-      //     },
-      //     managerId: user.managerId,
-      //     avatar: user.avatar,
-      //     departmentId: user.department?.id,
-      //     companyId: user.company?.id,
-      //     passportNumber: user.passportNumber,
-      //     nationalInsuranceNumber: user.nationalInsuranceNumber
-      //   });
-
-      //   // this.userForm.controls['userName'].patchValue(user.userName);
-      //   // this.userForm.controls['title'].patchValue(user.title);
-      //   // this.userForm.controls['jobTitle'].patchValue(user.jobTitle)
-      //   // this.userForm.controls['gender'].patchValue(user.gender);
-      //   // this.userForm.controls['holidayAllowance'].patchValue(user.holidayAllowance?.toString());
-      //   // this.userForm.controls['workEmailAddress'].patchValue(user.workEmailAddress);
-      //   // this.userForm.controls['dateOfBirth'].patchValue(user.dateOfBirth);
-
-      //   // this.userForm.patchValue({ middleName: user.middleName });
-      //   // this.userForm.patchValue({ lastName: user.lastName });
-      //   // this.userForm.patchValue({ userName: user.userName });
-      //   // this.userForm.patchValue({ title: user.title });
-      //   // this.userForm.patchValue({ gender: user.gender });
-      //   // this.userForm.patchValue({ workEmailAddress: user.workEmailAddress });
-      //   // this.userForm.patchValue({ personalEmailAddress: user.personalEmailAddress });
-      //   // this.userForm.patchValue({ workPhoneNumber: user.workPhoneNumber });
-      //   // this.userForm.patchValue({ workMobileNumber: user.workMobileNumber });
-      //   // this.userForm.patchValue({ phoneNumber: user.phoneNumber });
-      //   // this.userForm.patchValue({ personalMobileNumber: user.personalMobileNumber });
-      //   // this.userForm.patchValue({ jobTitle: user.jobTitle });
-      //   // this.userForm.patchValue({ holidayAllowance: user.holidayAllowance });
-      //   // this.userForm.patchValue({ dateOfBirth: user.dateOfBirth });
-      //   // this.userForm.patchValue({ startOfEmployment: user.startOfEmployment });
-
-      //   // this.userForm.patchValue({ address: { line1: user.address?.line1 } });
-      //   // this.userForm.patchValue({ address: { line2: user.address?.line2 } });
-      //   // this.userForm.patchValue({ address: { line3: user.address?.line3 } });
-      //   // this.userForm.patchValue({ address: { line4: user.address?.line4 } });
-      //   // this.userForm.patchValue({ address: { postcode: user.address?.postcode } });
-      //   // this.userForm.patchValue({ address: { county: user.address?.county } });
-
-      //   // this.userForm.patchValue({ managerId: user.managerId });
-      //   // this.userForm.patchValue({ avatar: user.avatar });
-      //   // this.userForm.patchValue({ departmentId: user.department?.id });
-      //   // this.userForm.patchValue({ companyId: user.company?.id });
-      //   // this.userForm.patchValue({ passportNumber: user.passportNumber });
-      //   // this.userForm.patchValue({ nationalInsuranceNumber: user.nationalInsuranceNumber });
-      //   // this.userForm.updateValueAndValidity();
-      //   // this.userForm.markAllAsTouched();
-      //   this.loading = false;
-      // });
     }
   }
   companyChange() {
@@ -305,34 +225,52 @@ export class UserFormComponent implements OnInit {
     if (!form.valid) {
       return;
     }
-    var address = new EmployeeAddress({ ...form.value.address });
-    var ef2 = new EmployeeCreateDto({ ...form.value });
-    ef2.address = address;
+    if (this.editing) {
+      // editing
+      var employeeId = this.route.snapshot.paramMap.get('userid');
+      var address = new EmployeeAddress({ ...form.value.address });
+      var empDetails = new EmployeeDetailDto({ ...form.value });
+      empDetails.address = address;
 
-    this.employeeService.createEmployee(null, ef2).subscribe({
-      next: (result: EmployeeDetailDto) => {
-        if (result.id) {
-          const formData = new FormData();
-          formData.append('id', result.id);
-          if (this.userForm.get('avatar')) {
-            // formData.append('avatar', this.userForm.get('avatar')?.value.toString());
-          }
+      this.employeeService.putEmployee(employeeId!, empDetails).subscribe({
+        next: (result: EmployeeDetailDto) => {
+          this._snackBar.open("Employee Updated Sucessfully", "OK", { duration: 2000 });
+        },
+        error: x => console.log(x)
+      })
+    } else {
+      // creating
+      var address = new EmployeeAddress({ ...form.value.address });
+      var ef2 = new EmployeeCreateDto({ ...form.value });
+      ef2.address = address;
 
-          this.http.post(`${environment.base_url}/Employees/${result.id}/upload-avatar`, formData).subscribe(
-            {
-              next: res => {
-                alert("I dunno...punt them back to user page?");
-              }, error: err => {
-                console.log(err);
-              }
+      this.employeeService.createEmployee(null, ef2).subscribe({
+        next: (result: EmployeeDetailDto) => {
+          if (result.id) {
+            const formData = new FormData();
+            formData.append('id', result.id);
+            if (this.userForm.get('avatar')) {
+              // formData.append('avatar', this.userForm.get('avatar')?.value.toString());
             }
-          );
+
+            this.http.post(`${environment.base_url}/Employees/${result.id}/upload-avatar`, formData).subscribe(
+              {
+                next: res => {
+                  alert("I dunno...punt them back to user page?");
+                }, error: err => {
+                  console.log(err);
+                }
+              }
+            );
+          }
+        },
+        error: (err: any) => {
+          console.log(err);
         }
-      },
-      error: (err: any) => {
-        console.log(err);
-      }
-    });
+      });
+    }
+
+
   }
   updateTitle(event: any) {
     console.log(event);

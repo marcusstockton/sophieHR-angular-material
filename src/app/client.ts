@@ -3803,11 +3803,15 @@ export class EmployeeDetailDto implements IEmployeeDetailDto {
     endOfEmployment?: Date | undefined;
     passportNumber?: string | undefined;
     nationalInsuranceNumber?: string | undefined;
-    address?: EmployeeAddress | undefined;
+    addressId?: string | undefined;
     managerId?: string | undefined;
+    companyId?: string | undefined;
+    departmentId?: string | undefined;
+    employeeAvatarId?: string | undefined;
     avatar?: EmployeeAvatarDetail | undefined;
     department?: DepartmentIdNameDto | undefined;
     company?: CompanyIdNameDto | undefined;
+    address?: EmployeeAddress | undefined;
 
     constructor(data?: IEmployeeDetailDto) {
         if (data) {
@@ -3840,11 +3844,15 @@ export class EmployeeDetailDto implements IEmployeeDetailDto {
             this.endOfEmployment = _data["endOfEmployment"] ? new Date(_data["endOfEmployment"].toString()) : <any>undefined;
             this.passportNumber = _data["passportNumber"];
             this.nationalInsuranceNumber = _data["nationalInsuranceNumber"];
-            this.address = _data["address"] ? EmployeeAddress.fromJS(_data["address"]) : <any>undefined;
+            this.addressId = _data["addressId"];
             this.managerId = _data["managerId"];
+            this.companyId = _data["companyId"];
+            this.departmentId = _data["departmentId"];
+            this.employeeAvatarId = _data["employeeAvatarId"];
             this.avatar = _data["avatar"] ? EmployeeAvatarDetail.fromJS(_data["avatar"]) : <any>undefined;
             this.department = _data["department"] ? DepartmentIdNameDto.fromJS(_data["department"]) : <any>undefined;
             this.company = _data["company"] ? CompanyIdNameDto.fromJS(_data["company"]) : <any>undefined;
+            this.address = _data["address"] ? EmployeeAddress.fromJS(_data["address"]) : <any>undefined;
         }
     }
 
@@ -3877,11 +3885,15 @@ export class EmployeeDetailDto implements IEmployeeDetailDto {
         data["endOfEmployment"] = this.endOfEmployment ? this.endOfEmployment.toISOString() : <any>undefined;
         data["passportNumber"] = this.passportNumber;
         data["nationalInsuranceNumber"] = this.nationalInsuranceNumber;
-        data["address"] = this.address ? this.address.toJSON() : <any>undefined;
+        data["addressId"] = this.addressId;
         data["managerId"] = this.managerId;
+        data["companyId"] = this.companyId;
+        data["departmentId"] = this.departmentId;
+        data["employeeAvatarId"] = this.employeeAvatarId;
         data["avatar"] = this.avatar ? this.avatar.toJSON() : <any>undefined;
         data["department"] = this.department ? this.department.toJSON() : <any>undefined;
         data["company"] = this.company ? this.company.toJSON() : <any>undefined;
+        data["address"] = this.address ? this.address.toJSON() : <any>undefined;
         return data;
     }
 }
@@ -3907,11 +3919,15 @@ export interface IEmployeeDetailDto {
     endOfEmployment?: Date | undefined;
     passportNumber?: string | undefined;
     nationalInsuranceNumber?: string | undefined;
-    address?: EmployeeAddress | undefined;
+    addressId?: string | undefined;
     managerId?: string | undefined;
+    companyId?: string | undefined;
+    departmentId?: string | undefined;
+    employeeAvatarId?: string | undefined;
     avatar?: EmployeeAvatarDetail | undefined;
     department?: DepartmentIdNameDto | undefined;
     company?: CompanyIdNameDto | undefined;
+    address?: EmployeeAddress | undefined;
 }
 
 export class EmployeeAvatarDetail implements IEmployeeAvatarDetail {
