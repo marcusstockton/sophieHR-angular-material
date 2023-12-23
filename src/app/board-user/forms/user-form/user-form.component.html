@@ -1,52 +1,107 @@
 <div class="user-form">
     <div *ngIf="!loading">
         <form [formGroup]="userForm" (ngSubmit)="submit(userForm)">
-            <div>
-                <label for="avatar">Avatar: </label>
-                <input id="avatar" type="file" class="form-control" accept=".jpg,.png" (change)="onFileChange($event)">
-            </div>
-            <span *ngIf="imageSrc">
-                <img [src]="imageSrc" class="avatar">
-            </span>
-            <div>
-                <mat-form-field class="FiftyPercentInput">
-                    <mat-label>Company</mat-label>
-                    <mat-select formControlName="companyId" (selectionChange)="companyChange()">
-                        <mat-option *ngFor="let company of companies" [value]="company?.key">
-                            {{company.value}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-
             <div class="row">
-                <mat-form-field class="column">
-                    <mat-label>Username</mat-label>
-                    <span matPrefix>
-                        <mat-icon>account_box</mat-icon>
+                <div class="column">
+                    <div>
+                        <label for="avatar">Avatar: </label>
+                        <input id="avatar" type="file" class="form-control" accept=".jpg,.png"
+                            (change)="onFileChange($event)">
+                    </div>
+                    <span *ngIf="imageSrc">
+                        <img [src]="imageSrc" class="avatar">
                     </span>
-                    <input matInput placeholder="UserName" formControlName="userName" #nameInput [readonly]="editing">
-                    <mat-hint>Your username</mat-hint>
-                    <mat-error>Username is required</mat-error>
-                </mat-form-field>
+                </div>
+                <div class="column">
+                    <div class="row">
+                        <div class="column">
+                            <mat-form-field class="FiftyPercentInput">
+                                <mat-label>Company</mat-label>
+                                <mat-select formControlName="companyId" (selectionChange)="companyChange()">
+                                    <mat-option *ngFor="let company of companies" [value]="company?.key">
+                                        {{company.value}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <mat-form-field class="column">
+                            <mat-label>Username</mat-label>
+                            <span matPrefix>
+                                <mat-icon>account_box</mat-icon>
+                            </span>
+                            <input matInput placeholder="UserName" formControlName="userName" #nameInput
+                                [readonly]="editing">
+                            <mat-hint>Your username</mat-hint>
+                            <mat-error>Username is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <mat-form-field class="column">
+                            <input type="text" placeholder="Job Title" formControlName="jobTitle" matInput
+                                [matAutocomplete]="auto">
+                            <mat-hint>Job title</mat-hint>
+                            <mat-spinner *ngIf="gettingTitles" matSuffix diameter="16"
+                                style="display: inline-flex"></mat-spinner>
+                            <mat-autocomplete #auto="matAutocomplete">
+                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                    {{option}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error>Job title is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <mat-form-field class="column">
+                            <mat-label>Title</mat-label>
+                            <mat-select formControlName="title" (selectionChange)="updateTitle($event)">
+                                <mat-option *ngFor="let title of titles" [value]="title">
+                                    {{title}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>Title is required</mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="column">
+                            <mat-label>Gender</mat-label>
+                            <mat-select formControlName="gender">
+                                <mat-option>None</mat-option>
+                                <mat-option value="Male">Male</mat-option>
+                                <mat-option value="Female">Female</mat-option>
+                                <mat-option value="Other">Other</mat-option>
+                            </mat-select>
+                            <mat-error>Gender is required</mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="column">
+                            <mat-label>Leave Allowance</mat-label>
+                            <input matInput placeholder="Leave Allowance" formControlName="holidayAllowance"
+                                #leaveInput>
+                            <mat-hint>Leave Allowance in days</mat-hint>
+                            <mat-error>Leave Allowance is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <mat-form-field class="column">
+                            <mat-label>Passport Number</mat-label>
+                            <input matInput placeholder="Passport Number" formControlName="passportNumber"
+                                #passportNumberInput>
+                            <mat-hint>Passport Number</mat-hint>
+                            <mat-error *ngIf="userFormControl['passportNumber'].errors?.['pattern']">Invalid
+                                format</mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="column">
+                            <mat-label>National Insurance Number</mat-label>
+                            <input matInput placeholder="National Insurance Number"
+                                formControlName="nationalInsuranceNumber" #nationalInsuranceNumberInput>
+                            <mat-hint>National Insurance Number</mat-hint>
+                            <mat-error *ngIf="userFormControl['nationalInsuranceNumber'].errors?.['pattern']">Invalid
+                                format</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
 
-                <mat-form-field class="column">
-                    <input type="text" placeholder="Job Title" formControlName="jobTitle" matInput
-                        [matAutocomplete]="auto">
-                    <mat-spinner *ngIf="gettingTitles" matSuffix diameter="16"
-                        style="display: inline-flex"></mat-spinner>
-                    <mat-autocomplete #auto="matAutocomplete">
-                        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                            {{option}}
-                        </mat-option>
-                    </mat-autocomplete>
-                    <mat-error>Job title is required</mat-error>
-                    <!-- <mat-label>Job Title</mat-label>
-                        <input matInput placeholder="Job Title" formControlName="jobTitle" #jobTitleInput>
-                        <mat-hint>Job Title</mat-hint>
-                        <mat-error>Job Title is required</mat-error> -->
-                </mat-form-field>
             </div>
+
             <div class="row">
                 <mat-form-field class="column">
                     <mat-label>First Name</mat-label>
@@ -64,35 +119,6 @@
                     <input matInput placeholder="Surname" formControlName="lastName" #lastNameInput>
                     <mat-hint>Last Name</mat-hint>
                     <mat-error>Last Name is required</mat-error>
-                </mat-form-field>
-            </div>
-            <div class="row">
-                <!-- Drop downs -->
-                <mat-form-field class="column">
-                    <mat-label>Title</mat-label>
-                    <mat-select formControlName="title" (selectionChange)="updateTitle($event)">
-                        <mat-option *ngFor="let title of titles" [value]="title">
-                            {{title}}
-                        </mat-option>
-                    </mat-select>
-                    <mat-error>Title is required</mat-error>
-                </mat-form-field>
-
-                <mat-form-field class="column">
-                    <mat-label>Gender</mat-label>
-                    <mat-select formControlName="gender">
-                        <mat-option>None</mat-option>
-                        <mat-option value="Male">Male</mat-option>
-                        <mat-option value="Female">Female</mat-option>
-                        <mat-option value="Other">Other</mat-option>
-                    </mat-select>
-                    <mat-error>Gender is required</mat-error>
-                </mat-form-field>
-                <mat-form-field class="column">
-                    <mat-label>Leave Allowance</mat-label>
-                    <input matInput placeholder="Leave Allowance" formControlName="holidayAllowance" #leaveInput>
-                    <mat-hint>Leave Allowance in days</mat-hint>
-                    <mat-error>Leave Allowance is required</mat-error>
                 </mat-form-field>
             </div>
             <div class="row">
@@ -209,22 +235,6 @@
                             {{dept.name}}
                         </mat-option>
                     </mat-select>
-                </mat-form-field>
-            </div>
-            <div class="row">
-                <mat-form-field class="column">
-                    <mat-label>Passport Number</mat-label>
-                    <input matInput placeholder="Passport Number" formControlName="passportNumber" #passportNumberInput>
-                    <mat-hint>Passport Number</mat-hint>
-                    <mat-error *ngIf="userFormControl['passportNumber'].errors?.['pattern']">Invalid format</mat-error>
-                </mat-form-field>
-                <mat-form-field class="column">
-                    <mat-label>National Insurance Number</mat-label>
-                    <input matInput placeholder="National Insurance Number" formControlName="nationalInsuranceNumber"
-                        #nationalInsuranceNumberInput>
-                    <mat-hint>National Insurance Number</mat-hint>
-                    <mat-error *ngIf="userFormControl['nationalInsuranceNumber'].errors?.['pattern']">Invalid
-                        format</mat-error>
                 </mat-form-field>
             </div>
             <div class="row">

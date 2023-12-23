@@ -20,7 +20,7 @@
           <span *ngIf="userImage">
             <img mat-card-image [src]="userImage" alt="{{employeeRecord.firstName}} {{employeeRecord.lastName}}">
           </span>
-          
+
           <mat-card-content>
             <div class="row">
               <div class="column">
@@ -82,7 +82,7 @@
     <div class="column">
       <div class="row-50">
         <app-notes [employeeId]="employeeRecord.id" (noteChangedEvent)="onNotesChanged($event)"></app-notes>
-        
+
       </div>
       <div class="row-50">
         <app-leave-list [employeeId]="employeeRecord.id"></app-leave-list>

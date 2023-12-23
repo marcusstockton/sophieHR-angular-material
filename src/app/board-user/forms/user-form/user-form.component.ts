@@ -234,9 +234,18 @@ export class UserFormComponent implements OnInit {
 
       this.employeeService.putEmployee(employeeId!, empDetails).subscribe({
         next: (result: EmployeeDetailDto) => {
-          this._snackBar.open("Employee Updated Sucessfully", "OK", { duration: 2000 });
+          this._snackBar.open("Employee Updated Sucessfully", "OK", {
+            duration: 2000,
+            panelClass: ['mat-toolbar', 'mat-primary']
+          });
         },
-        error: x => console.log(x)
+        error: x => {
+          this._snackBar.open(`An Error Occured ${x}`, "OK", {
+            duration: 2000,
+            panelClass: ['mat-toolbar', 'mat-warn']
+          });
+          console.log(x)
+        }
       })
     } else {
       // creating
