@@ -21,9 +21,10 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   role: string = '';
   hidePassword: boolean = true;
-  userId:string;
+  userId: string;
 
   managers: string[];
+  admins: string[];
 
   constructor(
     private authService: AccountClient,
@@ -79,6 +80,12 @@ export class LoginComponent implements OnInit {
 
   getManagers() {
     this.retrievingManagers = true;
+
+    this.authService.getListOfCompanyAdmins().subscribe({
+      next: x => {
+        this.admins = x;
+      }
+    })
     this.authService.getListOfManagers().subscribe((managers) => {
       this.managers = managers;
       this.retrievingManagers = false;
@@ -93,13 +100,13 @@ export class LoginComponent implements OnInit {
       console.log("Logged in as Admin");
       this.router.navigate(['/admin'])
     }
-    if (role === 'Manager') {
+    if (role === 'Manager' || role === "CompanyAdmin") {
       console.log("Logged in as Manager");
       this.router.navigate(['/manager'])
     }
     if (role === 'User') {
       console.log("Logged in as User");
-      this.router.navigate(['/user',{userid: this.userId}])
+      this.router.navigate(['/user', { userid: this.userId }])
     }
   }
 
