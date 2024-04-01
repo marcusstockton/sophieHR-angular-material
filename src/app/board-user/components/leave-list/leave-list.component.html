@@ -13,15 +13,18 @@
                     <mat-icon fontIcon="{{getLeaveApproval(leaveRequest)}}"></mat-icon>
                 </div>
                 <div class="row">
-                    <p>Start Date: {{leaveRequest.startDate}}</p>
-                    <p>End Date: {{leaveRequest.endDate}}</p>
+                    <p>Start Date: {{leaveRequest.startDate | date}} </p>
+
                 </div>
                 <div class="row">
-                    <p>{{leaveRequest.comments}}</p>
+                    <p>End Date: {{leaveRequest.endDate | date}} </p>
+                </div>
+                <div class="row">
+                    <p>Comments: {{leaveRequest.comments}}</p>
                 </div>
 
-
-                <p>{{leaveRequest | json}}</p>
+                <!-- TODO: Remove -->
+                <pre>{{leaveRequest | json}}</pre>
             </div>
         </div>
         <ng-template #no_leave_requests>No Leave added yet</ng-template>

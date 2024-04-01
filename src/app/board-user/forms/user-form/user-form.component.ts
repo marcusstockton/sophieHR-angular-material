@@ -4,10 +4,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { CompaniesClient, DepartmentDetailDto, DepartmentsClient, EmployeeAddress, EmployeeCreateDto, EmployeeDetailDto, EmployeeListDto, EmployeesClient, KeyValuePairOfGuidAndString } from 'src/app/client';
+import { CompaniesClient, DepartmentDetailDto, DepartmentsClient, EmployeeAddress, EmployeeAvatarDetail, EmployeeCreateDto, EmployeeDetailDto, EmployeeListDto, EmployeesClient, FileParameter, KeyValuePairOfGuidAndString } from 'src/app/client';
 import { startWith, debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { RandomUser } from 'src/app/models/RandomUser';
+import { Name } from '../../../models/RandomUser';
 
 
 @Component({
@@ -74,17 +75,21 @@ export class UserFormComponent implements OnInit {
     if (event.target.files && event.target.files.length) {
       const [file] = event.target.files;
       reader.readAsDataURL(file);
-
       reader.onload = () => {
-
         this.imageSrc = reader.result as string;
+        const formData = new FormData();
+        formData.append("avatar", file);
+        if (this.editing) {
 
-        this.userForm.setValue({
-          avatar: file
-        });
-
+          const id = this.route.snapshot.paramMap.get('userid');
+          this.http.post(`https://localhost:7189/api/Employees/${id}/upload-avatar`, formData).subscribe({
+            next: res => {
+              console.log(res);
+            }, error: err => console.log(err)
+          })
+        }
+        this.userForm.controls['avatar'].setValue(formData);
       };
-
     }
   }
 
@@ -95,7 +100,7 @@ export class UserFormComponent implements OnInit {
       firstName: [null, [Validators.required]],
       middleName: [null],
       lastName: [null, [Validators.required]],
-      userName: [null, [Validators.required, Validators.email]],
+      username: [null, [Validators.required]],
       title: [null, [Validators.required]],
       gender: [null, [Validators.required]],
       workEmailAddress: [null, [Validators.required, Validators.email]],
@@ -154,7 +159,7 @@ export class UserFormComponent implements OnInit {
             firstName: user.firstName,
             middleName: user.middleName,
             lastName: user.lastName,
-            userName: user.userName,
+            username: user.userName,
             title: user.title,
             gender: user.gender,
             workEmailAddress: user.workEmailAddress,
@@ -199,9 +204,9 @@ export class UserFormComponent implements OnInit {
     this.loading = true;
     this.employeeService.getManagersForCompanyId(companyId).subscribe((result: EmployeeListDto[]) => {
       this.managers = result;
-      // if (result.length === 1) {
-      //   this.userForm.setValue({ managerId: result[0].id });
-      // }
+      if (result.length === 1) {
+        this.userForm.controls['managerId'].setValue(result[0].id);
+      }
       this.loading = false;
     });
   }
@@ -223,10 +228,10 @@ export class UserFormComponent implements OnInit {
 
   submit(form: FormGroup) {
     if (!form.valid) {
+      this.check();
       return;
     }
     if (this.editing) {
-      // editing
       var employeeId = this.route.snapshot.paramMap.get('userid');
       var address = new EmployeeAddress({ ...form.value.address });
       var empDetails = new EmployeeDetailDto({ ...form.value });
@@ -251,26 +256,18 @@ export class UserFormComponent implements OnInit {
       // creating
       var address = new EmployeeAddress({ ...form.value.address });
       var ef2 = new EmployeeCreateDto({ ...form.value });
+
       ef2.address = address;
 
       this.employeeService.createEmployee(null, ef2).subscribe({
         next: (result: EmployeeDetailDto) => {
           if (result.id) {
-            const formData = new FormData();
-            formData.append('id', result.id);
-            if (this.userForm.get('avatar')) {
-              // formData.append('avatar', this.userForm.get('avatar')?.value.toString());
-            }
-
-            this.http.post(`${environment.base_url}/Employees/${result.id}/upload-avatar`, formData).subscribe(
-              {
-                next: res => {
-                  alert("I dunno...punt them back to user page?");
-                }, error: err => {
-                  console.log(err);
-                }
-              }
-            );
+            var formData = form.controls['avatar'].value;
+            this.http.post(`https://localhost:7189/api/Employees/${result.id}/upload-avatar`, formData).subscribe({
+              next: res => {
+                console.log(res);
+              }, error: err => console.log(err)
+            })
           }
         },
         error: (err: any) => {
@@ -281,9 +278,59 @@ export class UserFormComponent implements OnInit {
 
 
   }
+
   updateTitle(event: any) {
     console.log(event);
-    this.userForm.setValue({ title: event.value });
+    this.userForm.controls['title'].setValue(event.value);
+  }
+
+
+  check() {
+    const controls = this.userForm.controls;
+    const invalidArr = [];
+    const validArr = [];
+    for (const name in controls) {
+      if (controls[name].status === 'INVALID') {
+        invalidArr.push(name);
+      } else {
+        validArr.push(name);
+      }
+    }
+    console.log(`valid count : ${validArr.length}`)
+    console.log(`invalid count : ${invalidArr.length}`)
+  }
+
+
+  /// This and the titleCaseWord funciton are just for me when deving as i'm lazy and just need some demo data...
+  // TODO: Remove before this goes anywhere other than a dev env lol
+  generateRandomUserData() {
+    var url = "https://randomuser.me/api/?nat=gb";
+    this.http.get<RandomUser>(url).subscribe(data => {
+      this.userForm.patchValue({
+        firstName: data.results[0].name.first,
+        lastName: data.results[0].name.last,
+        username: data.results[0].login.username + '@example.com',
+        title: data.results[0].name.title,
+        gender: this.titleCaseWord(data.results[0].gender),
+        workEmailAddress: data.results[0].email,
+        workPhoneNumber: data.results[0].phone,
+        workMobileNumber: data.results[0].cell,
+        dateOfBirth: new Date(data.results[0].dob.date),
+        startOfEmployment: new Date(),
+        holidayAllowance: (Math.random() * 40 | 7) + 1,
+        nationalInsuranceNumber: data.results[0].id.value.replace(/\s/g, ""),
+        address: {
+          line1: data.results[0].location.street.number + " " + data.results[0].location.street.name,
+          postcode: data.results[0].location.postcode,
+          county: data.results[0].location.state,
+        },
+      });
+    });
+  }
+  // TODO: Remove before this goes anywhere other than a dev env lol
+  titleCaseWord(word: string) {
+    if (!word) return word;
+    return word[0].toUpperCase() + word.substr(1).toLowerCase();
   }
 
 }

@@ -37,7 +37,7 @@
         </form>
         <mat-card-subtitle>
           <p *ngIf="retrievingManagers">Getting some manager usernames...</p>
-          <div *ngFor="let admin of admins">
+          <div *ngFor="let admin of managers">
             <p>{{admin}}</p>
           </div>
         </mat-card-subtitle>

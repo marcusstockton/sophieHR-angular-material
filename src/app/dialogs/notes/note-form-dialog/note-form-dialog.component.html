@@ -31,8 +31,8 @@
             </div>
         </div>
     </form>
-    <small *ngIf="this.noteData">Created on {{noteData.createdDate | date:'medium'}}</small>
-    <small *ngIf="this.noteData.updatedDate">Updated on {{noteData.updatedDate | date:'medium'}}</small>
+    <small class="row" *ngIf="this.noteData">Created on {{noteData.createdDate | date:'medium'}}</small>
+    <small class="row" *ngIf="this.noteData.updatedDate">Updated on {{noteData.updatedDate | date:'medium'}}</small>
 </mat-dialog-content>
 <mat-dialog-actions>
     <button mat-raised-button mat-dialog-close>Cancel</button>

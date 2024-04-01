@@ -1,11 +1,17 @@
 <div class="user-form">
     <div *ngIf="!loading">
+        <div class="row" *ngIf="!editing">
+            <!-- TODO: Remove before this goes anywhere other than a dev env lol -->
+            <button mat-raised-button color="primary" (click)="generateRandomUserData()">Generate Some Random
+                User</button>
+        </div>
         <form [formGroup]="userForm" (ngSubmit)="submit(userForm)">
+
             <div class="row">
                 <div class="column">
                     <div>
                         <label for="avatar">Avatar: </label>
-                        <input id="avatar" type="file" class="form-control" accept=".jpg,.png"
+                        <input id="avatar" type="file" class="form-control" accept=".jpg,.jpeg,.png,.webp"
                             (change)="onFileChange($event)">
                     </div>
                     <span *ngIf="imageSrc">
@@ -31,7 +37,7 @@
                             <span matPrefix>
                                 <mat-icon>account_box</mat-icon>
                             </span>
-                            <input matInput placeholder="UserName" formControlName="userName" #nameInput
+                            <input matInput placeholder="UserName" formControlName="username" #nameInput
                                 [readonly]="editing">
                             <mat-hint>Your username</mat-hint>
                             <mat-error>Username is required</mat-error>
@@ -92,6 +98,7 @@
                         <mat-form-field class="column">
                             <mat-label>National Insurance Number</mat-label>
                             <input matInput placeholder="National Insurance Number"
+                                onkeyup="this.value = this.value.toUpperCase();"
                                 formControlName="nationalInsuranceNumber" #nationalInsuranceNumberInput>
                             <mat-hint>National Insurance Number</mat-hint>
                             <mat-error *ngIf="userFormControl['nationalInsuranceNumber'].errors?.['pattern']">Invalid
@@ -157,7 +164,7 @@
                 </mat-form-field>
                 <mat-form-field class="column">
                     <mat-label>Phone Number</mat-label>
-                    <input matInput placeholder="Work Email" formControlName="phoneNumber" #phoneNumberInput>
+                    <input matInput placeholder="Phone Number" formControlName="phoneNumber" #phoneNumberInput>
                     <mat-hint>Phone Number</mat-hint>
                 </mat-form-field>
             </div>
