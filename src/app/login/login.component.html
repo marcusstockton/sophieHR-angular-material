@@ -35,9 +35,17 @@
           </div>
 
         </form>
+        <mat-card-title>Managers</mat-card-title>
         <mat-card-subtitle>
           <p *ngIf="retrievingManagers">Getting some manager usernames...</p>
           <div *ngFor="let admin of managers">
+            <p>{{admin}}</p>
+          </div>
+        </mat-card-subtitle>
+        <mat-card-title>Company Admins</mat-card-title>
+        <mat-card-subtitle>
+          <p *ngIf="retrievingManagers">Getting some HR usernames...</p>
+          <div *ngFor="let admin of admins">
             <p>{{admin}}</p>
           </div>
         </mat-card-subtitle>
