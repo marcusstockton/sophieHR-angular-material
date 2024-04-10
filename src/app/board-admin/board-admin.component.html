@@ -1,12 +1,11 @@
 <div class="admin">
-  <p>Welcome Admin</p>
-
-
   <div>
-    <p *ngIf="companyId">
-      
+
+
+    <h2>Foo Bar</h2>
+    <!-- <div @if(companyId)>
       <app-company-detail [companyId]="companyId"></app-company-detail>
-    </p>
+    </div> -->
 
     <!-- <div *ngIf="company">
       <span class="card-row">
@@ -80,7 +79,7 @@
       </span>
 
     </div> -->
-    <div [hidden]="!companyId">
+    <!-- <div [hidden]="!companyId">
       <div class="table">
         <mat-form-field>
           <mat-label>Filter</mat-label>
@@ -150,7 +149,7 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"(click)="getEmployeeRecord(row)"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="getEmployeeRecord(row)"></tr>
 
             <tr class="mat-row" *matNoDataRow>
               <td class="mat-cell" colspan="12">No data found.</td>
@@ -160,6 +159,6 @@
           <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>

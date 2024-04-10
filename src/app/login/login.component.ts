@@ -1,4 +1,3 @@
-import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -19,7 +18,7 @@ export class LoginComponent implements OnInit {
   loggingIn = false;
   isLoginFailed = false;
   errorMessage = '';
-  role: string = '';
+  role: string | undefined = '';
   hidePassword: boolean = true;
   userId: string;
 
@@ -40,8 +39,7 @@ export class LoginComponent implements OnInit {
 
     if (this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
-      this.role = this.tokenStorage.getUser().role;
-      this.redirectUser(this.role);
+      this.redirectUser(this.tokenStorage.getUser()?.role || '');
     }
     this.getManagers();
   }
@@ -67,11 +65,11 @@ export class LoginComponent implements OnInit {
         this.userId = data.id!;
         this.isLoginFailed = false;
         this.isLoggedIn = true;
-        this.role = this.tokenStorage.getUser().role;
         this.tokenStorage.isLoggedIn = true;
-        this.redirectUser(this.role);
+        this.redirectUser(this.tokenStorage.getUser()?.role || '');
       },
       error: (err) => {
+        console.log("Error!", err);
         this.loggingIn = false;
         this.isLoginFailed = true;
       }

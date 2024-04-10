@@ -11,8 +11,8 @@ import { CompaniesClient, KeyValuePairOfGuidAndString } from './client';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  role: string;
-  username?: string;
+  role: string | undefined;
+  username?: string | undefined;
   isExpanded: boolean;
   companyNames: KeyValuePairOfGuidAndString[] = [];
   companyId?: string;
@@ -31,8 +31,8 @@ export class AppComponent {
         if (this.tokenStorageService.getToken()) {
           this.isExpanded = true;
           const user = this.tokenStorageService.getUser();
-          this.role = user.role;
-          this.username = user.username;
+          this.role = user?.role;
+          this.username = user?.userName;
           if (this.role == "Admin") {
             this.getCompanies();
           }
@@ -48,6 +48,11 @@ export class AppComponent {
 
   viewProfile() {
     this.router.navigate(['/profile'])
+  }
+
+  companyConfig() {
+    let companyid = this.tokenStorageService.getUser()?.companyId;
+    this.router.navigate([`/company/${companyid}/config`])
   }
 
   getCompanies() {

@@ -15,22 +15,24 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   {
     path: 'user', canActivate: [AuthGuard],
-    loadChildren: () => import('src/app/board-user/board-user.module').then(m => m.BoardUserModule),
+    loadChildren: () => import('./board-user/board-user.module').then(m => m.BoardUserModule),
   },
   { path: 'manager', component: BoardManagerComponent, canActivate: [AuthGuard] },
   {
     path: 'admin', canActivate: [AuthGuard],
-    loadChildren: () => import('src/app/board-admin/board-admin.module').then(m => m.BoardAdminModule),
+    loadChildren: () => import('./board-admin/board-admin.module').then(m => m.BoardAdminModule),
   },
   {
     path: 'company', canActivate: [AuthGuard],
-    loadChildren: () => import('src/app/company/company.module').then(m => m.CompanyModule),
+    loadChildren: () => import('./company/company.module').then(m => m.CompanyModule),
   },
   { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes,
+    { enableTracing: true }) // <-- Debugging purposes only
+  ],
   exports: [RouterModule],
   providers: [CompaniesClient, EmployeesClient, AccountClient, DepartmentsClient, NotesClient, LeaveRequestsClient]
 })

@@ -4,25 +4,29 @@
   </button>
   <span>Sophies Human Resources</span>
   <span *ngIf="this.role==='Admin' && companyNames">
-    <!-- <button mat-button (click)="sidenav.toggle()">Companies <mat-icon>expand_more</mat-icon></button> -->
-    <!-- <mat-menu #menu="matMenu">
-      <span *ngFor="let company of companyNames">
-        <button mat-menu-item (click)="onCompanyChange(company.key!)">{{company.value}}</button>
-      </span>
-    </mat-menu> -->
   </span>
   <span class="example-spacer"></span>
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" (click)="viewProfile()">
-    <mat-icon title="View my account">account_box</mat-icon>
+  @if (this.role == 'Admin' || this.role == 'CompanyAdmin') {
+  <button mat-icon-button class="example-icon" matTooltip="Company Config" aria-label="Company Config"
+    (click)="companyConfig()">
+    <mat-icon>settings_applications</mat-icon>
   </button>
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon" (click)="logout()">
-    <mat-icon title="Log Out">logout</mat-icon>
+  }
+  <button mat-icon-button class="example-icon" matTooltip="View my account" aria-label="View my account"
+    (click)="viewProfile()">
+    <mat-icon>account_box</mat-icon>
+  </button>
+  <button mat-icon-button class="example-icon" aria-label="Log Out" matTooltip="Log Out" (click)="logout()">
+    <mat-icon>logout</mat-icon>
   </button>
 </mat-toolbar>
 
 <mat-sidenav-container class="sidenav-container" autosize>
   <mat-sidenav #drawer class="sidenav" mode="side" [opened]="(this.tokenStorageService.isLoggedIn)">
-    <mat-nav-list *ngIf="this.role==='Admin'">
+
+    @switch (this.role!) {
+    @case ('Admin') {
+    <mat-nav-list>
       <mat-list-item>
         <button mat-button class="menu-button" routerLink="/admin">
           <mat-icon>home</mat-icon>
@@ -30,28 +34,21 @@
         </button>
       </mat-list-item>
       <mat-list-item>
-        <button mat-button class="menu-button" routerLink="/company">
+        <button mat-button class="menu-button" routerLink="/company/list">
           <mat-icon>business</mat-icon>
           <span> Companies</span>
         </button>
       </mat-list-item>
     </mat-nav-list>
-    <mat-nav-list *ngIf="this.role==='Manager'">
-      <mat-list-item>
-        <button mat-button class="menu-button" routerLink="/manager">
-          <mat-icon>home</mat-icon>
-          <span> Home</span>
-        </button>
-      </mat-list-item>
-      <mat-list-item>
-        <button mat-button class="menu-button" [routerLink]="['/user/add']">
-          <mat-icon>person_add</mat-icon>
-          <span> Add Employee</span>
-        </button>
-      </mat-list-item>
-    </mat-nav-list>
-
-    <mat-nav-list *ngIf="this.role==='User'">
+    }
+    @case('Manager'){
+    <ng-container *ngTemplateOutlet="managerShared" />
+    }
+    @case ('CompanyAdmin') {
+    <ng-container *ngTemplateOutlet="managerShared" />
+    }
+    @case ('User') {
+    <mat-nav-list>
       <mat-list-item>
         <button mat-button class="menu-button" routerLink="/user">
           <mat-icon>home</mat-icon>
@@ -59,6 +56,25 @@
         </button>
       </mat-list-item>
     </mat-nav-list>
+    }
+    }
+
+    <ng-template #managerShared>
+      <mat-nav-list>
+        <mat-list-item>
+          <button mat-button class="menu-button" routerLink="/manager">
+            <mat-icon>home</mat-icon>
+            <span> Home</span>
+          </button>
+        </mat-list-item>
+        <mat-list-item>
+          <button mat-button class="menu-button" [routerLink]="['/user/add']">
+            <mat-icon>person_add</mat-icon>
+            <span> Add Employee</span>
+          </button>
+        </mat-list-item>
+      </mat-nav-list>
+    </ng-template>
 
     <mat-nav-list>
       <footer style="position: absolute; bottom: 0;">

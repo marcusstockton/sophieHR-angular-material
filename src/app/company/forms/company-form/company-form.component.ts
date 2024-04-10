@@ -124,7 +124,7 @@ export class CompanyFormComponent implements OnInit {
         this._companyService.putCompany(this.companyId!, updatedCompany).subscribe({
           next: (res) => {
             console.log(res.data);
-            this.router.navigate(['/company']);
+            this.router.navigate(['/company/list']);
           },
           error: (err) => {
             console.log("Error updating company" + err);
@@ -135,11 +135,11 @@ export class CompanyFormComponent implements OnInit {
           }
         });
       } else {
-        var companyDto:CompanyCreateDto = this.companyForm.value;
+        var companyDto: CompanyCreateDto = this.companyForm.value;
         this._companyService.postCompany(companyDto).subscribe({
           next: (res) => {
             console.log(res);
-            this.router.navigate(["/company"]);
+            this.router.navigate(["/company/list"]);
           },
           error: (err) => {
             console.log("Error creating company" + err);
@@ -154,7 +154,7 @@ export class CompanyFormComponent implements OnInit {
     }
   }
 
-  public openLogoDialog(){
+  public openLogoDialog() {
     let dialogRef = this.dialog.open(CompanyLogoDialogComponent, {
       data: { companyId: this.companyId },
     });

@@ -4,12 +4,14 @@ import { CompanyDetailComponent } from './company-detail/company-detail.componen
 import { AuthGuard } from '../_helpers/auth.guard';
 import { CompanyFormComponent } from './forms/company-form/company-form.component';
 import { CompanyListComponent } from './company-list/company-list.component';
+import { CompanyConfigComponent } from './company-config/company-config.component';
 
 const routes: Routes = [
-  { path: '', component: CompanyListComponent, canActivate: [AuthGuard] },
+  { path: 'list', component: CompanyListComponent, canActivate: [AuthGuard] },
   { path: 'create', component: CompanyFormComponent, canActivate: [AuthGuard] },
   { path: ':companyid', component: CompanyDetailComponent, canActivate: [AuthGuard] },
   { path: ':companyid/edit', component: CompanyFormComponent, canActivate: [AuthGuard] },
+  { path: ':companyid/config', component: CompanyConfigComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

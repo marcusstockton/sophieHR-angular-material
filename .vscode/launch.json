@@ -3,9 +3,18 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Launch Edge",
+      "request": "launch",
+      "type": "msedge",
+      "preLaunchTask": "npm: start",
+      "url": "http://localhost:4200/",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
       "name": "ng serve Firefox",
       "type": "firefox",
       "request": "launch",
+      "reAttach": true,
       "preLaunchTask": "npm: start",
       "url": "http://localhost:4200/"
     },

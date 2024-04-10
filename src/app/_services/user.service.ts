@@ -8,8 +8,7 @@ export class UserService {
   public companyId = new BehaviorSubject(localStorage.getItem('currentCompanyId') || '');
   constructor() { }
 
-  updateCompanyId(companyId:string){
+  updateCompanyId(companyId: string) {
     this.companyId.next(companyId);
   }
-
 }
