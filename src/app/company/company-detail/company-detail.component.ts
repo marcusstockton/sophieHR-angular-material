@@ -1,9 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { CompaniesClient, CompanyDetailDto } from 'src/app/client';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { HttpStatusCode } from '@angular/common/http';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -18,7 +17,9 @@ export class CompanyDetailComponent {
   @Input() set companyId(value: string) {
     this._companyId = value;
   }
-  constructor(private readonly companyService: CompaniesClient, private route: ActivatedRoute, private _snackBar: MatSnackBar, private router: Router) { }
+  constructor(private readonly companyService: CompaniesClient,
+    private route: ActivatedRoute, private router: Router, private location: Location) { }
+
 
   ngOnInit() {
     if (!this._companyId) {
@@ -48,5 +49,9 @@ export class CompanyDetailComponent {
   editCompany(companyid: string | undefined) {
     console.log(`CompanyID clicked: ${companyid}`);
     this.router.navigate([`/company/${companyid}/edit`, { companyid: companyid }]);
+  }
+
+  back() {
+    this.location.back();
   }
 }

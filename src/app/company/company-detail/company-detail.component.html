@@ -5,6 +5,7 @@
     <div class="row" style="border: 1px solid red; height: 20vh;">
       <div class="column" style="border: 1px solid yellow;">
         <p>Column 1</p>
+        {{company.name}}
       </div>
       <div class="column" style="border: 1px solid orchid;">
         <p>Column 2</p>
@@ -24,8 +25,8 @@
     </div>
     <div class="footer">
       <div class="example-button-row">
-      <a mat-raised-button routerLink="..">Back</a>
-      <button mat-raised-button color="primary" (click)="editCompany(company.id)">Edit</button>
+        <a mat-raised-button (click)="back()">Back</a>
+        <button mat-raised-button color="primary" (click)="editCompany(company.id)">Edit</button>
       </div>
     </div>
 

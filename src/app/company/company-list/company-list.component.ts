@@ -17,23 +17,26 @@ export class CompanyListComponent implements OnInit, AfterViewInit {
   public companies: CompanyDetailNoLogo[];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  
+
   displayedColumns: string[] = ['id', 'name', 'createdDate', 'updatedDate', 'postcode', 'lat', 'lon'];
 
   constructor(private readonly companyService: CompaniesClient, private _snackBar: MatSnackBar, private router: Router) { }
   dataSource = new MatTableDataSource<CompanyDetailNoLogo>();
-  
+  isLoading: boolean = false;
+
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.companyService.getCompanies().subscribe(
       {
         next: (result) => {
           this.companies = result;
           this.dataSource.data = result;
+          this.isLoading = false;
         },
         error: (err) => {
           console.log(err);
@@ -49,6 +52,7 @@ export class CompanyListComponent implements OnInit, AfterViewInit {
               errorMessage = "Something unforeseen went wrong :-(";
           }
           this._snackBar.open(errorMessage, "Ok");
+          this.isLoading = false;
         }
       }
     )
