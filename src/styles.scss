@@ -28,7 +28,9 @@ body {
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
-  border: 1px red dashed;
+  margin-left: -15px;
+  margin-right: -15px;
+  border: 1px red dashed; // <-- Just for debugging
 }
 
 .column {
@@ -36,7 +38,7 @@ body {
   flex-direction: column;
   flex-basis: 100%;
   flex: 1;
-  border: 1px blue dashed;
+  border: 1px blue dashed; // <-- Just for debugging
 }
 
 .errorsnackbar {

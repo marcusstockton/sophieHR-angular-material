@@ -2,24 +2,46 @@
 
   <span *ngIf="company">
 
-    <div class="row" style="border: 1px solid red; height: 20vh;">
-      <div class="column" style="border: 1px solid yellow;">
-        <p>Column 1</p>
-        {{company.name}}
+    <div class="row">
+      <div class="column">
+        <mat-card class="company-card">
+          <mat-card-header>
+            <mat-card-title-group>
+              <mat-card-title>{{company.name}}</mat-card-title>
+              <mat-card-subtitle>{{company.updatedDate| date : 'long'}}</mat-card-subtitle>
+              <img mat-card-lg-image src="data:image/png;base64,{{company.logo}}" alt="company logo">
+            </mat-card-title-group>
+          </mat-card-header>
+          <mat-card-content>
+            {{company.employeeCount}}
+          </mat-card-content>
+        </mat-card>
       </div>
-      <div class="column" style="border: 1px solid orchid;">
-        <p>Column 2</p>
+      <div class="column">
+        <mat-card class="company-card">
+          <mat-card-header>
+            <mat-card-title>Address</mat-card-title>
+
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{company.address?.line1}} {{company.address?.line2}}</p>
+            <p>{{company.address?.line3}} {{company.address?.line4}}</p>
+            <p>{{company.address?.county}}</p>
+          </mat-card-content>
+        </mat-card>
       </div>
-      <div class="column" style="border: 1px solid green;">
-        <p>Column 3</p>
+      <div class="column">
+        <mat-card class="company-card-lg">
+          <img src="data:image/png;base64,{{company.address?.mapImage}}" alt="company location">
+        </mat-card>
       </div>
     </div>
 
-    <div class="row" style="border: 1px solid blue; height: 20vh;">
-      <div class="column" style="border: 1px solid purple;">
+    <div class="row">
+      <div class="column">
         <p>Column 1</p>
       </div>
-      <div class="column" style="border: 1px solid olive;">
+      <div class="column">
         <p>Column 2</p>
       </div>
     </div>

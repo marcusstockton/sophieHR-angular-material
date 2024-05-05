@@ -1,9 +1,24 @@
 .company-detail {
   margin: 15px;
   height: 100%;
+  flex-flow: column wrap;
+  justify-content: space-around;
 }
 
 .example-button-row {
   display: table-cell;
+  width: 600px;
+}
+
+.column {
+  align-items: center;
+  justify-content: center;
+}
+
+.company-card {
+  max-width: 400px;
+}
+
+.company-card-lg {
   max-width: 600px;
 }

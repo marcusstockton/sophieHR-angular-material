@@ -3178,7 +3178,7 @@ export class CompanyDetailNoLogo implements ICompanyDetailNoLogo {
     createdDate?: Date;
     updatedDate?: Date;
     name?: string | undefined;
-    address?: CompanyAddress | undefined;
+    address?: AddressBasic | undefined;
 
     constructor(data?: ICompanyDetailNoLogo) {
         if (data) {
@@ -3195,7 +3195,7 @@ export class CompanyDetailNoLogo implements ICompanyDetailNoLogo {
             this.createdDate = _data["createdDate"] ? new Date(_data["createdDate"].toString()) : <any>undefined;
             this.updatedDate = _data["updatedDate"] ? new Date(_data["updatedDate"].toString()) : <any>undefined;
             this.name = _data["name"];
-            this.address = _data["address"] ? CompanyAddress.fromJS(_data["address"]) : <any>undefined;
+            this.address = _data["address"] ? AddressBasic.fromJS(_data["address"]) : <any>undefined;
         }
     }
 
@@ -3222,40 +3222,63 @@ export interface ICompanyDetailNoLogo {
     createdDate?: Date;
     updatedDate?: Date;
     name?: string | undefined;
-    address?: CompanyAddress | undefined;
+    address?: AddressBasic | undefined;
 }
 
-export class CompanyAddress extends Address implements ICompanyAddress {
-    mapImage?: string | undefined;
+export class AddressBasic implements IAddressBasic {
+    line1?: string | undefined;
+    line2?: string | undefined;
+    line3?: string | undefined;
+    line4?: string | undefined;
+    postcode?: string | undefined;
+    county?: string | undefined;
 
-    constructor(data?: ICompanyAddress) {
-        super(data);
-    }
-
-    override init(_data?: any) {
-        super.init(_data);
-        if (_data) {
-            this.mapImage = _data["mapImage"];
+    constructor(data?: IAddressBasic) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
         }
     }
 
-    static override fromJS(data: any): CompanyAddress {
+    init(_data?: any) {
+        if (_data) {
+            this.line1 = _data["line1"];
+            this.line2 = _data["line2"];
+            this.line3 = _data["line3"];
+            this.line4 = _data["line4"];
+            this.postcode = _data["postcode"];
+            this.county = _data["county"];
+        }
+    }
+
+    static fromJS(data: any): AddressBasic {
         data = typeof data === 'object' ? data : {};
-        let result = new CompanyAddress();
+        let result = new AddressBasic();
         result.init(data);
         return result;
     }
 
-    override toJSON(data?: any) {
+    toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["mapImage"] = this.mapImage;
-        super.toJSON(data);
+        data["line1"] = this.line1;
+        data["line2"] = this.line2;
+        data["line3"] = this.line3;
+        data["line4"] = this.line4;
+        data["postcode"] = this.postcode;
+        data["county"] = this.county;
         return data;
     }
 }
 
-export interface ICompanyAddress extends IAddress {
-    mapImage?: string | undefined;
+export interface IAddressBasic {
+    line1?: string | undefined;
+    line2?: string | undefined;
+    line3?: string | undefined;
+    line4?: string | undefined;
+    postcode?: string | undefined;
+    county?: string | undefined;
 }
 
 export class KeyValuePairOfGuidAndString implements IKeyValuePairOfGuidAndString {
@@ -3356,6 +3379,39 @@ export interface ICompanyDetailDto {
     logo?: string | undefined;
     employeeCount?: number;
     address?: CompanyAddress | undefined;
+}
+
+export class CompanyAddress extends Address implements ICompanyAddress {
+    mapImage?: string | undefined;
+
+    constructor(data?: ICompanyAddress) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.mapImage = _data["mapImage"];
+        }
+    }
+
+    static override fromJS(data: any): CompanyAddress {
+        data = typeof data === 'object' ? data : {};
+        let result = new CompanyAddress();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["mapImage"] = this.mapImage;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface ICompanyAddress extends IAddress {
+    mapImage?: string | undefined;
 }
 
 export class CompanyCreateDto implements ICompanyCreateDto {
@@ -4184,6 +4240,7 @@ export class Employee extends ApplicationUser implements IEmployee {
     departmentId?: string | undefined;
     companyId?: string;
     employeeAvatarId?: string;
+    managerId?: string | undefined;
     address?: EmployeeAddress | undefined;
     manager?: Employee | undefined;
     department?: Department | undefined;
@@ -4217,6 +4274,7 @@ export class Employee extends ApplicationUser implements IEmployee {
             this.departmentId = _data["departmentId"];
             this.companyId = _data["companyId"];
             this.employeeAvatarId = _data["employeeAvatarId"];
+            this.managerId = _data["managerId"];
             this.address = _data["address"] ? EmployeeAddress.fromJS(_data["address"]) : <any>undefined;
             this.manager = _data["manager"] ? Employee.fromJS(_data["manager"]) : <any>undefined;
             this.department = _data["department"] ? Department.fromJS(_data["department"]) : <any>undefined;
@@ -4258,6 +4316,7 @@ export class Employee extends ApplicationUser implements IEmployee {
         data["departmentId"] = this.departmentId;
         data["companyId"] = this.companyId;
         data["employeeAvatarId"] = this.employeeAvatarId;
+        data["managerId"] = this.managerId;
         data["address"] = this.address ? this.address.toJSON() : <any>undefined;
         data["manager"] = this.manager ? this.manager.toJSON() : <any>undefined;
         data["department"] = this.department ? this.department.toJSON() : <any>undefined;
@@ -4293,6 +4352,7 @@ export interface IEmployee extends IApplicationUser {
     departmentId?: string | undefined;
     companyId?: string;
     employeeAvatarId?: string;
+    managerId?: string | undefined;
     address?: EmployeeAddress | undefined;
     manager?: Employee | undefined;
     department?: Department | undefined;
