@@ -2,55 +2,18 @@
 
   <span *ngIf="company">
 
-    <div class="row">
-      <div class="column">
-        <mat-card class="company-card">
-          <mat-card-header>
-            <mat-card-title-group>
-              <mat-card-title>{{company.name}}</mat-card-title>
-              <mat-card-subtitle>{{company.updatedDate| date : 'long'}}</mat-card-subtitle>
-              <img mat-card-lg-image src="data:image/png;base64,{{company.logo}}" alt="company logo">
-            </mat-card-title-group>
-          </mat-card-header>
-          <mat-card-content>
-            {{company.employeeCount}}
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div class="column">
-        <mat-card class="company-card">
-          <mat-card-header>
-            <mat-card-title>Address</mat-card-title>
-
-          </mat-card-header>
-          <mat-card-content>
-            <p>{{company.address?.line1}} {{company.address?.line2}}</p>
-            <p>{{company.address?.line3}} {{company.address?.line4}}</p>
-            <p>{{company.address?.county}}</p>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div class="column">
-        <mat-card class="company-card-lg">
-          <img src="data:image/png;base64,{{company.address?.mapImage}}" alt="company location">
-        </mat-card>
-      </div>
+    <div class="grid-container">
+      <div class="item1">1</div>
+      <div class="item2">2</div>
+      <div class="item3">3</div>
+      <div class="item4">4 <small>Some Graph here?</small></div>
+      <div class="item5">5</div>
+      <div class="item6">6</div>
+      <div class="item7">7</div>
+      <div class="item8">8</div>
     </div>
 
-    <div class="row">
-      <div class="column">
-        <p>Column 1</p>
-      </div>
-      <div class="column">
-        <p>Column 2</p>
-      </div>
-    </div>
-    <div class="footer">
-      <div class="example-button-row">
-        <a mat-raised-button (click)="back()">Back</a>
-        <button mat-raised-button color="primary" (click)="editCompany(company.id)">Edit</button>
-      </div>
-    </div>
+
 
     <!-- <mat-card appearance="outlined" class="image-card" *ngIf="company.logo">
       <img mat-card-image src="data:image/png;base64,{{company.logo}}" width="200vw;" height="auto;"/>

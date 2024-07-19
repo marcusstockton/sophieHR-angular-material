@@ -21,8 +21,17 @@
 // }
 
 .sidenav-container {
-  // height: calc(100vh - 64px);
-  height: 93dvh;
+  height: calc(100vh - 64px);
+  // height: 100%;
+  // width: 400px;
+  // height: 200px;
+  // margin: 10px;
+  // border: 1px solid #555;
+  // height: 92vh;
+}
+
+.mat-drawer-content {
+  height: calc(100vh - 64px);
 }
 
 // .sidenav {

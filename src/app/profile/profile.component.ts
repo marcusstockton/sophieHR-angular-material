@@ -15,7 +15,7 @@ export class ProfileComponent implements OnInit {
   constructor(private token: TokenStorageService) { }
   ngOnInit(): void {
     this.currentUser = this.token.getUser();
-    this.tokenExpiry = dayjs(this.currentUser.expiredTime);
+    this.tokenExpiry = dayjs.default(this.currentUser.expiredTime);
     console.log(this.currentUser);
   }
 

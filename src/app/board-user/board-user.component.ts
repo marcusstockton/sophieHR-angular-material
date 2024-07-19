@@ -72,8 +72,8 @@ export class BoardUserComponent implements OnInit {
 
   private dateDiff(startdate: Date) {
     //define moments for the startdate and enddate
-    var startdateMoment = dayjs(startdate);
-    var enddateMoment = dayjs(new Date());
+    var startdateMoment = dayjs.default(startdate);
+    var enddateMoment = dayjs.default(new Date());
 
     if (startdateMoment.isValid() === true && enddateMoment.isValid() === true) {
       //getting the difference in years

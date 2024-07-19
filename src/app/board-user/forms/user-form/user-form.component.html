@@ -15,7 +15,7 @@
                             (change)="onFileChange($event)">
                     </div>
                     <span *ngIf="imageSrc">
-                        <img [src]="imageSrc" class="avatar">
+                        <img [src]="imageSrc" class="avatar" alt="Avatar">
                     </span>
                 </div>
                 <div class="column">
@@ -171,7 +171,7 @@
             <div class="row">
                 <mat-form-field class="column">
                     <mat-label>DoB</mat-label>
-                    <input matInput [matDatepicker]="dobpicker" formControlName="dateOfBirth">
+                    <input matInput [matDatepicker]="dobpicker" formControlName="dateOfBirth" placeholder="dateOfBirth">
                     <mat-hint>DD/MM/YYYY</mat-hint>
                     <mat-datepicker-toggle matSuffix [for]="dobpicker"></mat-datepicker-toggle>
                     <mat-datepicker #dobpicker></mat-datepicker>
@@ -179,7 +179,8 @@
                 </mat-form-field>
                 <mat-form-field class="column">
                     <mat-label>Start Of Employment</mat-label>
-                    <input matInput [matDatepicker]="soepicker" formControlName="startOfEmployment">
+                    <input matInput [matDatepicker]="soepicker" formControlName="startOfEmployment"
+                        placeholder="start of employ">
                     <mat-hint>DD/MM/YYYY</mat-hint>
                     <mat-datepicker-toggle matSuffix [for]="soepicker"></mat-datepicker-toggle>
                     <mat-datepicker #soepicker></mat-datepicker>

@@ -1,6 +1,6 @@
 .company-detail {
   margin: 15px;
-  height: 100%;
+  // height: 100%;
   flex-flow: column wrap;
   justify-content: space-around;
 }
@@ -10,15 +10,23 @@
   width: 600px;
 }
 
-.column {
-  align-items: center;
-  justify-content: center;
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-template-rows: auto auto auto;
+  gap: 10px;
+  padding: 10px;
+  height: 100%;
 }
 
-.company-card {
-  max-width: 400px;
+.grid-container>div {
+  padding: 20px 10px;
+  font-size: 30px;
+  border: 1px solid gray;
+  box-shadow: 3px 5px 5px gray;
 }
 
-.company-card-lg {
-  max-width: 600px;
+.item4 {
+  grid-row: 2 / 4;
+  grid-column: 1 / 3;
 }
