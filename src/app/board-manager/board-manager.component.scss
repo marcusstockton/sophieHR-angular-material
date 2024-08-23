@@ -14,9 +14,10 @@
     align-items: center;
 }
 
-.th{
-    font-weight:700;
+.th {
+    font-weight: 700;
 }
+
 .table {
     width: 100%;
 
@@ -29,20 +30,23 @@
     border-bottom: 1px solid transparent;
     border-top: 1px solid transparent;
     cursor: pointer;
-  }
-  .mat-mdc-row:hover .mat-mdc-cell {
-    border-color: currentColor;
-  }
+}
 
-.companyMap{
+.mat-mdc-row:hover .mat-mdc-cell {
+    border-color: currentColor;
+}
+
+.companyMap {
     width: 100%;
     // max-width: max-content;
 }
+
 .mat-mdc-form-field {
     font-size: 14px;
     width: 100%;
-  }
-  .card-table{
+}
+
+.card-table {
     width: 100%;
     padding: 5px;
-  }
+}

@@ -12,31 +12,19 @@
   color: #00843d;
 }
 
-// .example-button-row {
-//   display: table-cell;
-// }
-
-// .example-button-row .mat-mdc-button-base {
-//   margin: 8px 8px 8px 0;
-// }
-
-.sidenav-container {
-  height: calc(100vh - 64px);
-  // height: 100%;
-  // width: 400px;
-  // height: 200px;
-  // margin: 10px;
-  // border: 1px solid #555;
-  // height: 92vh;
-}
 
 .mat-drawer-content {
   height: calc(100vh - 64px);
+  padding: 10px;
 }
 
-// .sidenav {
-//   width: 200px;
-// }
+.sidenav-container:visible {
+  height: calc(100vh - 64px);
+}
+
+.mat-drawer-content:visible {
+  height: calc(100vh - 64px);
+}
 
 .sidenav .mat-toolbar {
   background: inherit;

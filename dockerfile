@@ -25,6 +25,7 @@ FROM nginx:latest
 # Set working directory to nginx asset directory
 
 # Remove default nginx static assets
+RUN rm -rf /usr/share/nginx/html/*
 
 # Copy static assets from builder stage
 COPY --from=build /usr/local/app/dist/sophie-hr-angular-material /usr/share/nginx/html

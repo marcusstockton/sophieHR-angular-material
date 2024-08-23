@@ -85,6 +85,7 @@ export class UserFormComponent implements OnInit {
           this.http.post(`https://localhost:7189/api/Employees/${id}/upload-avatar`, formData).subscribe({
             next: res => {
               console.log(res);
+              this._snackBar.open("Avatar updated", "OK");
             }, error: err => console.log(err)
           })
         }
