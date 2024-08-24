@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
         this.redirectUser(this.tokenStorage.getUser()?.role || '');
       },
       error: (err) => {
-        console.log("Error!", err);
+        // console.log("Error!", err);
         this.loggingIn = false;
         this.isLoginFailed = true;
       }
@@ -89,21 +89,21 @@ export class LoginComponent implements OnInit {
       this.retrievingManagers = false;
     }, (err) => {
       this.retrievingManagers = false;
-      console.log("Unable to get Managers...")
+      // console.log("Unable to get Managers...")
     })
   }
 
   redirectUser(role: string) {
     if (role === 'Admin') {
-      console.log("Logged in as Admin");
+      // console.log("Logged in as Admin");
       this.router.navigate(['/admin'])
     }
     if (role === 'Manager' || role === "CompanyAdmin") {
-      console.log("Logged in as Manager");
+      // console.log("Logged in as Manager");
       this.router.navigate(['/manager'])
     }
     if (role === 'User') {
-      console.log("Logged in as User");
+      // console.log("Logged in as User");
       this.router.navigate(['/user', { userid: this.userId }])
     }
   }

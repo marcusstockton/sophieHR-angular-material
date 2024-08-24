@@ -63,7 +63,7 @@ export class LeaveRequestFormComponent implements OnInit {
 
   startDateChange(event: Date) {
     this.form.controls['startDate'].setValue(event);
-    console.log(event);
+    // console.log(event);
     var endDate = this.form.controls['endDate'].value;
 
     if (endDate && endDate > event) {
@@ -75,7 +75,7 @@ export class LeaveRequestFormComponent implements OnInit {
     var startDate = this.form.controls['startDate'].value;
 
     if (startDate.toLocaleDateString() === event.toLocaleDateString()) {
-      console.log("same day");
+      // console.log("same day");
       this.isMultiDay = false;
     } else {
       this.isMultiDay = true;

@@ -30,7 +30,7 @@ body {
   width: 100%;
   margin-left: -15px;
   margin-right: -15px;
-  border: 1px red dashed; // <-- Just for debugging
+  // border: 1px red dashed; // <-- Just for debugging
 }
 
 .column {
@@ -38,19 +38,34 @@ body {
   flex-direction: column;
   flex-basis: 100%;
   flex: 1;
-  border: 1px blue dashed; // <-- Just for debugging
+  // border: 1px blue dashed; // <-- Just for debugging
 }
 
-.errorsnackbar {
-  background-color: red;
-  color: #f7f7f7;
+// .errorsnackbar {
+//   background-color: red;
+//   color: #f7f7f7;
+// }
+
+// .successsnackbar {
+//   background-color: green;
+//   color: #f7f7f7;
+// }
+
+.mat-mdc-snack-bar-container {
+  &.success-snackbar {
+    --mdc-snackbar-container-color: green;
+    --mat-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #f7f7f7;
+  }
 }
 
-.successsnackbar {
-  background-color: green;
-  color: #f7f7f7;
+.mat-mdc-snack-bar-container {
+  &.error-snackbar {
+    --mdc-snackbar-container-color: red;
+    --mat-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #f7f7f7;
+  }
 }
-
 
 .container {
   padding: 10px;

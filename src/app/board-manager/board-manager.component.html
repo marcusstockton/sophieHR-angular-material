@@ -9,9 +9,38 @@
         <img mat-card-image src="data:image/png;base64,{{this.companyMap}}" class="companyMap" alt="Company Map" />
       </div>
     </div>
-    <h3>Welcome Manager {{this.user['userName']}}</h3>
+    <h2>Welcome Manager {{this.user['userName']}}</h2>
 
-    <div class='row' *ngIf="!isLoading && company">
+    <div class="container" *ngIf="!isLoading && company" sty>
+      <div class="item">
+        <mat-card appearance="outlined" class="image-card" *ngIf="company.logo">
+          <img mat-card-image src="data:image/png;base64,{{company.logo}}" alt="Company Logo" />
+        </mat-card>
+      </div>
+      <div class="item">
+        <mat-card appearance="outlined">
+          <mat-card-title>Employee Count</mat-card-title>
+          <mat-card-content style="font-size:xx-large">
+            {{dataSource.data.length}}
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="item">
+        <mat-card appearance="outlined">
+          <mat-card-title>
+            {{company.name}}
+          </mat-card-title>
+          <mat-card-content>
+            <p><small>{{company.address?.line1}} {{company.address?.line2}} {{company.address?.line3}}
+                {{company.address?.line4}}</small></p>
+            <p><small>{{company.address?.county}}</small></p>
+            <p><small>{{company.address?.postcode | uppercase}}</small></p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+    <!-- <div class='row' *ngIf="!isLoading && company">
       <div class='column'>
         <mat-card appearance="outlined" class="image-card" *ngIf="company.logo">
           <img mat-card-image src="data:image/png;base64,{{company.logo}}" alt="Company Logo" />
@@ -38,7 +67,7 @@
           </mat-card-content>
         </mat-card>
       </div>
-    </div>
+    </div> -->
 
     <div class="row">
       <mat-card class="card-table">

@@ -30,12 +30,12 @@ export class DeptCreateDialogComponent {
     });
 
     this.departmentClient.postDepartment(dept).subscribe({
-      next: (val)=> { 
-        this._snackBar.open(`Department ${val.name} created`, "", {duration: 2000, panelClass: ['successsnackbar']});  
+      next: (val) => {
+        this._snackBar.open(`Department ${val.name} created`, "", { duration: 2000, panelClass: ['success-snackbar'] });
         this.dialogRef.close()
       },
-      error: (err) =>{ 
-        this._snackBar.open(err, "", {duration: 2000, panelClass: ['errorsnackbar']})
+      error: (err) => {
+        this._snackBar.open(err, "", { duration: 2000, panelClass: ['error-snackbar'] })
       }
     })
   }

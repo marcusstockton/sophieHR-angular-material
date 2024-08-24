@@ -8,7 +8,7 @@ import { CompaniesClient, DepartmentDetailDto, DepartmentsClient, EmployeeAddres
 import { startWith, debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RandomUser } from 'src/app/models/RandomUser';
-import { Name } from '../../../models/RandomUser';
+import { error } from 'console';
 
 
 @Component({
@@ -84,9 +84,9 @@ export class UserFormComponent implements OnInit {
           const id = this.route.snapshot.paramMap.get('userid');
           this.http.post(`https://localhost:7189/api/Employees/${id}/upload-avatar`, formData).subscribe({
             next: res => {
-              console.log(res);
-              this._snackBar.open("Avatar updated", "OK");
-            }, error: err => console.log(err)
+              // console.log(res);
+              this._snackBar.open("Avatar updated", "OK", { panelClass: ["success-snackbar"] });
+            }, error: err => this._snackBar.open(err, "Ok", { panelClass: ["error-snackbar"] })
           })
         }
         this.userForm.controls['avatar'].setValue(formData);
@@ -101,7 +101,7 @@ export class UserFormComponent implements OnInit {
       firstName: [null, [Validators.required]],
       middleName: [null],
       lastName: [null, [Validators.required]],
-      username: [null, [Validators.required]],
+      userName: [null, [Validators.required]],
       title: [null, [Validators.required]],
       gender: [null, [Validators.required]],
       workEmailAddress: [null, [Validators.required, Validators.email]],
@@ -160,7 +160,7 @@ export class UserFormComponent implements OnInit {
             firstName: user.firstName,
             middleName: user.middleName,
             lastName: user.lastName,
-            username: user.userName,
+            userName: user.userName,
             title: user.title,
             gender: user.gender,
             workEmailAddress: user.workEmailAddress,
@@ -242,15 +242,14 @@ export class UserFormComponent implements OnInit {
         next: (result: EmployeeDetailDto) => {
           this._snackBar.open("Employee Updated Sucessfully", "OK", {
             duration: 2000,
-            panelClass: ['mat-toolbar', 'mat-primary']
+            panelClass: ['success-snackbar']
           });
         },
         error: x => {
           this._snackBar.open(`An Error Occured ${x}`, "OK", {
-            duration: 2000,
-            panelClass: ['mat-toolbar', 'mat-warn']
+            panelClass: ['error-snackbar']
           });
-          console.log(x)
+          // console.log(x)
         }
       })
     } else {
@@ -266,13 +265,19 @@ export class UserFormComponent implements OnInit {
             var formData = form.controls['avatar'].value;
             this.http.post(`https://localhost:7189/api/Employees/${result.id}/upload-avatar`, formData).subscribe({
               next: res => {
-                console.log(res);
-              }, error: err => console.log(err)
+                // console.log(res);
+                this._snackBar.open("Employee created successfully", "Ok", { duration: 5000, panelClass: ["success-snackbar"] })
+              }, error: err => this._snackBar.open(`An Error Occured ${err}`, "OK", {
+                panelClass: ['error-snackbar']
+              })
             })
           }
         },
         error: (err: any) => {
-          console.log(err);
+          // console.log(err);
+          this._snackBar.open(`An Error Occured ${err}`, "OK", {
+            panelClass: ['error-snackbar']
+          })
         }
       });
     }
@@ -281,7 +286,7 @@ export class UserFormComponent implements OnInit {
   }
 
   updateTitle(event: any) {
-    console.log(event);
+    // console.log(event);
     this.userForm.controls['title'].setValue(event.value);
   }
 
@@ -297,8 +302,8 @@ export class UserFormComponent implements OnInit {
         validArr.push(name);
       }
     }
-    console.log(`valid count : ${validArr.length}`)
-    console.log(`invalid count : ${invalidArr.length}`)
+    // console.log(`valid count : ${validArr.length}`)
+    // console.log(`invalid count : ${invalidArr.length}`)
   }
 
 
@@ -306,27 +311,59 @@ export class UserFormComponent implements OnInit {
   // TODO: Remove before this goes anywhere other than a dev env lol
   generateRandomUserData() {
     var url = "https://randomuser.me/api/?nat=gb";
-    this.http.get<RandomUser>(url).subscribe(data => {
-      this.userForm.patchValue({
-        firstName: data.results[0].name.first,
-        lastName: data.results[0].name.last,
-        username: data.results[0].login.username + '@example.com',
-        title: data.results[0].name.title,
-        gender: this.titleCaseWord(data.results[0].gender),
-        workEmailAddress: data.results[0].email,
-        workPhoneNumber: data.results[0].phone,
-        workMobileNumber: data.results[0].cell,
-        dateOfBirth: new Date(data.results[0].dob.date),
-        startOfEmployment: new Date(),
-        holidayAllowance: (Math.random() * 40 | 7) + 1,
-        nationalInsuranceNumber: data.results[0].id.value.replace(/\s/g, ""),
-        address: {
-          line1: data.results[0].location.street.number + " " + data.results[0].location.street.name,
-          postcode: data.results[0].location.postcode,
-          county: data.results[0].location.state,
+
+    this.http.get<RandomUser>(url).subscribe(
+      {
+        next: (data) => {
+          this.userForm.patchValue({
+            firstName: data.results[0].name.first,
+            lastName: data.results[0].name.last,
+            userName: data.results[0].login.username + '@example.com',
+            title: data.results[0].name.title,
+            gender: this.titleCaseWord(data.results[0].gender),
+            workEmailAddress: data.results[0].email,
+            workPhoneNumber: data.results[0].phone,
+            workMobileNumber: data.results[0].cell,
+            dateOfBirth: new Date(data.results[0].dob.date),
+            startOfEmployment: new Date(),
+            holidayAllowance: (Math.random() * 40 | 7) + 1,
+            nationalInsuranceNumber: data.results[0].id.value.replace(/\s/g, ""),
+            address: {
+              line1: data.results[0].location.street.number + " " + data.results[0].location.street.name,
+              postcode: data.results[0].location.postcode,
+              county: data.results[0].location.state,
+            },
+          });
         },
-      });
-    });
+        error: (err) => {
+          this._snackBar.open(`An Error Occured ${err}`, "OK", {
+            panelClass: ['error-snackbar']
+          })
+        }
+      }
+    )
+
+    // this.http.get<RandomUser>(url).subscribe(data => {
+    //   this.userForm.patchValue({
+    //     firstName: data.results[0].name.first,
+    //     lastName: data.results[0].name.last,
+    //     userName: data.results[0].login.username + '@example.com',
+    //     title: data.results[0].name.title,
+    //     gender: this.titleCaseWord(data.results[0].gender),
+    //     workEmailAddress: data.results[0].email,
+    //     workPhoneNumber: data.results[0].phone,
+    //     workMobileNumber: data.results[0].cell,
+    //     dateOfBirth: new Date(data.results[0].dob.date),
+    //     startOfEmployment: new Date(),
+    //     holidayAllowance: (Math.random() * 40 | 7) + 1,
+    //     nationalInsuranceNumber: data.results[0].id.value.replace(/\s/g, ""),
+    //     address: {
+    //       line1: data.results[0].location.street.number + " " + data.results[0].location.street.name,
+    //       postcode: data.results[0].location.postcode,
+    //       county: data.results[0].location.state,
+    //     },
+    //   });
+    // });
   }
   // TODO: Remove before this goes anywhere other than a dev env lol
   titleCaseWord(word: string) {

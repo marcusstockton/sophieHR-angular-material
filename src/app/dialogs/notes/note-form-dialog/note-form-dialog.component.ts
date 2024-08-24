@@ -17,10 +17,10 @@ export class NoteFormDialogComponent implements OnInit {
   public form: FormGroup = this.fb.group({
     title: [null, [Validators.required]],
     content: [null, [Validators.required]],
-    noteTypeId:[null, [Validators.required]]
+    noteTypeId: [null, [Validators.required]]
   });
-  
-  
+
+
 
   constructor(
     private fb: FormBuilder,
@@ -44,7 +44,7 @@ export class NoteFormDialogComponent implements OnInit {
         content: this.noteData.content,
         noteTypeId: this.noteData.noteType?.toString()
       });
-    } else{
+    } else {
       this.noteData = {
         content: '',
         title: '',
@@ -55,34 +55,35 @@ export class NoteFormDialogComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    console.log(this.form.getRawValue());
-    
+    // console.log(this.form.getRawValue());
+
     if (this.noteData.id) {
       var data = {
-      content: this.form.get('content')?.value,
-      createdDate: this.noteData.createdDate,
-      employeeId: this.noteData.employeeId,
-      id: this.noteData.id,
-      noteType: Number.parseInt(this.form.get('noteTypeId')?.value),
-      title: this.form.get('title')?.value,
-      updatedDate: this.noteData.updatedDate
-    } as NoteDetailDto;
+        content: this.form.get('content')?.value,
+        createdDate: this.noteData.createdDate,
+        employeeId: this.noteData.employeeId,
+        id: this.noteData.id,
+        noteType: Number.parseInt(this.form.get('noteTypeId')?.value),
+        title: this.form.get('title')?.value,
+        updatedDate: this.noteData.updatedDate
+      } as NoteDetailDto;
       this.notesClient.putNotes(this.noteData.id, data).subscribe(
-        (success)=>{
-        this.dialogRef.close({data:"updated"});
-      }, (error)=>{
-        this.submitted = false;
-      })
+        (success) => {
+          this.dialogRef.close({ data: "updated" });
+        }, (error) => {
+          this.submitted = false;
+
+        })
       // edit
     } else {
       // create
-      var noteCreate:NoteCreateDto = {...this.form.value};
+      var noteCreate: NoteCreateDto = { ...this.form.value };
       this.notesClient.postNotes(this.data.employeeId, noteCreate).subscribe(
-        (success)=>{
-        this.dialogRef.close({data:"created"});
-      }, (error)=>{
-        this.submitted = false; 
-      })
+        (success) => {
+          this.dialogRef.close({ data: "created" });
+        }, (error) => {
+          this.submitted = false;
+        })
     }
   }
 

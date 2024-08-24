@@ -14,7 +14,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         let errorMsg = '';
 
         if (error.error instanceof ProgressEvent) {
-          console.log("Back end issue");
+          // console.log("Back end issue");
           errorMsg = `Error: ${error.statusText}`;
         }
         else if (error.error instanceof Blob && error.error.type == "application/json") {
@@ -25,15 +25,15 @@ export class HttpErrorInterceptor implements HttpInterceptor {
           })
         }
         else if (error.error instanceof ErrorEvent) {
-          console.log('This is client side error');
+          // console.log('This is client side error');
           errorMsg = `Error: ${error.error.message}`;
         }
         else {
-          console.log('This is server side error');
+          // console.log('This is server side error');
           errorMsg = `Error Code: ${error.status},  Message: ${error.message}`;
         }
-        console.log(errorMsg);
-        this._snackBar.open(errorMsg, "Ok", { duration: 5000, panelClass: ['mat-toolbar', 'mat-warn'] });
+        // console.log(errorMsg);
+        this._snackBar.open(errorMsg, "Ok", { duration: 5000, panelClass: ['error-snackbar'] });
         return throwError(() => new Error(errorMsg))
       })
     )

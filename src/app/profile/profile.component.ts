@@ -16,7 +16,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = this.token.getUser();
     this.tokenExpiry = dayjs.default(this.currentUser.expiredTime);
-    console.log(this.currentUser);
+    // console.log(this.currentUser);
   }
 
 }

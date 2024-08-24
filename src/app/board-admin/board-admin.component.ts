@@ -67,29 +67,29 @@ export class BoardAdminComponent implements OnInit, AfterViewInit {
   }
 
   getEmployeeRecord(row: any) {
-    console.log(JSON.stringify(row));
-    this.router.navigate(['/user/'+row.id]);
+    // console.log(JSON.stringify(row));
+    this.router.navigate(['/user/' + row.id]);
   }
 
-  getDepartmentsForCompany(companyId: string){
-    this.departmentClient.getDepartmentsByCompanyId(companyId).subscribe((depts)=>{
+  getDepartmentsForCompany(companyId: string) {
+    this.departmentClient.getDepartmentsByCompanyId(companyId).subscribe((depts) => {
       this.departments = depts;
     })
   }
 
-  addDepartment(){
+  addDepartment() {
     this.openCreateDepartmentDialog();
   }
 
-  
+
   openCreateDepartmentDialog(): void {
     const dialogRef = this.dialog.open(DeptCreateDialogComponent, {
       width: '250px',
-      data: {companyId: this.companyId}
+      data: { companyId: this.companyId }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      // console.log('The dialog was closed');
       this.getDepartmentsForCompany(this.companyId);
     });
   }

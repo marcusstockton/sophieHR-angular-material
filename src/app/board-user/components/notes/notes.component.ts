@@ -23,7 +23,7 @@ export class NotesComponent implements OnInit {
   }
 
   public openNoteDialog(note: any) {
-    console.log("Open Note Dialog hit");
+    // console.log("Open Note Dialog hit");
     const dialogRef = this.dialog.open(NoteFormDialogComponent, { width: '600px', data: { note, employeeId: this.employeeId } });
     dialogRef.afterClosed().subscribe({
       next: (res: any) => {

@@ -1,6 +1,6 @@
-.user-form{
-    width: 90%;
-    padding: 10px;
+.user-form {
+    // width: 90%;
+    padding: 15px;
     // display: flex; 
     // align-items: center; 
     // justify-content: center;
@@ -10,8 +10,8 @@
 //     margin: 0 auto;
 // }
 
-.avatar{
-    padding:2px;
+.avatar {
+    padding: 2px;
     max-width: 20vw;
     width: 100%;
     height: auto;
@@ -21,7 +21,8 @@
 
 ::ng-deep .cdk-overlay-pane {
     width: 350px !important;
-    .mat-mdc-option{
+
+    .mat-mdc-option {
         font-size: small !important;
     }
 }

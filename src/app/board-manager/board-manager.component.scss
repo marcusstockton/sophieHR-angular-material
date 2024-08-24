@@ -1,17 +1,24 @@
 .manager {
-    height: 90vh;
+    // height: 90vh;
     margin: 15px;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item {
+    flex-grow: 0;
+    align-self: auto;
+    box-shadow: 10px 5px 5px lightgray;
 }
 
 .image-card {
     max-width: 30vh;
     display: flex;
     justify-content: center;
-}
-
-.card {
-    max-width: 30vh;
-    align-items: center;
 }
 
 .th {

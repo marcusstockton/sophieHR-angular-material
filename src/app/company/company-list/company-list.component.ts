@@ -39,7 +39,7 @@ export class CompanyListComponent implements OnInit, AfterViewInit {
           this.isLoading = false;
         },
         error: (err) => {
-          console.log(err);
+          // console.log(err);
           let errorMessage = "";
           switch (err.status) {
             case HttpStatusCode.Forbidden:
@@ -51,7 +51,7 @@ export class CompanyListComponent implements OnInit, AfterViewInit {
             default:
               errorMessage = "Something unforeseen went wrong :-(";
           }
-          this._snackBar.open(errorMessage, "Ok");
+          this._snackBar.open(errorMessage, "Ok", { panelClass: ['error-snackbar'] });
           this.isLoading = false;
         }
       }

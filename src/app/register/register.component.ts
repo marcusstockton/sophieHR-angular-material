@@ -14,7 +14,7 @@ export class RegisterComponent {
     email: null,
     password: null
   };
-  
+
   isSuccessful = false;
   isSignUpFailed = false;
   errorMessage = '';
@@ -33,7 +33,7 @@ export class RegisterComponent {
     this.authService.registerNewAdminUser(userReg).subscribe(
       {
         next: (result) => {
-          console.log(result);
+          // console.log(result);
           this.isSuccessful = true;
           this.isSignUpFailed = false;
         }, error: (err) => {
