@@ -8,8 +8,6 @@ import { CompaniesClient, DepartmentDetailDto, DepartmentsClient, EmployeeAddres
 import { startWith, debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RandomUser } from 'src/app/models/RandomUser';
-import { error } from 'console';
-
 
 @Component({
   selector: 'app-user-form',

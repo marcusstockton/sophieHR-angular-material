@@ -8,23 +8,25 @@
     <ng-template #creating>Creating Company</ng-template>
 
     <div *ngIf="companyDetails?.address?.mapImage != null">
-        <img [src]="'data:image/jpg;base64,'+ companyDetails!.address!.mapImage" style="height:200px;" />
+        <img [src]="'data:image/jpg;base64,'+ companyDetails!.address!.mapImage" style="height:200px;"
+            alt="company location" />
     </div>
 
     <div>
-        <img *ngIf="companyDetails?.logo" [src]="'data:image/jpg;base64,'+ companyDetails!.logo" style="height:200px;" />
+        <img *ngIf="companyDetails?.logo" [src]="'data:image/jpg;base64,'+ companyDetails!.logo" style="height:200px;"
+            alt="company logo" />
         <button mat-mini-fab color="primary" aria-label="Company Logo Add/Edit" (click)="openLogoDialog()">
             <mat-icon *ngIf="!editing" matTooltip="Add company logo">add</mat-icon>
             <mat-icon *ngIf="editing" matTooltip="Change company logo">create</mat-icon>
         </button>
     </div>
-    
+
 
     <form (ngSubmit)="submitCompany()" id="companyForm">
         <ng-container [formGroup]="this.companyForm">
             <mat-form-field>
                 <mat-label>Company Name</mat-label>
-                <input matInput formControlName="name" required/>
+                <input matInput formControlName="name" required />
             </mat-form-field>
             <ng-container formGroupName="address">
                 <mat-form-field>
@@ -41,7 +43,7 @@
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Line 4</mat-label>
-                    <input matInput formControlName="line4"/>
+                    <input matInput formControlName="line4" />
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Post code</mat-label>
@@ -52,7 +54,7 @@
                             {{option}}
                         </mat-option>
                     </mat-autocomplete>
-                    
+
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>County</mat-label>
@@ -60,7 +62,8 @@
                 </mat-form-field>
             </ng-container>
         </ng-container>
-        <button mat-raised-button color="primary" type="submit" [disabled]="!companyForm.valid || !companyForm.dirty">Submit</button>
+        <button mat-raised-button color="primary" type="submit"
+            [disabled]="!companyForm.valid || !companyForm.dirty">Submit</button>
     </form>
 
 
