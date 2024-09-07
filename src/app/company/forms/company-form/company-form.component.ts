@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, debounceTime, distinctUntilChanged, filter, finalize, map, pipe, startWith, switchMap, tap } from 'rxjs';
-import { Address, AddressCreateDto, CompaniesClient, CompanyAddress, CompanyCreateDto, CompanyDetailDto, CompanyDetailNoLogo, Result } from 'src/app/client';
+import { Observable, debounceTime, distinctUntilChanged, filter, map, startWith, switchMap } from 'rxjs';
+import { AddressCreateDto, CompaniesClient, CompanyCreateDto, CompanyDetailDto, CompanyDetailNoLogo, Result } from 'src/app/client';
 import { CompanyLogoDialogComponent } from '../../dialogs/company-logo-dialog/company-logo-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -86,7 +86,6 @@ export class CompanyFormComponent implements OnInit {
           this.companyForm.patchValue(res);
         },
         error: (err) => {
-          // console.log('HTTP Error', err);
           this._snackBar.open(err, "Ok", { panelClass: ['error-snackbar'] })
         },
         complete: () => {
@@ -132,7 +131,7 @@ export class CompanyFormComponent implements OnInit {
             this._snackBar.open(err, "Ok", { panelClass: ['error-snackbar'] })
           },
           complete: () => {
-            console.log("Update Company Completed");
+            // console.log("Update Company Completed");
             this._snackBar.open("Successfully updated the company details", "OK", { duration: 2000, panelClass: ['success-snackbar'] });
           }
         });
