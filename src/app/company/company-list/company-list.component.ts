@@ -10,17 +10,16 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-company-list',
   templateUrl: './company-list.component.html',
-  styleUrls: ['./company-list.component.scss']
+  styleUrl: './company-list.component.scss',
 })
 export class CompanyListComponent implements OnInit, AfterViewInit {
-
-  public companies: CompanyDetailNoLogo[];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  displayedColumns: string[] = ['id', 'name', 'createdDate', 'updatedDate', 'postcode', 'lat', 'lon'];
+  displayedColumns: string[] = ['name', 'createdDate', 'updatedDate', 'postcode', 'lat', 'lon'];
 
   constructor(private readonly companyService: CompaniesClient, private _snackBar: MatSnackBar, private router: Router) { }
+
   dataSource = new MatTableDataSource<CompanyDetailNoLogo>();
   isLoading: boolean = false;
 
@@ -33,10 +32,8 @@ export class CompanyListComponent implements OnInit, AfterViewInit {
     this.isLoading = true;
     this.companyService.getCompanies().subscribe(
       {
-        next: (result) => {
-          this.companies = result;
+        next: (result: CompanyDetailNoLogo[]) => {
           this.dataSource.data = result;
-          this.isLoading = false;
         },
         error: (err) => {
           // console.log(err);
@@ -52,8 +49,8 @@ export class CompanyListComponent implements OnInit, AfterViewInit {
               errorMessage = "Something unforeseen went wrong :-(";
           }
           this._snackBar.open(errorMessage, "Ok", { panelClass: ['error-snackbar'] });
-          this.isLoading = false;
-        }
+        },
+        complete: () => this.isLoading = false
       }
     )
   }
@@ -62,4 +59,9 @@ export class CompanyListComponent implements OnInit, AfterViewInit {
     this.router.navigate([`/company/${company.id}`]);
   }
 
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 }

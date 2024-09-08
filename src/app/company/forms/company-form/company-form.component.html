@@ -1,20 +1,21 @@
 <div id="company-form">
 
     <div *ngIf="editing && companyDetails;else creating">
-        <p>
+        <h2>
             Editing Company {{companyDetails.name}}
-        </p>
+        </h2>
     </div>
-    <ng-template #creating>Creating Company</ng-template>
+    <ng-template #creating>
+        <h2>Creating Company</h2>
+    </ng-template>
 
-    <div *ngIf="companyDetails?.address?.mapImage != null">
-        <img [src]="'data:image/jpg;base64,'+ companyDetails!.address!.mapImage" style="height:200px;"
-            alt="company location" />
+    <div *ngIf="companyDetails?.address?.mapImage != null" id="company-map">
+        <img [src]="'data:image/jpg;base64,'+ companyDetails!.address!.mapImage" alt="company location" />
     </div>
 
     <div>
-        <img *ngIf="companyDetails?.logo" [src]="'data:image/jpg;base64,'+ companyDetails!.logo" style="height:200px;"
-            alt="company logo" />
+        <img *ngIf="companyDetails?.logo" [src]="'data:image/jpg;base64,'+ companyDetails!.logo" alt="company logo"
+            id="company-logo" />
         <button mat-mini-fab color="primary" aria-label="Company Logo Add/Edit" (click)="openLogoDialog()">
             <mat-icon *ngIf="!editing" matTooltip="Add company logo">add</mat-icon>
             <mat-icon *ngIf="editing" matTooltip="Change company logo">create</mat-icon>
@@ -62,8 +63,11 @@
                 </mat-form-field>
             </ng-container>
         </ng-container>
-        <button mat-raised-button color="primary" type="submit"
-            [disabled]="!companyForm.valid || !companyForm.dirty">Submit</button>
+        <div class="button-row">
+            <button mat-raised-button color="primary" type="submit"
+                [disabled]="!companyForm.valid || !companyForm.dirty">Submit</button>
+        </div>
+
     </form>
 
 

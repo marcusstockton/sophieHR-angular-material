@@ -1,18 +1,13 @@
 <h1 mat-dialog-title>{{editing ? "Change" : "Add"}} Company Logo</h1>
 <mat-dialog-content class="mat-typography">
-<p>company-logo-dialog works!</p>
-<p>{{data.companyId}}</p>
-
-<div *ngIf="preview">
-<img [src]="preview" style="height:200px;" />
-</div>
-<input #imageInput
-         type="file"
-         accept="image/*"
-         (change)="processFile(imageInput)">
-<p *ngIf="error && error.length > 0" class="text-danger">{{error}}</p>
+  <div *ngIf="preview">
+    <img [src]="preview" id="preview" alt="preview" />
+  </div>
+  <input #imageInput type="file" accept="image/*" (change)="processFile(imageInput)">
+  <p *ngIf="error && error.length > 0" class="text-danger">{{error}}</p>
 </mat-dialog-content>
-<mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="submit()">{{editing ? "Update" : "Add"}}</button>
-  </mat-dialog-actions>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="submit()">{{editing ? "Update" :
+    "Add"}}</button>
+</mat-dialog-actions>

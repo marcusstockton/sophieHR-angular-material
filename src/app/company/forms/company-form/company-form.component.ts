@@ -162,7 +162,6 @@ export class CompanyFormComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // console.log(`Dialog result: ${result}`);
       this.GetCompanyById();
     });
   }

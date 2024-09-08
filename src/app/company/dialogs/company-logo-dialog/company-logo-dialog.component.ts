@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CompaniesClient } from 'src/app/client';
 import { FileParameter } from '../../../client';
-import { DIALOG_DATA } from '@angular/cdk/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-company-logo-dialog',
@@ -12,32 +12,32 @@ import { DIALOG_DATA } from '@angular/cdk/dialog';
 
 export class CompanyLogoDialogComponent {
   public editing: boolean;
-  public preview:string;
-  public error:string;
+  public preview: string;
+  public error: string;
   private logo: FileParameter;
 
   selectedFile: ImageSnippet;
   constructor(@Inject(MAT_DIALOG_DATA) public data: { companyId: string },
     private dialogRef: MatDialogRef<CompanyLogoDialogComponent>,
-    private _companyService: CompaniesClient) {
-    if(data.companyId){
+    private _companyService: CompaniesClient, private _snackBar: MatSnackBar) {
+    if (data.companyId) {
       this.editing = true;
     }
-   }
+  }
 
-   processFile(imageInput: any) {
+  processFile(imageInput: any) {
     const file: File = imageInput.files[0];
     const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {
       this.error = '';
       this.selectedFile = new ImageSnippet(event.target.result, file);
-      if(this.selectedFile.file.size > 1000000){
+      if (this.selectedFile.file.size > 1000000) {
         this.error = "Image size too large. Needs to be less than 1MB.";
         return;
       }
       this.preview = this.selectedFile.src;
-      
+
       this.logo = {
         data: this.selectedFile.file,
         fileName: this.selectedFile.file.name
@@ -47,14 +47,15 @@ export class CompanyLogoDialogComponent {
     reader.readAsDataURL(file);
   }
 
-  submit(){
+  submit() {
     this._companyService.uploadLogo(this.data.companyId, this.logo).subscribe(
       {
         next: (res) => {
+          this._snackBar.open("Successfully updated the company logo", "OK", { duration: 2000, panelClass: ['success-snackbar'] });
           this.dialogRef.close(res);
         },
         error: (err) => {
-          console.log('HTTP Error', err)
+          this._snackBar.open(err, "Ok", { panelClass: ['error-snackbar'] })
         }
       }
     )
@@ -62,5 +63,5 @@ export class CompanyLogoDialogComponent {
 }
 
 class ImageSnippet {
-  constructor(public src: string, public file: File) {}
+  constructor(public src: string, public file: File) { }
 }

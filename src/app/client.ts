@@ -1531,6 +1531,13 @@ export class EmployeesClient implements IEmployeesClient {
             result200 = EmployeeDetailDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -1661,16 +1668,16 @@ export class EmployeesClient implements IEmployeesClient {
             result200 = EmployeeDetailDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
-        } else if (status === 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("A server side error occurred.", status, _responseText, _headers);
-            }));
         } else if (status === 404) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result404: any = null;
             let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result404 = ProblemDetails.fromJS(resultData404);
             return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("A server side error occurred.", status, _responseText, _headers);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -3232,6 +3239,9 @@ export class AddressBasic implements IAddressBasic {
     line4?: string | undefined;
     postcode?: string | undefined;
     county?: string | undefined;
+    mapImage?: string | undefined;
+    lat?: number;
+    lon?: number;
 
     constructor(data?: IAddressBasic) {
         if (data) {
@@ -3250,6 +3260,9 @@ export class AddressBasic implements IAddressBasic {
             this.line4 = _data["line4"];
             this.postcode = _data["postcode"];
             this.county = _data["county"];
+            this.mapImage = _data["mapImage"];
+            this.lat = _data["lat"];
+            this.lon = _data["lon"];
         }
     }
 
@@ -3268,6 +3281,9 @@ export class AddressBasic implements IAddressBasic {
         data["line4"] = this.line4;
         data["postcode"] = this.postcode;
         data["county"] = this.county;
+        data["mapImage"] = this.mapImage;
+        data["lat"] = this.lat;
+        data["lon"] = this.lon;
         return data;
     }
 }
@@ -3279,6 +3295,9 @@ export interface IAddressBasic {
     line4?: string | undefined;
     postcode?: string | undefined;
     county?: string | undefined;
+    mapImage?: string | undefined;
+    lat?: number;
+    lon?: number;
 }
 
 export class KeyValuePairOfGuidAndString implements IKeyValuePairOfGuidAndString {
@@ -3462,6 +3481,8 @@ export class AddressCreateDto implements IAddressCreateDto {
     postcode?: string | undefined;
     county?: string | undefined;
     mapImage?: string | undefined;
+    lat?: number;
+    lon?: number;
 
     constructor(data?: IAddressCreateDto) {
         if (data) {
@@ -3481,6 +3502,8 @@ export class AddressCreateDto implements IAddressCreateDto {
             this.postcode = _data["postcode"];
             this.county = _data["county"];
             this.mapImage = _data["mapImage"];
+            this.lat = _data["lat"];
+            this.lon = _data["lon"];
         }
     }
 
@@ -3500,6 +3523,8 @@ export class AddressCreateDto implements IAddressCreateDto {
         data["postcode"] = this.postcode;
         data["county"] = this.county;
         data["mapImage"] = this.mapImage;
+        data["lat"] = this.lat;
+        data["lon"] = this.lon;
         return data;
     }
 }
@@ -3512,6 +3537,8 @@ export interface IAddressCreateDto {
     postcode?: string | undefined;
     county?: string | undefined;
     mapImage?: string | undefined;
+    lat?: number;
+    lon?: number;
 }
 
 export class PostcodeLookup implements IPostcodeLookup {

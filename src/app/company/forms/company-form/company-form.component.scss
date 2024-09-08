@@ -5,4 +5,20 @@
 
 #companyForm {
     display: grid;
+    max-width: 600px;
+}
+
+.button-row {
+    display: table-cell;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+#company-map {
+    height: 200px;
+}
+
+#company-logo {
+    height: 200px;
 }
