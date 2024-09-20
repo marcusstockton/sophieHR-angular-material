@@ -46,3 +46,4 @@ Calendar library - https://mattlewis92.github.io/angular-calendar/docs/
 ## Update Commands
 
 ng update
+npm update --save
