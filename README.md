@@ -41,3 +41,8 @@ Get UK Bank holidays - https://www.gov.uk/bank-holidays.json
 ## Possible libraries to use
 
 Calendar library - https://mattlewis92.github.io/angular-calendar/docs/
+
+
+## Update Commands
+
+ng update
