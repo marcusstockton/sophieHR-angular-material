@@ -5,9 +5,10 @@ import { AccountClient, UserLogins } from '../client';
 import { TokenStorageService } from '../_services/token-storage.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    standalone: false
 })
 export class LoginComponent implements OnInit {
   retrievingManagers: boolean = false;

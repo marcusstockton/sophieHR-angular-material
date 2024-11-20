@@ -8,9 +8,10 @@ import { CompaniesClient, CompanyDetailNoLogo } from 'src/app/client';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-company-list',
-  templateUrl: './company-list.component.html',
-  styleUrl: './company-list.component.scss',
+    selector: 'app-company-list',
+    templateUrl: './company-list.component.html',
+    styleUrl: './company-list.component.scss',
+    standalone: false
 })
 export class CompanyListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;

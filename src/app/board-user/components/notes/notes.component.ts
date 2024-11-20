@@ -4,9 +4,10 @@ import { NoteDetailDto, NotesClient, NoteType } from 'src/app/client';
 import { NoteFormDialogComponent } from 'src/app/dialogs/notes/note-form-dialog/note-form-dialog.component';
 
 @Component({
-  selector: 'app-notes',
-  templateUrl: './notes.component.html',
-  styleUrls: ['./notes.component.scss']
+    selector: 'app-notes',
+    templateUrl: './notes.component.html',
+    styleUrls: ['./notes.component.scss'],
+    standalone: false
 })
 export class NotesComponent implements OnInit {
 

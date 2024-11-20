@@ -7,9 +7,10 @@ import { CompaniesClient, CompanyDetailDto, EmployeeListDto, EmployeesClient } f
 import { TokenStorageService } from '../_services/token-storage.service';
 
 @Component({
-  selector: 'app-board-manager',
-  templateUrl: './board-manager.component.html',
-  styleUrls: ['./board-manager.component.scss']
+    selector: 'app-board-manager',
+    templateUrl: './board-manager.component.html',
+    styleUrls: ['./board-manager.component.scss'],
+    standalone: false
 })
 export class BoardManagerComponent implements OnInit, AfterViewInit {
 

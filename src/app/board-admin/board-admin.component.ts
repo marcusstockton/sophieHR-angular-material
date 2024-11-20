@@ -9,9 +9,10 @@ import { DeptCreateDialogComponent } from '../dialogs/departments/dept-create-di
 import { UserService } from '../_services/user.service';
 
 @Component({
-  selector: 'app-board-admin',
-  templateUrl: './board-admin.component.html',
-  styleUrls: ['./board-admin.component.scss']
+    selector: 'app-board-admin',
+    templateUrl: './board-admin.component.html',
+    styleUrls: ['./board-admin.component.scss'],
+    standalone: false
 })
 export class BoardAdminComponent implements OnInit, AfterViewInit {
 

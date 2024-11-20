@@ -3,9 +3,10 @@ import { TokenStorageService } from '../_services/token-storage.service';
 import * as dayjs from 'dayjs';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+    selector: 'app-profile',
+    templateUrl: './profile.component.html',
+    styleUrls: ['./profile.component.scss'],
+    standalone: false
 })
 export class ProfileComponent implements OnInit {
 

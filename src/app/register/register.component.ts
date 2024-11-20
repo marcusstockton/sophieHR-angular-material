@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { AccountClient, RegisterUserDto } from '../client';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+    selector: 'app-register',
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.scss'],
+    standalone: false
 })
 export class RegisterComponent {
 

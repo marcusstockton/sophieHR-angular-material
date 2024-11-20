@@ -9,9 +9,10 @@ import * as dayjs from 'dayjs';
 
 
 @Component({
-  selector: 'app-board-user',
-  templateUrl: './board-user.component.html',
-  styleUrls: ['./board-user.component.scss']
+    selector: 'app-board-user',
+    templateUrl: './board-user.component.html',
+    styleUrls: ['./board-user.component.scss'],
+    standalone: false
 })
 export class BoardUserComponent implements OnInit {
 

@@ -4,9 +4,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NoteCreateDto, NoteDetailDto, NotesClient } from 'src/app/client';
 
 @Component({
-  selector: 'app-note-form-dialog',
-  templateUrl: './note-form-dialog.component.html',
-  styleUrls: ['./note-form-dialog.component.scss']
+    selector: 'app-note-form-dialog',
+    templateUrl: './note-form-dialog.component.html',
+    styleUrls: ['./note-form-dialog.component.scss'],
+    standalone: false
 })
 export class NoteFormDialogComponent implements OnInit {
 

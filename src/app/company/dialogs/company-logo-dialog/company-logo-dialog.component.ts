@@ -5,9 +5,10 @@ import { FileParameter } from '../../../client';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-company-logo-dialog',
-  templateUrl: './company-logo-dialog.component.html',
-  styleUrls: ['./company-logo-dialog.component.scss']
+    selector: 'app-company-logo-dialog',
+    templateUrl: './company-logo-dialog.component.html',
+    styleUrls: ['./company-logo-dialog.component.scss'],
+    standalone: false
 })
 
 export class CompanyLogoDialogComponent {

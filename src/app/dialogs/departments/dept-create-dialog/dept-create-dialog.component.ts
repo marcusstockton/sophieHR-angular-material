@@ -5,9 +5,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DepartmentCreateDto, DepartmentsClient } from 'src/app/client';
 
 @Component({
-  selector: 'app-dept-create-dialog',
-  templateUrl: './dept-create-dialog.component.html',
-  styleUrls: ['./dept-create-dialog.component.scss']
+    selector: 'app-dept-create-dialog',
+    templateUrl: './dept-create-dialog.component.html',
+    styleUrls: ['./dept-create-dialog.component.scss'],
+    standalone: false
 })
 export class DeptCreateDialogComponent {
 

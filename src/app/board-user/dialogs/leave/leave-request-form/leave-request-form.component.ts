@@ -5,9 +5,10 @@ import { CreateLeaveRequest, LeaveRequest, LeaveRequestsClient, LeaveType } from
 import { map } from 'rxjs';
 
 @Component({
-  selector: 'app-leave-request-form',
-  templateUrl: './leave-request-form.component.html',
-  styleUrls: ['./leave-request-form.component.scss']
+    selector: 'app-leave-request-form',
+    templateUrl: './leave-request-form.component.html',
+    styleUrls: ['./leave-request-form.component.scss'],
+    standalone: false
 })
 export class LeaveRequestFormComponent implements OnInit {
 

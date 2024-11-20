@@ -5,9 +5,10 @@ import { LeaveRequestFormComponent } from '../../dialogs/leave/leave-request-for
 import { LeaveType } from 'src/app/client';
 
 @Component({
-  selector: 'app-leave-list',
-  templateUrl: './leave-list.component.html',
-  styleUrls: ['./leave-list.component.scss']
+    selector: 'app-leave-list',
+    templateUrl: './leave-list.component.html',
+    styleUrls: ['./leave-list.component.scss'],
+    standalone: false
 })
 export class LeaveListComponent implements OnInit {
 
