@@ -41,16 +41,6 @@ body {
   // border: 1px blue dashed; // <-- Just for debugging
 }
 
-// .errorsnackbar {
-//   background-color: red;
-//   color: #f7f7f7;
-// }
-
-// .successsnackbar {
-//   background-color: green;
-//   color: #f7f7f7;
-// }
-
 .mat-mdc-snack-bar-container {
   &.success-snackbar {
     --mdc-snackbar-container-color: green;
@@ -70,9 +60,3 @@ body {
 .container {
   padding: 10px;
 }
-
-// .toolbar-title{
-//   padding: 10px;
-//   background-color: #123f13;
-//   color: #edeef1;
-// }

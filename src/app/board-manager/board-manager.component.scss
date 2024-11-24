@@ -13,6 +13,15 @@
     flex-grow: 0;
     align-self: auto;
     box-shadow: 10px 5px 5px lightgray;
+
+    mat-card {
+        padding: 1em;
+    }
+}
+
+.centre-card {
+    display: grid;
+    justify-items: center;
 }
 
 .image-card {

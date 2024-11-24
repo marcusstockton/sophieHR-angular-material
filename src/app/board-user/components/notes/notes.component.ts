@@ -2,12 +2,13 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NoteDetailDto, NotesClient, NoteType } from 'src/app/client';
 import { NoteFormDialogComponent } from 'src/app/dialogs/notes/note-form-dialog/note-form-dialog.component';
+import * as dayjs from 'dayjs';
 
 @Component({
-    selector: 'app-notes',
-    templateUrl: './notes.component.html',
-    styleUrls: ['./notes.component.scss'],
-    standalone: false
+  selector: 'app-notes',
+  templateUrl: './notes.component.html',
+  styleUrls: ['./notes.component.scss'],
+  standalone: false
 })
 export class NotesComponent implements OnInit {
 
@@ -28,7 +29,7 @@ export class NotesComponent implements OnInit {
     const dialogRef = this.dialog.open(NoteFormDialogComponent, { width: '600px', data: { note, employeeId: this.employeeId } });
     dialogRef.afterClosed().subscribe({
       next: (res: any) => {
-        if (res.data === 'created' || res.data === 'updated') {
+        if (res.data === 'created' || res.data === 'updated' || res.data == "deleted") {
           this.getEmployeeNotes(this.employeeId);
         }
       },

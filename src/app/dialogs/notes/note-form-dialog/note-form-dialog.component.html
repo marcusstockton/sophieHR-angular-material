@@ -31,10 +31,12 @@
             </div>
         </div>
     </form>
-    <small class="row" *ngIf="this.noteData">Created on {{noteData.createdDate | date:'medium'}}</small>
+    <small class="row" *ngIf="this.noteData.createdDate">Created on {{noteData.createdDate | date:'medium'}}</small>
     <small class="row" *ngIf="this.noteData.updatedDate">Updated on {{noteData.updatedDate | date:'medium'}}</small>
 </mat-dialog-content>
 <mat-dialog-actions>
+    <button mat-raised-button color="warn" [hidden]="noteData.id == null"
+        (click)="deleteNote(noteData.id!)">Delete</button>
     <button mat-raised-button mat-dialog-close>Cancel</button>
     <button mat-raised-button color="primary" (click)="onSubmit()"
         [disabled]="!form.valid || !form.dirty || submitted">Ok</button>

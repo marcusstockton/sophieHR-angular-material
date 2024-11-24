@@ -7,10 +7,10 @@ import { CompaniesClient, CompanyDetailDto, EmployeeListDto, EmployeesClient } f
 import { TokenStorageService } from '../_services/token-storage.service';
 
 @Component({
-    selector: 'app-board-manager',
-    templateUrl: './board-manager.component.html',
-    styleUrls: ['./board-manager.component.scss'],
-    standalone: false
+  selector: 'app-board-manager',
+  templateUrl: './board-manager.component.html',
+  styleUrls: ['./board-manager.component.scss'],
+  standalone: false
 })
 export class BoardManagerComponent implements OnInit, AfterViewInit {
 
@@ -58,11 +58,16 @@ export class BoardManagerComponent implements OnInit, AfterViewInit {
   getCompany() {
     this.companyService.getCompany(this.user['companyId']).subscribe((result: CompanyDetailDto) => {
       this.company = result;
-      this.companyService.getMapFromLatLong(this.company.address?.lat, this.company.address?.lon, undefined, undefined, undefined, undefined).subscribe({
-        next: img => {
-          this.companyMap = img;
-        }
-      })
+      if (this.company.address?.mapImage == null && this.company.address?.lat! > 0 && this.company.address?.lon! > 0) {
+        this.companyService.getMapFromLatLong(this.company.address?.lat, this.company.address?.lon, undefined, undefined, undefined, undefined).subscribe({
+          next: img => {
+            this.companyMap = img;
+          }
+        })
+      }
+      else {
+        this.companyMap = this.company.address?.mapImage!
+      }
     });
   }
 
