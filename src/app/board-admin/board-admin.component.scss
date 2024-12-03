@@ -1,48 +1,85 @@
-.admin {
-    height: 90vh;
-    display: flex;
-    flex-direction: column;
-    width: 90%;
-    padding-left: 5%;
+// .admin {
+//     height: 90vh;
+//     display: flex;
+//     flex-direction: column;
+//     width: 90%;
+//     padding-left: 5%;
+// }
+
+// .detail-card {
+//     display: flex;
+//     flex-direction: column;
+//     min-width: 15vw;
+//     max-width: 20vw;
+//     align-content: center;
+//     align-items: center;
+// }
+
+// .image-card {
+//     max-width: 20vh;
+//     display: flex;
+//     justify-content: center;
+// }
+
+// .card-row {
+//     display: flex;
+//     flex-direction: row;
+//     padding-top: 2vh;
+//     justify-content: space-between;
+//     flex: 1 1 auto;
+// }
+
+// #customer-select {
+//     background-color: lightgray;
+// }
+
+
+// .table {
+//     width: 100%;
+
+//     table {
+//         width: 100%;
+//     }
+// }
+
+// .mat-column-department,
+// .mat-column-holidayAllowance {
+//     text-align: center;
+// }
+.item1 {
+    grid-area: header;
 }
 
-.detail-card {
-    display: flex;
-    flex-direction: column;
-    min-width: 15vw;
-    max-width: 20vw;
-    align-content: center;
-    align-items: center;
+.item2 {
+    grid-area: menu;
 }
 
-.image-card {
-    max-width: 20vh;
-    display: flex;
-    justify-content: center;
+.item3 {
+    grid-area: main;
 }
 
-.card-row {
-    display: flex;
-    flex-direction: row;
-    padding-top: 2vh;
-    justify-content: space-between;
-    flex: 1 1 auto;
+.item4 {
+    grid-area: right;
 }
 
-#customer-select {
-    background-color: lightgray;
+.item5 {
+    grid-area: footer;
 }
 
-
-.table {
-    width: 100%;
-
-    table {
-        width: 100%;
-    }
+.grid-container {
+    display: grid;
+    grid-template-areas:
+        'header header header header header header'
+        'menu main main main . right'
+        'menu footer footer footer footer footer';
+    grid-gap: 10px;
+    background-color: #2196F3;
+    padding: 10px;
 }
 
-.mat-column-department,
-.mat-column-holidayAllowance {
+.grid-container>div {
+    background-color: rgba(255, 255, 255, 0.8);
     text-align: center;
+    padding: 20px 0;
+    font-size: 30px;
 }

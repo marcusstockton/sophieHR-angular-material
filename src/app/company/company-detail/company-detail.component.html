@@ -1,8 +1,23 @@
 <div class="company-detail">
 
-  <span *ngIf="company">
+  <div class="item1">{{company.name}}</div>
+  <div class="item2">Menu</div>
+  <div class="item3">Main</div>
+  <div class="item4">Right</div>
 
-    <div class="grid-container">
+  <div class="item6"><img src="data:image/png;base64,{{company.logo}}" alt="placeholder" id="logo" /></div>
+
+  <div class="item5">
+    <footer>
+      <div layout="row" layout-align="center center" flex>
+        <button mat-raised-button color="accent" [routerLink]="['./edit']"> Edit</button>
+      </div>
+    </footer>
+  </div>
+</div>
+<!-- <span *ngIf="company"> -->
+
+<!-- <div class="grid-container">
       <div class="item1">
         <img src="data:image/png;base64,{{company.logo}}" alt="placeholder" id="logo" />
       </div>
@@ -22,16 +37,16 @@
       <div class="item7">7</div>
       <div class="item8">8</div>
       <div class="item8">9</div>
-    </div>
+    </div> -->
 
 
-    <!-- <mat-card class="image-card" *ngIf="company.logo">
+<!-- <mat-card class="image-card" *ngIf="company.logo">
           <img mat-card-image src="data:image/png;base64,{{company.logo}}" alt="{{company.name}} logo" id="logo" />
         </mat-card> -->
 
 
 
-    <!-- <mat-card class="detail-card">
+<!-- <mat-card class="detail-card">
           <mat-card-header>
             <mat-card-title>{{company.name}}</mat-card-title>
             <mat-card-content>
@@ -45,7 +60,7 @@
         </mat-card> -->
 
 
-    <!-- <mat-card class="detail-card">
+<!-- <mat-card class="detail-card">
           <mat-card-header>
             <mat-card-title>Employees</mat-card-title>
           </mat-card-header>
@@ -53,11 +68,11 @@
             {{company.employeeCount}}
           </mat-card-content>
         </mat-card> -->
-  </span>
+<!-- </span> -->
 
-  <footer>
+<!-- <footer>
     <div layout="row" layout-align="center center" flex>
       <button mat-raised-button color="accent" [routerLink]="['./edit']"> Edit</button>
     </div>
   </footer>
-</div>
+</div> -->
