@@ -64,6 +64,7 @@
 
 .item5 {
   grid-area: footer;
+  justify-content: flex-end;
 }
 
 .item6 {
@@ -75,15 +76,12 @@
   grid-template-areas:
     'logo . header header header header'
     'menu main main main right right'
-    'menu main main main right right'
-    'menu main main main right right'
-    'menu main main main right right'
-    'menu main main main right right'
     'footer footer footer footer footer footer';
+  grid-template-rows: 1fr 1.5fr auto;
   grid-gap: 10px;
   background-color: #2196F3;
   padding: 10px;
-  height: 95%;
+  height: calc(100vh - 64px);
 }
 
 .company-detail>div {

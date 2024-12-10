@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NotesComponent } from './notes.component';
+import { NotesClient } from 'src/app/client';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 describe('NotesComponent', () => {
   let component: NotesComponent;
@@ -8,9 +10,10 @@ describe('NotesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NotesComponent ]
+      declarations: [NotesComponent],
+      providers: [NotesClient, provideHttpClient(withFetch())]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(NotesComponent);
     component = fixture.componentInstance;

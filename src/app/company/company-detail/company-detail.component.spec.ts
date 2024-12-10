@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CompaniesClient } from 'src/app/client';
 
 import { CompanyDetailComponent } from './company-detail.component';
+import { RouterModule } from '@angular/router';
 
 describe('CompanyDetailComponent', () => {
   let component: CompanyDetailComponent;
@@ -11,12 +12,13 @@ describe('CompanyDetailComponent', () => {
     const mockCompaniesClient = jasmine.createSpyObj('CompaniesClient', ['getCompany'])
 
     await TestBed.configureTestingModule({
-      declarations: [ CompanyDetailComponent ],
-      providers:[
+      declarations: [CompanyDetailComponent],
+      imports: [RouterModule.forRoot([])],
+      providers: [
         { provide: CompaniesClient, useValue: mockCompaniesClient },
       ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

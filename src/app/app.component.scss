@@ -35,3 +35,9 @@
   top: 0;
   z-index: 1;
 }
+
+:host ::ng-deep .footer-buttons {
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 20px;
+}

@@ -68,10 +68,12 @@
 
 .grid-container {
     display: grid;
+    height: calc(100vh - 64px);
     grid-template-areas:
         'header header header header header header'
         'menu main main main . right'
         'menu footer footer footer footer footer';
+    grid-template-rows: 1fr 1.5fr auto;
     grid-gap: 10px;
     background-color: #2196F3;
     padding: 10px;

@@ -6,10 +6,10 @@ import { Location } from '@angular/common';
 
 
 @Component({
-    selector: 'app-company-detail',
-    templateUrl: './company-detail.component.html',
-    styleUrls: ['./company-detail.component.scss'],
-    standalone: false
+  selector: 'app-company-detail',
+  templateUrl: './company-detail.component.html',
+  styleUrls: ['./company-detail.component.scss'],
+  standalone: false
 })
 export class CompanyDetailComponent {
   private _companyId: string;
