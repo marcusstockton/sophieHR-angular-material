@@ -8,10 +8,10 @@ import { CompanyLogoDialogComponent } from '../../dialogs/company-logo-dialog/co
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-    selector: 'app-company-form',
-    templateUrl: './company-form.component.html',
-    styleUrls: ['./company-form.component.scss'],
-    standalone: false
+  selector: 'app-company-form',
+  templateUrl: './company-form.component.html',
+  styleUrls: ['./company-form.component.scss'],
+  standalone: false
 })
 export class CompanyFormComponent implements OnInit {
 

@@ -81,7 +81,7 @@
   grid-gap: 10px;
   background-color: #2196F3;
   padding: 10px;
-  height: calc(100vh - 64px);
+  height: calc(100vh - 82px);
 }
 
 .company-detail>div {
@@ -89,4 +89,10 @@
   text-align: center;
   padding: 20px 0;
   font-size: 30px;
+}
+
+#mapImage {
+  width: fit-content;
+  height: fit-content;
+  object-fit: cover;
 }

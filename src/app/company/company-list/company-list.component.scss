@@ -16,5 +16,13 @@ th.mat-header-cell {
 }
 
 #filter {
-    width: 90%;
+    font-size: 14px;
+    width: 100%;
+}
+
+#loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
 }
