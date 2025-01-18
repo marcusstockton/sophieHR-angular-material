@@ -1,24 +1,31 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CompaniesClient } from 'src/app/client';
-
+import { CompaniesClient, CompanyDetailDto } from 'src/app/client';
 import { CompanyDetailComponent } from './company-detail.component';
 import { RouterModule } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 describe('CompanyDetailComponent', () => {
   let component: CompanyDetailComponent;
   let fixture: ComponentFixture<CompanyDetailComponent>;
+  let mockCompaniesClient: jasmine.SpyObj<CompaniesClient>;
 
   beforeEach(async () => {
-    const mockCompaniesClient = jasmine.createSpyObj('CompaniesClient', ['getCompany'])
+    mockCompaniesClient = jasmine.createSpyObj('CompaniesClient', ['getCompany']);
 
     await TestBed.configureTestingModule({
       declarations: [CompanyDetailComponent],
       imports: [RouterModule.forRoot([])],
       providers: [
         { provide: CompaniesClient, useValue: mockCompaniesClient },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: of({ companyid: "123" })
+          }
+        }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -29,5 +36,30 @@ describe('CompanyDetailComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should set companyId from route params', () => {
+    expect(component.companyId).toBe("123");
+  });
+
+  it('should call getCompanyDetails on init', () => {
+    spyOn(component, 'getCompanyDetails');
+    component.ngOnInit();
+    expect(component.getCompanyDetails).toHaveBeenCalledWith('123');
+  });
+
+  it('should set company on successful getCompany', () => {
+    const mockCompanyDetail = { id: '123', name: 'Test Company' } as CompanyDetailDto;
+    mockCompaniesClient.getCompany.and.returnValue(of(mockCompanyDetail));
+
+    component.getCompanyDetails('123');
+
+    expect(component.company).toEqual(mockCompanyDetail);
+  });
+
+  it('should navigate to edit company on editCompany call', () => {
+    const routerSpy = spyOn(component['router'], 'navigate');
+    component.editCompany('123');
+    expect(routerSpy).toHaveBeenCalledWith(['/company/123/edit', { companyid: '123' }]);
   });
 });
