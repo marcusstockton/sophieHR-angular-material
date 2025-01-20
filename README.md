@@ -47,3 +47,9 @@ Calendar library - https://mattlewis92.github.io/angular-calendar/docs/
 
 ng update
 npm update --save
+
+
+## Docker commands
+
+```docker build -t sophiehr-ui .```
+``` docker run --name sophiehr-ui -d -p 8080:80 sophiehr-ui```
