@@ -57,6 +57,14 @@ body {
   }
 }
 
+.mat-mdc-snack-bar-container {
+  &.warn-snackbar {
+    --mdc-snackbar-container-color: #fff3cd;
+    --mat-snack-bar-button-color: black;
+    --mdc-snackbar-supporting-text-color: #856404;
+  }
+}
+
 .container {
   padding: 10px;
 }

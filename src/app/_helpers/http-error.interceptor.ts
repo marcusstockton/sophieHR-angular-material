@@ -20,7 +20,17 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         else if (error.error instanceof Blob && error.error.type == "application/json") {
           error.error.text().then((err) => {
             errorMsg = err;
-            this._snackBar.open(errorMsg, "Ok", { duration: 5000, panelClass: ['mat-toolbar', 'mat-warn'] });
+            this._snackBar.open(errorMsg, "Ok", { duration: 5000, panelClass: ['warn-snackbar'] });
+            return throwError(() => new Error(errorMsg))
+          })
+        }
+        else if (error.error instanceof Blob && error.error.type == "application/problem+json") {
+          error.error.text().then((err) => {
+            let errorObj = JSON.parse(err);
+            errorObj.errors.id.forEach((x: any) => {
+              errorMsg += x + '\n';
+            })
+            this._snackBar.open(errorMsg, "Ok", { duration: 5000, panelClass: ['warn-snackbar'] });
             return throwError(() => new Error(errorMsg))
           })
         }
