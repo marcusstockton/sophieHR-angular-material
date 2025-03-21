@@ -21,9 +21,9 @@
   </button>
 </mat-toolbar>
 
-<mat-sidenav-container class="sidenav-container" autosize>
+<mat-sidenav-container class="sidenav-container" [ngClass]="{'full-height': !this.tokenStorageService.isLoggedIn}"
+  autosize>
   <mat-sidenav #drawer class="sidenav" mode="side" [opened]="(this.tokenStorageService.isLoggedIn)">
-
     @switch (this.role!) {
     @case ('Admin') {
     <mat-nav-list>

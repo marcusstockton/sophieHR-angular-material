@@ -1,22 +1,18 @@
 .user-form {
-    // width: 90%;
     padding: 15px;
-    // display: flex; 
-    // align-items: center; 
-    // justify-content: center;
 }
 
-// form{
-//     margin: 0 auto;
-// }
 
 .avatar {
-    padding: 2px;
+    padding: 8px;
     max-width: 20vw;
     width: 100%;
     height: auto;
     display: block;
     border: 1px solid black;
+    box-shadow:
+        3px 3px lightgray,
+        -0.5em 0 0.4em lightgray;
 }
 
 ::ng-deep .cdk-overlay-pane {
