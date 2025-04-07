@@ -13,6 +13,9 @@ describe('CompanyDetailComponent', () => {
   beforeEach(async () => {
     mockCompaniesClient = jasmine.createSpyObj('CompaniesClient', ['getCompany']);
 
+    // Ensure getCompany returns an observable
+    mockCompaniesClient.getCompany.and.returnValue(of({ id: '123', name: 'Test Company' } as CompanyDetailDto));
+
     await TestBed.configureTestingModule({
       declarations: [CompanyDetailComponent],
       imports: [RouterModule.forRoot([])],
@@ -21,7 +24,7 @@ describe('CompanyDetailComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            params: of({ companyid: "123" })
+            params: of({ companyid: '123' })
           }
         }
       ]
@@ -39,11 +42,11 @@ describe('CompanyDetailComponent', () => {
   });
 
   it('should set companyId from route params', () => {
-    expect(component.companyId).toBe("123");
+    expect(component.companyId).toBe('123');
   });
 
   it('should call getCompanyDetails on init', () => {
-    spyOn(component, 'getCompanyDetails');
+    spyOn(component, 'getCompanyDetails').and.callThrough();
     component.ngOnInit();
     expect(component.getCompanyDetails).toHaveBeenCalledWith('123');
   });
