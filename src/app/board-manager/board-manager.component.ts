@@ -59,7 +59,7 @@ export class BoardManagerComponent implements OnInit, AfterViewInit {
     this.companyService.getCompany(this.user['companyId']).subscribe((result: CompanyDetailDto) => {
       this.company = result;
       if (this.company.address?.mapImage == null && this.company.address?.lat! > 0 && this.company.address?.lon! > 0) {
-        this.companyService.getMapFromLatLong(this.company.address?.lat, this.company.address?.lon, undefined, undefined, undefined, undefined).subscribe({
+        this.companyService.getMapFromLatLong(this.company.address?.lat, this.company.address?.lon, undefined, undefined, undefined).subscribe({
           next: img => {
             this.companyMap = img;
           }

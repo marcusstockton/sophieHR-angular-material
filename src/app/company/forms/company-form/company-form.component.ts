@@ -6,6 +6,7 @@ import { Observable, debounceTime, distinctUntilChanged, filter, map, startWith,
 import { AddressCreateDto, CompaniesClient, CompanyCreateDto, CompanyDetailDto, CompanyDetailNoLogo, Result } from 'src/app/client';
 import { CompanyLogoDialogComponent } from '../../dialogs/company-logo-dialog/company-logo-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-company-form',
@@ -25,6 +26,7 @@ export class CompanyFormComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
     private router: Router,
+    private location: Location,
     private _companyService: CompaniesClient,
     private readonly formBuilder: FormBuilder,
     private _snackBar: MatSnackBar,
@@ -104,7 +106,7 @@ export class CompanyFormComponent implements OnInit {
         this.companyForm.get("address.lat")?.patchValue(this.postcodeLookupData.latitude);
         this.companyForm.get("address.lon")?.patchValue(this.postcodeLookupData.longitude);
 
-        this._companyService.getMapFromLatLong(this.postcodeLookupData.latitude!, this.postcodeLookupData.longitude!, undefined, undefined, undefined, undefined)
+        this._companyService.getMapFromLatLong(this.postcodeLookupData.latitude!, this.postcodeLookupData.longitude!, undefined, undefined, undefined)
           .subscribe((mapStr) => {
             this.companyForm.get("address.mapImage")?.patchValue(mapStr);
             if (this.editing) {
@@ -165,6 +167,10 @@ export class CompanyFormComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.GetCompanyById();
     });
+  }
+
+  goBack(): void {
+    this.location.back(); // Navigates to the previous page
   }
 
   private _filter(value: string): Observable<string[]> | undefined {
