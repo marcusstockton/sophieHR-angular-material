@@ -50,4 +50,4 @@ npm update --save
 ## Docker commands
 
 ```docker build -t sophiehr-ui .```
-``` docker run --name sophiehr-ui -d -p 8080:80 sophiehr-ui```
+```docker run --name sophiehr-ui -d -p 8080:80 sophiehr-ui```
