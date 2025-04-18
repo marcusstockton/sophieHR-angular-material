@@ -1,4 +1,4 @@
-<div id="company-form">
+<div id="company-form-page">
 
     <div *ngIf="editing && companyDetails;else creating">
         <h2>
@@ -63,7 +63,7 @@
                 </mat-form-field>
             </ng-container>
         </ng-container>
-        <div class="button-row">
+        <div class="button-row" fxLayout="row" fxLayoutAlign="space-between center">
             <button mat-raised-button color="info" type="button" (click)="goBack()">Back</button>
             <button mat-raised-button color="primary" type="submit"
                 [disabled]="!companyForm.valid || !companyForm.dirty">Submit</button>

@@ -13,7 +13,6 @@ import { BoardManagerComponent } from './board-manager/board-manager.component';
 import { AuthInterceptor } from './_helpers/auth.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
-// import { CompaniesClient, EmployeesClient, AccountClient, DepartmentsClient, NotesClient } from './client';
 import { DeptCreateDialogComponent } from './dialogs/departments/dept-create-dialog/dept-create-dialog.component';
 import { BoardUserModule } from './board-user/board-user.module';
 import { CompanyModule } from './company/company.module';
@@ -21,7 +20,8 @@ import { BoardAdminModule } from './board-admin/board-admin.module';
 import { HttpErrorInterceptor } from './_helpers/http-error.interceptor';
 
 
-@NgModule({ declarations: [
+@NgModule({
+    declarations: [
         AppComponent,
         LoginComponent,
         RegisterComponent,
@@ -39,16 +39,17 @@ import { HttpErrorInterceptor } from './_helpers/http-error.interceptor';
         BoardUserModule,
         CompanyModule,
         BoardAdminModule], providers: [
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: AuthInterceptor,
-            multi: true
-        },
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: HttpErrorInterceptor,
-            multi: true
-        },
-        provideHttpClient(withInterceptorsFromDi()),
-    ] })
+            {
+                provide: HTTP_INTERCEPTORS,
+                useClass: AuthInterceptor,
+                multi: true
+            },
+            {
+                provide: HTTP_INTERCEPTORS,
+                useClass: HttpErrorInterceptor,
+                multi: true
+            },
+            provideHttpClient(withInterceptorsFromDi()),
+        ]
+})
 export class AppModule { }

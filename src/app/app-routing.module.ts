@@ -7,6 +7,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './_helpers/auth.guard';
 import { AccountClient, CompaniesClient, DepartmentsClient, EmployeesClient, LeaveRequestsClient, NotesClient } from './client';
+import { environment } from 'src/environments/environment';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -30,9 +31,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes,
-    { enableTracing: true }) // <-- Debugging purposes only
-  ],
+  imports: [RouterModule.forRoot(routes, { enableTracing: !environment.production })],
   exports: [RouterModule],
   providers: [CompaniesClient, EmployeesClient, AccountClient, DepartmentsClient, NotesClient, LeaveRequestsClient]
 })
