@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -10,10 +10,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { RandomUser } from 'src/app/models/RandomUser';
 
 @Component({
-    selector: 'app-user-form',
-    templateUrl: './user-form.component.html',
-    styleUrls: ['./user-form.component.scss'],
-    standalone: false
+  selector: 'app-user-form',
+  templateUrl: './user-form.component.html',
+  styleUrls: ['./user-form.component.scss'],
+  standalone: false
 })
 export class UserFormComponent implements OnInit {
   imageSrc: any;
@@ -308,10 +308,17 @@ export class UserFormComponent implements OnInit {
 
   /// This and the titleCaseWord funciton are just for me when deving as i'm lazy and just need some demo data...
   // TODO: Remove before this goes anywhere other than a dev env lol
+  // TODO: Remove - doesn't seem to work - getting CORS error - need to fix this
   generateRandomUserData() {
-    var url = "https://randomuser.me/api/?nat=gb";
+    const url = "https://randomuser.me/api/?nat=gb";
 
-    this.http.get<RandomUser>(url).subscribe(
+    // Create headers
+    const headers = new HttpHeaders({
+      'Access-Control-Allow-Origin': '*',
+      'content-type': 'application/json',
+      'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
+    });
+    this.http.get<RandomUser>(url, { headers }).subscribe(
       {
         next: (data) => {
           this.userForm.patchValue({

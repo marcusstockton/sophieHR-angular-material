@@ -14,8 +14,10 @@
 
 html,
 body {
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .full-height {
@@ -76,13 +78,14 @@ body {
 }
 
 app-root {
-  flex: 1;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .sidenav-container {
-  flex: 1;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  height: 100%;
+  /* Full height of the viewport */
 }

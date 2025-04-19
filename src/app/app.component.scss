@@ -19,25 +19,45 @@
   min-height: 0; // Prevent overflow caused by child elements
 }
 
-.mat-sidenav-container {
+.sidenav-content {
   flex: 1;
+  /* Allow the content to grow and fill available space */
+  overflow-y: auto;
+  /* Add vertical scrolling if content overflows */
+}
+
+.mat-sidenav-container {
   display: flex;
   flex-direction: row;
+  /* Ensures the sidenav and content are side by side */
+  height: 100%;
+  /* Full height of the parent container */
+  box-sizing: border-box;
 }
 
 .mat-sidenav {
-  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
   height: 100%;
-  overflow: auto; // Add scroll bars to the sidenav if content overflows
+  /* Full height of the container */
+  overflow: hidden;
+  /* Prevent scrolling to the bottom */
 }
 
 .mat-sidenav-content {
   flex: 1;
-  overflow: auto; // Add scroll bars to the content if it overflows
+  /* Allow it to grow and fill the remaining space */
+  overflow: auto;
+  /* Add scrollbars if content overflows */
+  display: flex;
+  flex-direction: column;
+  /* Ensure child elements like router-outlet stack vertically */
+
 }
 
 router-outlet {
-  flex: 1; // Make the router-outlet take up all available height
+  // flex: 1; // Make the router-outlet take up all available height
+  // max-height: 100%; // Prevent it from overflowing the parent container
   display: flex;
   flex-direction: column;
 }

@@ -1,6 +1,13 @@
 .user {
     margin: 15px;
-    height: 100%;
+    height: 100vh;
+    /* Full height of the viewport */
+    display: flex;
+    /* Use flexbox for layout */
+    flex-direction: column;
+    /* Stack child elements vertically */
+    box-sizing: border-box;
+    /* Include padding and borders in height calculation */
 }
 
 
@@ -18,6 +25,7 @@ dl>dt {
     margin: auto;
     /*optional centering of image*/
     max-width: 50%;
+
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version.*/

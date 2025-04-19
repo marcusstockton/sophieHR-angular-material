@@ -7,20 +7,32 @@ body {
 }
 
 .login {
-    background: url('../../images/hr-analytics-2021-hero-image@2x.jpg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+    position: relative;
+    /* Ensure the pseudo-element is positioned relative to this container */
     height: 100vh;
-    // position: relative;
-    // overflow-x: hidden !important;
+    overflow: hidden;
+    /* Prevent the pseudo-element from overflowing */
+}
+
+.login::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('../../images/hr-analytics-2021-hero-image@2x.jpg') center/cover no-repeat;
+    filter: blur(3px);
+    /* Apply the blur effect */
+    z-index: 0;
+    /* Place it behind the content */
 }
 
 .flex-container {
+    position: relative;
+    /* Ensure the form is positioned relative to the container */
+    z-index: 1;
+    /* Place the form above the blurred background */
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -44,10 +56,15 @@ mat-form-field {
 }
 
 .mat-mdc-card {
+    position: relative;
+    z-index: 2;
+    /* Ensure the card is above the blurred background */
     max-width: 50%;
     width: 25%;
     padding: 0 !important;
     border-radius: 10px;
+    background: white;
+    /* Optional: Add a background color for better contrast */
 }
 
 .mat-mdc-card-content {
