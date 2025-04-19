@@ -84,8 +84,8 @@ export class UserFormComponent implements OnInit {
           this.http.post(`https://localhost:7189/api/Employees/${id}/upload-avatar`, formData).subscribe({
             next: res => {
               // console.log(res);
-              this._snackBar.open("Avatar updated", "OK", { panelClass: ["success-snackbar"] });
-            }, error: err => this._snackBar.open(err, "Ok", { panelClass: ["error-snackbar"] })
+              this._snackBar.open("Avatar updated", "OK", { duration: 5000, panelClass: ["success-snackbar"] });
+            }, error: err => this._snackBar.open(err, "Ok", { duration: 5000, panelClass: ["error-snackbar"] })
           })
         }
         this.userForm.controls['avatar'].setValue(formData);
@@ -137,6 +137,7 @@ export class UserFormComponent implements OnInit {
       if (result.length === 1) {
         this.userForm.controls['companyId'].setValue(result[0].key);
         this.getManagersForComany(result[0].key!);
+        this.getDepartmentsForCompany(result[0].key!);
         this.loading = false;
       }
     })
@@ -246,6 +247,7 @@ export class UserFormComponent implements OnInit {
         },
         error: x => {
           this._snackBar.open(`An Error Occured ${x}`, "OK", {
+            duration: 5000,
             panelClass: ['error-snackbar']
           });
           // console.log(x)
@@ -267,6 +269,7 @@ export class UserFormComponent implements OnInit {
                 // console.log(res);
                 this._snackBar.open("Employee created successfully", "Ok", { duration: 5000, panelClass: ["success-snackbar"] })
               }, error: err => this._snackBar.open(`An Error Occured ${err}`, "OK", {
+                duration: 5000,
                 panelClass: ['error-snackbar']
               })
             })
@@ -275,6 +278,7 @@ export class UserFormComponent implements OnInit {
         error: (err: any) => {
           // console.log(err);
           this._snackBar.open(`An Error Occured ${err}`, "OK", {
+            duration: 5000,
             panelClass: ['error-snackbar']
           })
         }
@@ -342,7 +346,9 @@ export class UserFormComponent implements OnInit {
           });
         },
         error: (err) => {
+          console.log(err);
           this._snackBar.open(`An Error Occured ${err}`, "OK", {
+            duration: 5000,
             panelClass: ['error-snackbar']
           })
         }

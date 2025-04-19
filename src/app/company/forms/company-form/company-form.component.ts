@@ -89,7 +89,7 @@ export class CompanyFormComponent implements OnInit {
           this.companyForm.patchValue(res);
         },
         error: (err) => {
-          this._snackBar.open(err, "Ok", { panelClass: ['error-snackbar'] })
+          this._snackBar.open(err, "Ok", { duration: 5000, panelClass: ['error-snackbar'] })
         },
         complete: () => {
           // console.log('HTTP request completed.');
@@ -131,7 +131,7 @@ export class CompanyFormComponent implements OnInit {
           },
           error: (err) => {
             // console.log("Error updating company" + err);
-            this._snackBar.open(err, "Ok", { panelClass: ['error-snackbar'] })
+            this._snackBar.open(err, "Ok", { duration: 5000, panelClass: ['error-snackbar'] })
           },
           complete: () => {
             // console.log("Update Company Completed");

@@ -49,7 +49,7 @@ export class CompanyListComponent implements OnInit, AfterViewInit {
             default:
               errorMessage = "Something unforeseen went wrong :-(";
           }
-          this._snackBar.open(errorMessage, "Ok", { panelClass: ['error-snackbar'] });
+          this._snackBar.open(errorMessage, "Ok", { duration: 5000, panelClass: ['error-snackbar'] });
         },
         complete: () => this.isLoading = false
       }

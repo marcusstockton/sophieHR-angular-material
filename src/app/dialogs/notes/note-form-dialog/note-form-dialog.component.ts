@@ -72,10 +72,10 @@ export class NoteFormDialogComponent implements OnInit {
       this.notesClient.putNotes(this.noteData.id, data).subscribe(
         {
           next: result => {
-            this._snackBar.open("Note updated", "OK", { panelClass: ["success-snackbar"] });
+            this._snackBar.open("Note updated", "OK", { duration: 5000, panelClass: ["success-snackbar"] });
             this.dialogRef.close({ data: "updated" });
           }, error: err => {
-            this._snackBar.open(err, "Ok", { panelClass: ["error-snackbar"] });
+            this._snackBar.open(err, "Ok", { duration: 5000, panelClass: ["error-snackbar"] });
             this.submitted = false;
           }
         })
@@ -85,10 +85,10 @@ export class NoteFormDialogComponent implements OnInit {
       this.notesClient.postNotes(this.data.employeeId, noteCreate).subscribe({
 
         next: res => {
-          this._snackBar.open("Note created", "OK", { panelClass: ["success-snackbar"] });
+          this._snackBar.open("Note created", "OK", { duration: 5000, panelClass: ["success-snackbar"] });
           this.dialogRef.close({ data: "created" });
         }, error: err => {
-          this._snackBar.open(err, "Ok", { panelClass: ["error-snackbar"] });
+          this._snackBar.open(err, "Ok", { duration: 5000, panelClass: ["error-snackbar"] });
           this.submitted = false;
         }
       })
@@ -99,10 +99,10 @@ export class NoteFormDialogComponent implements OnInit {
     console.log(`Deleting note id ${id}`);
     this.notesClient.deleteNotes(id).subscribe({
       next: result => {
-        this._snackBar.open("Note created", "OK", { panelClass: ["success-snackbar"] });
+        this._snackBar.open("Note created", "OK", { duration: 5000, panelClass: ["success-snackbar"] });
         this.dialogRef.close({ data: "deleted" });
       }, error: err => {
-        this._snackBar.open(err, "Ok", { panelClass: ["error-snackbar"] });
+        this._snackBar.open(err, "Ok", { duration: 5000, panelClass: ["error-snackbar"] });
         this.submitted = false;
       }
     })
