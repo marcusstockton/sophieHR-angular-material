@@ -330,6 +330,7 @@ export interface ICompaniesClient {
     getMapFromLatLong(lat: number | undefined, lon: number | undefined, zoomLevel: number | undefined, width: number | undefined, height: number | undefined): Observable<string>;
     postcodeAutoComplete(postcode: string | null | undefined): Observable<string[]>;
     postcodeLookup(postcode: string | null | undefined): Observable<PostcodeLookup>;
+    getCompanyEmployeeCountByMonth(companyId: string | undefined): Observable<CompanyEmployeeCount[]>;
 }
 
 @Injectable()
@@ -967,6 +968,65 @@ export class CompaniesClient implements ICompaniesClient {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = PostcodeLookup.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getCompanyEmployeeCountByMonth(companyId: string | undefined): Observable<CompanyEmployeeCount[]> {
+        let url_ = this.baseUrl + "/api/Companies/GetCompanyEmployeeCountByMonth?";
+        if (companyId === null)
+            throw new Error("The parameter 'companyId' cannot be null.");
+        else if (companyId !== undefined)
+            url_ += "companyId=" + encodeURIComponent("" + companyId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCompanyEmployeeCountByMonth(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCompanyEmployeeCountByMonth(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CompanyEmployeeCount[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CompanyEmployeeCount[]>;
+        }));
+    }
+
+    protected processGetCompanyEmployeeCountByMonth(response: HttpResponseBase): Observable<CompanyEmployeeCount[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(CompanyEmployeeCount.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3792,6 +3852,50 @@ export interface ICodes {
     lau2?: string | undefined;
 }
 
+export class CompanyEmployeeCount implements ICompanyEmployeeCount {
+    month?: number;
+    year?: number;
+    count?: number;
+
+    constructor(data?: ICompanyEmployeeCount) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.month = _data["month"];
+            this.year = _data["year"];
+            this.count = _data["count"];
+        }
+    }
+
+    static fromJS(data: any): CompanyEmployeeCount {
+        data = typeof data === 'object' ? data : {};
+        let result = new CompanyEmployeeCount();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["month"] = this.month;
+        data["year"] = this.year;
+        data["count"] = this.count;
+        return data;
+    }
+}
+
+export interface ICompanyEmployeeCount {
+    month?: number;
+    year?: number;
+    count?: number;
+}
+
 export class DepartmentDetailDto implements IDepartmentDetailDto {
     id?: string;
     createdDate?: Date;
@@ -4721,10 +4825,8 @@ export class LeaveRequest extends Base implements ILeaveRequest {
     approvedById?: string | undefined;
     startDate?: Date;
     endDate?: Date;
-    startDateFirstHalf?: boolean;
-    startDateSecondHalf?: boolean;
-    endDateFirstHalf?: boolean;
-    endDateSecondHalf?: boolean;
+    hours?: number;
+    normalHoursPerDay?: number;
     approved?: boolean;
     comments?: string | undefined;
     leaveType?: LeaveType;
@@ -4740,10 +4842,8 @@ export class LeaveRequest extends Base implements ILeaveRequest {
             this.approvedById = _data["approvedById"];
             this.startDate = _data["startDate"] ? new Date(_data["startDate"].toString()) : <any>undefined;
             this.endDate = _data["endDate"] ? new Date(_data["endDate"].toString()) : <any>undefined;
-            this.startDateFirstHalf = _data["startDateFirstHalf"];
-            this.startDateSecondHalf = _data["startDateSecondHalf"];
-            this.endDateFirstHalf = _data["endDateFirstHalf"];
-            this.endDateSecondHalf = _data["endDateSecondHalf"];
+            this.hours = _data["hours"];
+            this.normalHoursPerDay = _data["normalHoursPerDay"];
             this.approved = _data["approved"];
             this.comments = _data["comments"];
             this.leaveType = _data["leaveType"];
@@ -4763,10 +4863,8 @@ export class LeaveRequest extends Base implements ILeaveRequest {
         data["approvedById"] = this.approvedById;
         data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
         data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
-        data["startDateFirstHalf"] = this.startDateFirstHalf;
-        data["startDateSecondHalf"] = this.startDateSecondHalf;
-        data["endDateFirstHalf"] = this.endDateFirstHalf;
-        data["endDateSecondHalf"] = this.endDateSecondHalf;
+        data["hours"] = this.hours;
+        data["normalHoursPerDay"] = this.normalHoursPerDay;
         data["approved"] = this.approved;
         data["comments"] = this.comments;
         data["leaveType"] = this.leaveType;
@@ -4780,10 +4878,8 @@ export interface ILeaveRequest extends IBase {
     approvedById?: string | undefined;
     startDate?: Date;
     endDate?: Date;
-    startDateFirstHalf?: boolean;
-    startDateSecondHalf?: boolean;
-    endDateFirstHalf?: boolean;
-    endDateSecondHalf?: boolean;
+    hours?: number;
+    normalHoursPerDay?: number;
     approved?: boolean;
     comments?: string | undefined;
     leaveType?: LeaveType;
