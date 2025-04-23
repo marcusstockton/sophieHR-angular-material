@@ -4616,6 +4616,7 @@ export class CompanyConfig extends Base implements ICompanyConfig {
     companyId?: string;
     company?: Company | undefined;
     gdprRetentionPeriodInYears?: number;
+    yearEnd?: number;
 
     constructor(data?: ICompanyConfig) {
         super(data);
@@ -4627,6 +4628,7 @@ export class CompanyConfig extends Base implements ICompanyConfig {
             this.companyId = _data["companyId"];
             this.company = _data["company"] ? Company.fromJS(_data["company"]) : <any>undefined;
             this.gdprRetentionPeriodInYears = _data["gdprRetentionPeriodInYears"];
+            this.yearEnd = _data["yearEnd"];
         }
     }
 
@@ -4642,6 +4644,7 @@ export class CompanyConfig extends Base implements ICompanyConfig {
         data["companyId"] = this.companyId;
         data["company"] = this.company ? this.company.toJSON() : <any>undefined;
         data["gdprRetentionPeriodInYears"] = this.gdprRetentionPeriodInYears;
+        data["yearEnd"] = this.yearEnd;
         super.toJSON(data);
         return data;
     }
@@ -4651,6 +4654,7 @@ export interface ICompanyConfig extends IBase {
     companyId?: string;
     company?: Company | undefined;
     gdprRetentionPeriodInYears?: number;
+    yearEnd?: number;
 }
 
 export class Note extends Base implements INote {
@@ -4894,10 +4898,8 @@ export class CreateLeaveRequest implements ICreateLeaveRequest {
     employeeId?: string;
     startDate?: Date;
     endDate?: Date;
-    startDateFirstHalf?: boolean;
-    startDateSecondHalf?: boolean;
-    endDateFirstHalf?: boolean;
-    endDateSecondHalf?: boolean;
+    hours?: number;
+    normalHoursPerDay?: number;
     leaveType?: LeaveType;
     comments?: string | undefined;
 
@@ -4915,10 +4917,8 @@ export class CreateLeaveRequest implements ICreateLeaveRequest {
             this.employeeId = _data["employeeId"];
             this.startDate = _data["startDate"] ? new Date(_data["startDate"].toString()) : <any>undefined;
             this.endDate = _data["endDate"] ? new Date(_data["endDate"].toString()) : <any>undefined;
-            this.startDateFirstHalf = _data["startDateFirstHalf"];
-            this.startDateSecondHalf = _data["startDateSecondHalf"];
-            this.endDateFirstHalf = _data["endDateFirstHalf"];
-            this.endDateSecondHalf = _data["endDateSecondHalf"];
+            this.hours = _data["hours"];
+            this.normalHoursPerDay = _data["normalHoursPerDay"];
             this.leaveType = _data["leaveType"];
             this.comments = _data["comments"];
         }
@@ -4936,10 +4936,8 @@ export class CreateLeaveRequest implements ICreateLeaveRequest {
         data["employeeId"] = this.employeeId;
         data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
         data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
-        data["startDateFirstHalf"] = this.startDateFirstHalf;
-        data["startDateSecondHalf"] = this.startDateSecondHalf;
-        data["endDateFirstHalf"] = this.endDateFirstHalf;
-        data["endDateSecondHalf"] = this.endDateSecondHalf;
+        data["hours"] = this.hours;
+        data["normalHoursPerDay"] = this.normalHoursPerDay;
         data["leaveType"] = this.leaveType;
         data["comments"] = this.comments;
         return data;
@@ -4950,10 +4948,8 @@ export interface ICreateLeaveRequest {
     employeeId?: string;
     startDate?: Date;
     endDate?: Date;
-    startDateFirstHalf?: boolean;
-    startDateSecondHalf?: boolean;
-    endDateFirstHalf?: boolean;
-    endDateSecondHalf?: boolean;
+    hours?: number;
+    normalHoursPerDay?: number;
     leaveType?: LeaveType;
     comments?: string | undefined;
 }

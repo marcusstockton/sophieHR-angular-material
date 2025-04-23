@@ -5,10 +5,10 @@ import { CreateLeaveRequest, LeaveRequest, LeaveRequestsClient, LeaveType } from
 import { map } from 'rxjs';
 
 @Component({
-    selector: 'app-leave-request-form',
-    templateUrl: './leave-request-form.component.html',
-    styleUrls: ['./leave-request-form.component.scss'],
-    standalone: false
+  selector: 'app-leave-request-form',
+  templateUrl: './leave-request-form.component.html',
+  styleUrls: ['./leave-request-form.component.scss'],
+  standalone: false
 })
 export class LeaveRequestFormComponent implements OnInit {
 
@@ -19,10 +19,6 @@ export class LeaveRequestFormComponent implements OnInit {
   public endDatePartialDay: boolean;
   public isMultiDay: boolean;
 
-  public startDateOptions: { id: number, name: string }[] = [{ id: 0, name: "Start Of Working Day" }, { id: 1, name: "Middle Of Working Day" }];
-  public endDateOptions: { id: number, name: string }[] = [{ id: 0, name: "Middle Of Working Day" }, { id: 1, name: "End Of Working Day" }];
-  public oneDateOptions = ["All Day", "First Half", "Second Half"];
-
   leaveTypes: { [key: string]: string; };
 
   public form: FormGroup = this.fb.group({
@@ -31,10 +27,8 @@ export class LeaveRequestFormComponent implements OnInit {
     approvedById: [null],
     startDate: [Date, [Validators.required]],
     endDate: [Date, [Validators.required]],
-    startDateFirstHalf: [Boolean, [Validators.required]],
-    startDateSecondHalf: [Boolean, [Validators.required]],
-    endDateFirstHalf: [Boolean, [Validators.required]],
-    endDateSecondHalf: [Boolean, [Validators.required]],
+    hours: [Number, null],
+    normalHoursPerDay: [Number, null],
     approved: [null],
     comments: [null]
   });
@@ -107,10 +101,8 @@ export class LeaveRequestFormComponent implements OnInit {
       endDate: endDate,
       leaveType: lt,
       comments: this.form.controls['comments'].value,
-      endDateFirstHalf: this.form.controls['endDateFirstHalf'].value,
-      endDateSecondHalf: this.form.controls['endDateSecondHalf'].value,
-      startDateFirstHalf: this.form.controls['startDateFirstHalf'].value,
-      startDateSecondHalf: this.form.controls['startDateSecondHalf'].value
+      hours: this.form.controls['hours'].value,
+      normalHoursPerDay: this.form.controls['normalHoursPerDay'].value
     });
 
     this.leaveRequestClient.postLeaveRequest(createRequest).subscribe({
