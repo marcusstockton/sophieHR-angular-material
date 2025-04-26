@@ -1,1 +1,14 @@
-<p>company-config works!</p>
+<div class="company-config-form">
+    <p>company-config works!</p>
+
+    <pre>{{companyConfig | json}}</pre>
+
+
+</div>
+
+<footer>
+    <div class="footer-buttons">
+        <button mat-raised-button (click)="back()"> Back</button>
+        <button mat-raised-button color="accent" [routerLink]="['./edit']"> Edit</button>
+    </div>
+</footer>

@@ -27,28 +27,29 @@
         <ng-container [formGroup]="this.companyForm">
             <mat-form-field>
                 <mat-label>Company Name</mat-label>
-                <input matInput formControlName="name" required />
+                <input matInput formControlName="name" required placeholder="Enter company name" />
             </mat-form-field>
             <ng-container formGroupName="address">
                 <mat-form-field>
                     <mat-label>Line 1</mat-label>
-                    <input matInput formControlName="line1" required />
+                    <input matInput formControlName="line1" required placeholder="Line 1" />
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Line 2</mat-label>
-                    <input matInput formControlName="line2" />
+                    <input matInput formControlName="line2" placeholder="Line 2" />
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Line 3</mat-label>
-                    <input matInput formControlName="line3" />
+                    <input matInput formControlName="line3" placeholder="Line 3" />
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Line 4</mat-label>
-                    <input matInput formControlName="line4" />
+                    <input matInput formControlName="line4" placeholder="Line 4" />
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Post code</mat-label>
-                    <input matInput formControlName="postcode" required [matAutocomplete]="auto" />
+                    <input matInput formControlName="postcode" required [matAutocomplete]="auto"
+                        placeholder="Postcode" />
                     <mat-autocomplete #auto="matAutocomplete">
                         <mat-option *ngFor="let option of filteredOptions | async"
                             (onSelectionChange)="getPostcodeInfo(option)" [value]="option">
@@ -59,7 +60,7 @@
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>County</mat-label>
-                    <input matInput formControlName="county" required />
+                    <input matInput formControlName="county" required placeholder="County" />
                 </mat-form-field>
             </ng-container>
         </ng-container>

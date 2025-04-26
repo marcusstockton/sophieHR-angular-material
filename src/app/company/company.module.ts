@@ -7,7 +7,9 @@ import { CompanyDetailComponent } from './company-detail/company-detail.componen
 import { CompanyFormComponent } from './forms/company-form/company-form.component';
 import { CompanyListComponent } from './company-list/company-list.component';
 import { CompanyLogoDialogComponent } from './dialogs/company-logo-dialog/company-logo-dialog.component';
-
+import { RouterModule } from '@angular/router';
+import { CompanyConfigComponent } from './company-config/company-config.component';
+import { CompanyConfigFormComponent } from './forms/company-config-form/company-config-form.component';
 
 
 @NgModule({
@@ -15,18 +17,22 @@ import { CompanyLogoDialogComponent } from './dialogs/company-logo-dialog/compan
     CompanyDetailComponent,
     CompanyFormComponent,
     CompanyListComponent,
-    CompanyLogoDialogComponent
+    CompanyLogoDialogComponent,
+    CompanyConfigComponent,
+    CompanyConfigFormComponent,
   ],
   imports: [
     CommonModule,
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    CompanyRoutingModule
+    CompanyRoutingModule,
+    CompanyRoutingModule,
+    RouterModule,
   ],
-  exports:[
+  exports: [
     CompanyDetailComponent,
-    CompanyFormComponent
+    CompanyFormComponent,
   ]
 })
 export class CompanyModule { }

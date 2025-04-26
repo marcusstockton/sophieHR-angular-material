@@ -1038,6 +1038,242 @@ export class CompaniesClient implements ICompaniesClient {
     }
 }
 
+export interface ICompanyConfigClient {
+    getCompanyConfig(id: string): Observable<CompanyConfig>;
+    putCompanyConfig(id: string, companyConfig: CompanyConfig): Observable<FileResponse>;
+    deleteCompanyConfig(id: string): Observable<FileResponse>;
+    postCompanyConfig(companyConfig: CompanyConfig): Observable<CompanyConfig>;
+}
+
+@Injectable()
+export class CompanyConfigClient implements ICompanyConfigClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "https://localhost:7189";
+    }
+
+    getCompanyConfig(id: string): Observable<CompanyConfig> {
+        let url_ = this.baseUrl + "/api/CompanyConfig/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCompanyConfig(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCompanyConfig(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CompanyConfig>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CompanyConfig>;
+        }));
+    }
+
+    protected processGetCompanyConfig(response: HttpResponseBase): Observable<CompanyConfig> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CompanyConfig.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    putCompanyConfig(id: string, companyConfig: CompanyConfig): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/CompanyConfig/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(companyConfig);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPutCompanyConfig(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPutCompanyConfig(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileResponse>;
+        }));
+    }
+
+    protected processPutCompanyConfig(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
+            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
+            if (fileName) {
+                fileName = decodeURIComponent(fileName);
+            } else {
+                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            }
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    deleteCompanyConfig(id: string): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/CompanyConfig/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteCompanyConfig(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteCompanyConfig(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileResponse>;
+        }));
+    }
+
+    protected processDeleteCompanyConfig(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
+            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
+            if (fileName) {
+                fileName = decodeURIComponent(fileName);
+            } else {
+                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            }
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    postCompanyConfig(companyConfig: CompanyConfig): Observable<CompanyConfig> {
+        let url_ = this.baseUrl + "/api/CompanyConfig";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(companyConfig);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPostCompanyConfig(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPostCompanyConfig(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CompanyConfig>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CompanyConfig>;
+        }));
+    }
+
+    protected processPostCompanyConfig(response: HttpResponseBase): Observable<CompanyConfig> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CompanyConfig.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
 export interface IDepartmentsClient {
     getDepartmentsByCompanyId(companyId: string): Observable<DepartmentDetailDto[]>;
     getDepartment(id: string): Observable<DepartmentDetailDto>;
@@ -3896,333 +4132,106 @@ export interface ICompanyEmployeeCount {
     count?: number;
 }
 
-export class DepartmentDetailDto implements IDepartmentDetailDto {
-    id?: string;
-    createdDate?: Date;
-    updatedDate?: Date;
-    name?: string | undefined;
+export class CompanyConfig extends Base implements ICompanyConfig {
     companyId?: string;
+    company?: Company | undefined;
+    gdprRetentionPeriodInYears?: number;
+    yearEnd?: number;
 
-    constructor(data?: IDepartmentDetailDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.createdDate = _data["createdDate"] ? new Date(_data["createdDate"].toString()) : <any>undefined;
-            this.updatedDate = _data["updatedDate"] ? new Date(_data["updatedDate"].toString()) : <any>undefined;
-            this.name = _data["name"];
-            this.companyId = _data["companyId"];
-        }
-    }
-
-    static fromJS(data: any): DepartmentDetailDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new DepartmentDetailDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
-        data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
-        data["name"] = this.name;
-        data["companyId"] = this.companyId;
-        return data;
-    }
-}
-
-export interface IDepartmentDetailDto {
-    id?: string;
-    createdDate?: Date;
-    updatedDate?: Date;
-    name?: string | undefined;
-    companyId?: string;
-}
-
-export class DepartmentCreateDto implements IDepartmentCreateDto {
-    name?: string | undefined;
-    companyId?: string;
-
-    constructor(data?: IDepartmentCreateDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.name = _data["name"];
-            this.companyId = _data["companyId"];
-        }
-    }
-
-    static fromJS(data: any): DepartmentCreateDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new DepartmentCreateDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["companyId"] = this.companyId;
-        return data;
-    }
-}
-
-export interface IDepartmentCreateDto {
-    name?: string | undefined;
-    companyId?: string;
-}
-
-export class EmployeeDetailDto implements IEmployeeDetailDto {
-    id?: string;
-    title?: string | undefined;
-    gender?: string | undefined;
-    userName?: string | undefined;
-    firstName?: string | undefined;
-    middleName?: string | undefined;
-    lastName?: string | undefined;
-    workEmailAddress?: string | undefined;
-    personalEmailAddress?: string | undefined;
-    workPhoneNumber?: string | undefined;
-    workMobileNumber?: string | undefined;
-    personalMobileNumber?: string | undefined;
-    phoneNumber?: string | undefined;
-    holidayAllowance?: number;
-    jobTitle?: string | undefined;
-    dateOfBirth?: Date;
-    startOfEmployment?: Date;
-    endOfEmployment?: Date | undefined;
-    passportNumber?: string | undefined;
-    nationalInsuranceNumber?: string | undefined;
-    addressId?: string | undefined;
-    managerId?: string | undefined;
-    companyId?: string | undefined;
-    departmentId?: string | undefined;
-    employeeAvatarId?: string | undefined;
-    avatar?: EmployeeAvatarDetail | undefined;
-    department?: DepartmentIdNameDto | undefined;
-    company?: CompanyIdNameDto | undefined;
-    address?: EmployeeAddress | undefined;
-
-    constructor(data?: IEmployeeDetailDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.title = _data["title"];
-            this.gender = _data["gender"];
-            this.userName = _data["userName"];
-            this.firstName = _data["firstName"];
-            this.middleName = _data["middleName"];
-            this.lastName = _data["lastName"];
-            this.workEmailAddress = _data["workEmailAddress"];
-            this.personalEmailAddress = _data["personalEmailAddress"];
-            this.workPhoneNumber = _data["workPhoneNumber"];
-            this.workMobileNumber = _data["workMobileNumber"];
-            this.personalMobileNumber = _data["personalMobileNumber"];
-            this.phoneNumber = _data["phoneNumber"];
-            this.holidayAllowance = _data["holidayAllowance"];
-            this.jobTitle = _data["jobTitle"];
-            this.dateOfBirth = _data["dateOfBirth"] ? new Date(_data["dateOfBirth"].toString()) : <any>undefined;
-            this.startOfEmployment = _data["startOfEmployment"] ? new Date(_data["startOfEmployment"].toString()) : <any>undefined;
-            this.endOfEmployment = _data["endOfEmployment"] ? new Date(_data["endOfEmployment"].toString()) : <any>undefined;
-            this.passportNumber = _data["passportNumber"];
-            this.nationalInsuranceNumber = _data["nationalInsuranceNumber"];
-            this.addressId = _data["addressId"];
-            this.managerId = _data["managerId"];
-            this.companyId = _data["companyId"];
-            this.departmentId = _data["departmentId"];
-            this.employeeAvatarId = _data["employeeAvatarId"];
-            this.avatar = _data["avatar"] ? EmployeeAvatarDetail.fromJS(_data["avatar"]) : <any>undefined;
-            this.department = _data["department"] ? DepartmentIdNameDto.fromJS(_data["department"]) : <any>undefined;
-            this.company = _data["company"] ? CompanyIdNameDto.fromJS(_data["company"]) : <any>undefined;
-            this.address = _data["address"] ? EmployeeAddress.fromJS(_data["address"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): EmployeeDetailDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new EmployeeDetailDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["title"] = this.title;
-        data["gender"] = this.gender;
-        data["userName"] = this.userName;
-        data["firstName"] = this.firstName;
-        data["middleName"] = this.middleName;
-        data["lastName"] = this.lastName;
-        data["workEmailAddress"] = this.workEmailAddress;
-        data["personalEmailAddress"] = this.personalEmailAddress;
-        data["workPhoneNumber"] = this.workPhoneNumber;
-        data["workMobileNumber"] = this.workMobileNumber;
-        data["personalMobileNumber"] = this.personalMobileNumber;
-        data["phoneNumber"] = this.phoneNumber;
-        data["holidayAllowance"] = this.holidayAllowance;
-        data["jobTitle"] = this.jobTitle;
-        data["dateOfBirth"] = this.dateOfBirth ? this.dateOfBirth.toISOString() : <any>undefined;
-        data["startOfEmployment"] = this.startOfEmployment ? this.startOfEmployment.toISOString() : <any>undefined;
-        data["endOfEmployment"] = this.endOfEmployment ? this.endOfEmployment.toISOString() : <any>undefined;
-        data["passportNumber"] = this.passportNumber;
-        data["nationalInsuranceNumber"] = this.nationalInsuranceNumber;
-        data["addressId"] = this.addressId;
-        data["managerId"] = this.managerId;
-        data["companyId"] = this.companyId;
-        data["departmentId"] = this.departmentId;
-        data["employeeAvatarId"] = this.employeeAvatarId;
-        data["avatar"] = this.avatar ? this.avatar.toJSON() : <any>undefined;
-        data["department"] = this.department ? this.department.toJSON() : <any>undefined;
-        data["company"] = this.company ? this.company.toJSON() : <any>undefined;
-        data["address"] = this.address ? this.address.toJSON() : <any>undefined;
-        return data;
-    }
-}
-
-export interface IEmployeeDetailDto {
-    id?: string;
-    title?: string | undefined;
-    gender?: string | undefined;
-    userName?: string | undefined;
-    firstName?: string | undefined;
-    middleName?: string | undefined;
-    lastName?: string | undefined;
-    workEmailAddress?: string | undefined;
-    personalEmailAddress?: string | undefined;
-    workPhoneNumber?: string | undefined;
-    workMobileNumber?: string | undefined;
-    personalMobileNumber?: string | undefined;
-    phoneNumber?: string | undefined;
-    holidayAllowance?: number;
-    jobTitle?: string | undefined;
-    dateOfBirth?: Date;
-    startOfEmployment?: Date;
-    endOfEmployment?: Date | undefined;
-    passportNumber?: string | undefined;
-    nationalInsuranceNumber?: string | undefined;
-    addressId?: string | undefined;
-    managerId?: string | undefined;
-    companyId?: string | undefined;
-    departmentId?: string | undefined;
-    employeeAvatarId?: string | undefined;
-    avatar?: EmployeeAvatarDetail | undefined;
-    department?: DepartmentIdNameDto | undefined;
-    company?: CompanyIdNameDto | undefined;
-    address?: EmployeeAddress | undefined;
-}
-
-export class EmployeeAvatarDetail implements IEmployeeAvatarDetail {
-    id?: string;
-    avatar?: string | undefined;
-    createdDate?: Date;
-    updatedDate?: Date;
-
-    constructor(data?: IEmployeeAvatarDetail) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.avatar = _data["avatar"];
-            this.createdDate = _data["createdDate"] ? new Date(_data["createdDate"].toString()) : <any>undefined;
-            this.updatedDate = _data["updatedDate"] ? new Date(_data["updatedDate"].toString()) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): EmployeeAvatarDetail {
-        data = typeof data === 'object' ? data : {};
-        let result = new EmployeeAvatarDetail();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["avatar"] = this.avatar;
-        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
-        data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
-        return data;
-    }
-}
-
-export interface IEmployeeAvatarDetail {
-    id?: string;
-    avatar?: string | undefined;
-    createdDate?: Date;
-    updatedDate?: Date;
-}
-
-export class EmployeeAvatar extends Base implements IEmployeeAvatar {
-    employeeId?: string;
-    employee?: Employee | undefined;
-    avatar?: string | undefined;
-
-    constructor(data?: IEmployeeAvatar) {
+    constructor(data?: ICompanyConfig) {
         super(data);
     }
 
     override init(_data?: any) {
         super.init(_data);
         if (_data) {
-            this.employeeId = _data["employeeId"];
-            this.employee = _data["employee"] ? Employee.fromJS(_data["employee"]) : <any>undefined;
-            this.avatar = _data["avatar"];
+            this.companyId = _data["companyId"];
+            this.company = _data["company"] ? Company.fromJS(_data["company"]) : <any>undefined;
+            this.gdprRetentionPeriodInYears = _data["gdprRetentionPeriodInYears"];
+            this.yearEnd = _data["yearEnd"];
         }
     }
 
-    static override fromJS(data: any): EmployeeAvatar {
+    static override fromJS(data: any): CompanyConfig {
         data = typeof data === 'object' ? data : {};
-        let result = new EmployeeAvatar();
+        let result = new CompanyConfig();
         result.init(data);
         return result;
     }
 
     override toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["employeeId"] = this.employeeId;
-        data["employee"] = this.employee ? this.employee.toJSON() : <any>undefined;
-        data["avatar"] = this.avatar;
+        data["companyId"] = this.companyId;
+        data["company"] = this.company ? this.company.toJSON() : <any>undefined;
+        data["gdprRetentionPeriodInYears"] = this.gdprRetentionPeriodInYears;
+        data["yearEnd"] = this.yearEnd;
         super.toJSON(data);
         return data;
     }
 }
 
-export interface IEmployeeAvatar extends IBase {
-    employeeId?: string;
-    employee?: Employee | undefined;
-    avatar?: string | undefined;
+export interface ICompanyConfig extends IBase {
+    companyId?: string;
+    company?: Company | undefined;
+    gdprRetentionPeriodInYears?: number;
+    yearEnd?: number;
+}
+
+export class Company extends Base implements ICompany {
+    name?: string | undefined;
+    logo?: string | undefined;
+    address?: CompanyAddress | undefined;
+    employees?: Employee[] | undefined;
+    companyConfig?: CompanyConfig | undefined;
+
+    constructor(data?: ICompany) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.name = _data["name"];
+            this.logo = _data["logo"];
+            this.address = _data["address"] ? CompanyAddress.fromJS(_data["address"]) : <any>undefined;
+            if (Array.isArray(_data["employees"])) {
+                this.employees = [] as any;
+                for (let item of _data["employees"])
+                    this.employees!.push(Employee.fromJS(item));
+            }
+            this.companyConfig = _data["companyConfig"] ? CompanyConfig.fromJS(_data["companyConfig"]) : <any>undefined;
+        }
+    }
+
+    static override fromJS(data: any): Company {
+        data = typeof data === 'object' ? data : {};
+        let result = new Company();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["logo"] = this.logo;
+        data["address"] = this.address ? this.address.toJSON() : <any>undefined;
+        if (Array.isArray(this.employees)) {
+            data["employees"] = [];
+            for (let item of this.employees)
+                data["employees"].push(item.toJSON());
+        }
+        data["companyConfig"] = this.companyConfig ? this.companyConfig.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data;
+    }
+}
+
+export interface ICompany extends IBase {
+    name?: string | undefined;
+    logo?: string | undefined;
+    address?: CompanyAddress | undefined;
+    employees?: Employee[] | undefined;
+    companyConfig?: CompanyConfig | undefined;
 }
 
 export class IdentityUserOfGuid implements IIdentityUserOfGuid {
@@ -4555,106 +4564,45 @@ export interface IDepartment extends IBase {
     company?: Company | undefined;
 }
 
-export class Company extends Base implements ICompany {
-    name?: string | undefined;
-    logo?: string | undefined;
-    address?: CompanyAddress | undefined;
-    employees?: Employee[] | undefined;
-    companyConfig?: CompanyConfig | undefined;
+export class EmployeeAvatar extends Base implements IEmployeeAvatar {
+    employeeId?: string;
+    employee?: Employee | undefined;
+    avatar?: string | undefined;
 
-    constructor(data?: ICompany) {
+    constructor(data?: IEmployeeAvatar) {
         super(data);
     }
 
     override init(_data?: any) {
         super.init(_data);
         if (_data) {
-            this.name = _data["name"];
-            this.logo = _data["logo"];
-            this.address = _data["address"] ? CompanyAddress.fromJS(_data["address"]) : <any>undefined;
-            if (Array.isArray(_data["employees"])) {
-                this.employees = [] as any;
-                for (let item of _data["employees"])
-                    this.employees!.push(Employee.fromJS(item));
-            }
-            this.companyConfig = _data["companyConfig"] ? CompanyConfig.fromJS(_data["companyConfig"]) : <any>undefined;
+            this.employeeId = _data["employeeId"];
+            this.employee = _data["employee"] ? Employee.fromJS(_data["employee"]) : <any>undefined;
+            this.avatar = _data["avatar"];
         }
     }
 
-    static override fromJS(data: any): Company {
+    static override fromJS(data: any): EmployeeAvatar {
         data = typeof data === 'object' ? data : {};
-        let result = new Company();
+        let result = new EmployeeAvatar();
         result.init(data);
         return result;
     }
 
     override toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["logo"] = this.logo;
-        data["address"] = this.address ? this.address.toJSON() : <any>undefined;
-        if (Array.isArray(this.employees)) {
-            data["employees"] = [];
-            for (let item of this.employees)
-                data["employees"].push(item.toJSON());
-        }
-        data["companyConfig"] = this.companyConfig ? this.companyConfig.toJSON() : <any>undefined;
+        data["employeeId"] = this.employeeId;
+        data["employee"] = this.employee ? this.employee.toJSON() : <any>undefined;
+        data["avatar"] = this.avatar;
         super.toJSON(data);
         return data;
     }
 }
 
-export interface ICompany extends IBase {
-    name?: string | undefined;
-    logo?: string | undefined;
-    address?: CompanyAddress | undefined;
-    employees?: Employee[] | undefined;
-    companyConfig?: CompanyConfig | undefined;
-}
-
-export class CompanyConfig extends Base implements ICompanyConfig {
-    companyId?: string;
-    company?: Company | undefined;
-    gdprRetentionPeriodInYears?: number;
-    yearEnd?: number;
-
-    constructor(data?: ICompanyConfig) {
-        super(data);
-    }
-
-    override init(_data?: any) {
-        super.init(_data);
-        if (_data) {
-            this.companyId = _data["companyId"];
-            this.company = _data["company"] ? Company.fromJS(_data["company"]) : <any>undefined;
-            this.gdprRetentionPeriodInYears = _data["gdprRetentionPeriodInYears"];
-            this.yearEnd = _data["yearEnd"];
-        }
-    }
-
-    static override fromJS(data: any): CompanyConfig {
-        data = typeof data === 'object' ? data : {};
-        let result = new CompanyConfig();
-        result.init(data);
-        return result;
-    }
-
-    override toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["companyId"] = this.companyId;
-        data["company"] = this.company ? this.company.toJSON() : <any>undefined;
-        data["gdprRetentionPeriodInYears"] = this.gdprRetentionPeriodInYears;
-        data["yearEnd"] = this.yearEnd;
-        super.toJSON(data);
-        return data;
-    }
-}
-
-export interface ICompanyConfig extends IBase {
-    companyId?: string;
-    company?: Company | undefined;
-    gdprRetentionPeriodInYears?: number;
-    yearEnd?: number;
+export interface IEmployeeAvatar extends IBase {
+    employeeId?: string;
+    employee?: Employee | undefined;
+    avatar?: string | undefined;
 }
 
 export class Note extends Base implements INote {
@@ -4706,6 +4654,294 @@ export enum NoteType {
     General = 0,
     Leaving = 1,
     Appraisal = 2,
+}
+
+export class DepartmentDetailDto implements IDepartmentDetailDto {
+    id?: string;
+    createdDate?: Date;
+    updatedDate?: Date;
+    name?: string | undefined;
+    companyId?: string;
+
+    constructor(data?: IDepartmentDetailDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.createdDate = _data["createdDate"] ? new Date(_data["createdDate"].toString()) : <any>undefined;
+            this.updatedDate = _data["updatedDate"] ? new Date(_data["updatedDate"].toString()) : <any>undefined;
+            this.name = _data["name"];
+            this.companyId = _data["companyId"];
+        }
+    }
+
+    static fromJS(data: any): DepartmentDetailDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DepartmentDetailDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
+        data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
+        data["name"] = this.name;
+        data["companyId"] = this.companyId;
+        return data;
+    }
+}
+
+export interface IDepartmentDetailDto {
+    id?: string;
+    createdDate?: Date;
+    updatedDate?: Date;
+    name?: string | undefined;
+    companyId?: string;
+}
+
+export class DepartmentCreateDto implements IDepartmentCreateDto {
+    name?: string | undefined;
+    companyId?: string;
+
+    constructor(data?: IDepartmentCreateDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.companyId = _data["companyId"];
+        }
+    }
+
+    static fromJS(data: any): DepartmentCreateDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DepartmentCreateDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["companyId"] = this.companyId;
+        return data;
+    }
+}
+
+export interface IDepartmentCreateDto {
+    name?: string | undefined;
+    companyId?: string;
+}
+
+export class EmployeeDetailDto implements IEmployeeDetailDto {
+    id?: string;
+    title?: string | undefined;
+    gender?: string | undefined;
+    userName?: string | undefined;
+    firstName?: string | undefined;
+    middleName?: string | undefined;
+    lastName?: string | undefined;
+    workEmailAddress?: string | undefined;
+    personalEmailAddress?: string | undefined;
+    workPhoneNumber?: string | undefined;
+    workMobileNumber?: string | undefined;
+    personalMobileNumber?: string | undefined;
+    phoneNumber?: string | undefined;
+    holidayAllowance?: number;
+    jobTitle?: string | undefined;
+    dateOfBirth?: Date;
+    startOfEmployment?: Date;
+    endOfEmployment?: Date | undefined;
+    passportNumber?: string | undefined;
+    nationalInsuranceNumber?: string | undefined;
+    addressId?: string | undefined;
+    managerId?: string | undefined;
+    companyId?: string | undefined;
+    departmentId?: string | undefined;
+    employeeAvatarId?: string | undefined;
+    avatar?: EmployeeAvatarDetail | undefined;
+    department?: DepartmentIdNameDto | undefined;
+    company?: CompanyIdNameDto | undefined;
+    address?: EmployeeAddress | undefined;
+
+    constructor(data?: IEmployeeDetailDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.title = _data["title"];
+            this.gender = _data["gender"];
+            this.userName = _data["userName"];
+            this.firstName = _data["firstName"];
+            this.middleName = _data["middleName"];
+            this.lastName = _data["lastName"];
+            this.workEmailAddress = _data["workEmailAddress"];
+            this.personalEmailAddress = _data["personalEmailAddress"];
+            this.workPhoneNumber = _data["workPhoneNumber"];
+            this.workMobileNumber = _data["workMobileNumber"];
+            this.personalMobileNumber = _data["personalMobileNumber"];
+            this.phoneNumber = _data["phoneNumber"];
+            this.holidayAllowance = _data["holidayAllowance"];
+            this.jobTitle = _data["jobTitle"];
+            this.dateOfBirth = _data["dateOfBirth"] ? new Date(_data["dateOfBirth"].toString()) : <any>undefined;
+            this.startOfEmployment = _data["startOfEmployment"] ? new Date(_data["startOfEmployment"].toString()) : <any>undefined;
+            this.endOfEmployment = _data["endOfEmployment"] ? new Date(_data["endOfEmployment"].toString()) : <any>undefined;
+            this.passportNumber = _data["passportNumber"];
+            this.nationalInsuranceNumber = _data["nationalInsuranceNumber"];
+            this.addressId = _data["addressId"];
+            this.managerId = _data["managerId"];
+            this.companyId = _data["companyId"];
+            this.departmentId = _data["departmentId"];
+            this.employeeAvatarId = _data["employeeAvatarId"];
+            this.avatar = _data["avatar"] ? EmployeeAvatarDetail.fromJS(_data["avatar"]) : <any>undefined;
+            this.department = _data["department"] ? DepartmentIdNameDto.fromJS(_data["department"]) : <any>undefined;
+            this.company = _data["company"] ? CompanyIdNameDto.fromJS(_data["company"]) : <any>undefined;
+            this.address = _data["address"] ? EmployeeAddress.fromJS(_data["address"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): EmployeeDetailDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeDetailDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["title"] = this.title;
+        data["gender"] = this.gender;
+        data["userName"] = this.userName;
+        data["firstName"] = this.firstName;
+        data["middleName"] = this.middleName;
+        data["lastName"] = this.lastName;
+        data["workEmailAddress"] = this.workEmailAddress;
+        data["personalEmailAddress"] = this.personalEmailAddress;
+        data["workPhoneNumber"] = this.workPhoneNumber;
+        data["workMobileNumber"] = this.workMobileNumber;
+        data["personalMobileNumber"] = this.personalMobileNumber;
+        data["phoneNumber"] = this.phoneNumber;
+        data["holidayAllowance"] = this.holidayAllowance;
+        data["jobTitle"] = this.jobTitle;
+        data["dateOfBirth"] = this.dateOfBirth ? this.dateOfBirth.toISOString() : <any>undefined;
+        data["startOfEmployment"] = this.startOfEmployment ? this.startOfEmployment.toISOString() : <any>undefined;
+        data["endOfEmployment"] = this.endOfEmployment ? this.endOfEmployment.toISOString() : <any>undefined;
+        data["passportNumber"] = this.passportNumber;
+        data["nationalInsuranceNumber"] = this.nationalInsuranceNumber;
+        data["addressId"] = this.addressId;
+        data["managerId"] = this.managerId;
+        data["companyId"] = this.companyId;
+        data["departmentId"] = this.departmentId;
+        data["employeeAvatarId"] = this.employeeAvatarId;
+        data["avatar"] = this.avatar ? this.avatar.toJSON() : <any>undefined;
+        data["department"] = this.department ? this.department.toJSON() : <any>undefined;
+        data["company"] = this.company ? this.company.toJSON() : <any>undefined;
+        data["address"] = this.address ? this.address.toJSON() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IEmployeeDetailDto {
+    id?: string;
+    title?: string | undefined;
+    gender?: string | undefined;
+    userName?: string | undefined;
+    firstName?: string | undefined;
+    middleName?: string | undefined;
+    lastName?: string | undefined;
+    workEmailAddress?: string | undefined;
+    personalEmailAddress?: string | undefined;
+    workPhoneNumber?: string | undefined;
+    workMobileNumber?: string | undefined;
+    personalMobileNumber?: string | undefined;
+    phoneNumber?: string | undefined;
+    holidayAllowance?: number;
+    jobTitle?: string | undefined;
+    dateOfBirth?: Date;
+    startOfEmployment?: Date;
+    endOfEmployment?: Date | undefined;
+    passportNumber?: string | undefined;
+    nationalInsuranceNumber?: string | undefined;
+    addressId?: string | undefined;
+    managerId?: string | undefined;
+    companyId?: string | undefined;
+    departmentId?: string | undefined;
+    employeeAvatarId?: string | undefined;
+    avatar?: EmployeeAvatarDetail | undefined;
+    department?: DepartmentIdNameDto | undefined;
+    company?: CompanyIdNameDto | undefined;
+    address?: EmployeeAddress | undefined;
+}
+
+export class EmployeeAvatarDetail implements IEmployeeAvatarDetail {
+    id?: string;
+    avatar?: string | undefined;
+    createdDate?: Date;
+    updatedDate?: Date;
+
+    constructor(data?: IEmployeeAvatarDetail) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.avatar = _data["avatar"];
+            this.createdDate = _data["createdDate"] ? new Date(_data["createdDate"].toString()) : <any>undefined;
+            this.updatedDate = _data["updatedDate"] ? new Date(_data["updatedDate"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): EmployeeAvatarDetail {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeAvatarDetail();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["avatar"] = this.avatar;
+        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
+        data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IEmployeeAvatarDetail {
+    id?: string;
+    avatar?: string | undefined;
+    createdDate?: Date;
+    updatedDate?: Date;
 }
 
 export class EmployeeCreateDto implements IEmployeeCreateDto {

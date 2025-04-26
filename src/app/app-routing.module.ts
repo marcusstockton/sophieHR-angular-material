@@ -6,7 +6,7 @@ import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './_helpers/auth.guard';
-import { AccountClient, CompaniesClient, DepartmentsClient, EmployeesClient, LeaveRequestsClient, NotesClient } from './client';
+import { AccountClient, CompaniesClient, CompanyConfigClient, DepartmentsClient, EmployeesClient, LeaveRequestsClient, NotesClient } from './client';
 import { environment } from 'src/environments/environment';
 
 const routes: Routes = [
@@ -33,6 +33,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes, { enableTracing: !environment.production })],
   exports: [RouterModule],
-  providers: [CompaniesClient, EmployeesClient, AccountClient, DepartmentsClient, NotesClient, LeaveRequestsClient]
+  providers: [CompaniesClient, EmployeesClient, AccountClient, DepartmentsClient, NotesClient, LeaveRequestsClient, CompanyConfigClient]
 })
 export class AppRoutingModule { }
