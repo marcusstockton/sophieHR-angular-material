@@ -24,26 +24,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
           errorMsg = `Error: ${error.error.message}`;
         } else {
           // Server-side error
-          switch (error.status) {
-            case 400:
-              errorMsg = 'Bad Request: The server could not understand the request.';
-              break;
-            case 401:
-              errorMsg = 'Unauthorized: Access is denied due to invalid credentials.';
-              break;
-            case 403:
-              errorMsg = 'Forbidden: You do not have permission to access this resource.';
-              break;
-            case 404:
-              errorMsg = 'Not Found: The requested resource could not be found.';
-              break;
-            case 500:
-              errorMsg = 'Internal Server Error: The server encountered an unexpected condition.';
-              break;
-            default:
-              errorMsg = `Unexpected Error: ${error.statusText || 'Unknown error'}`;
-          };
-
+          errorMsg = this.handleRFC9457Error(error) || `Unexpected Error: ${error.statusText || 'Unknown error'}`;
         }
 
         // Show the error message in a snackbar
@@ -69,7 +50,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               errorMsg += `${x}\n`;
             });
           } else {
-            errorMsg = errorObj.message || 'An unknown error occurred.';
+            errorMsg = errorObj.detail || 'An unknown error occurred.';
           }
 
           this._snackBar.open(errorMsg, "Ok", { duration: 5000, panelClass: ['warn-snackbar'] });
@@ -85,6 +66,22 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
       reader.readAsText(blob);
     });
+  }
+
+  private handleRFC9457Error(error: HttpErrorResponse): string | null {
+    if (error.headers.get('Content-Type')?.includes('application/problem+json')) {
+      try {
+        const problemDetails = error.error;
+        const title = problemDetails.title || 'An error occurred';
+        const detail = problemDetails.detail || '';
+        const instance = problemDetails.instance ? ` (Instance: ${problemDetails.instance})` : '';
+        return `${title}: ${detail}${instance}`;
+      } catch (e) {
+        return 'Failed to parse RFC 9457 error response.';
+      }
+    }
+
+    return null; // Return null if the error is not RFC 9457 compliant
   }
 }
 
