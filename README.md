@@ -32,15 +32,15 @@ This is done using NSwagStudio and copy/pasting the data across...will look to h
 
 ## Dev Notes
 
-Copied out the auth bits from https://www.bezkoder.com/angular-13-jwt-auth/
+Copied out the auth bits from <https://www.bezkoder.com/angular-13-jwt-auth/>
 
 ## Useful API's
 
-Get UK Bank holidays - https://www.gov.uk/bank-holidays.json
+Get UK Bank holidays - <https://www.gov.uk/bank-holidays.json>
 
 ## Possible libraries to use
 
-Calendar library - https://mattlewis92.github.io/angular-calendar/docs/
+Calendar library - <https://mattlewis92.github.io/angular-calendar/docs/>
 
 ## Update Commands
 
@@ -50,4 +50,5 @@ npm update --save
 ## Docker commands
 
 ```docker build -t sophiehr-ui .```
+
 ```docker run --name sophiehr-ui -d -p 8080:80 sophiehr-ui```
