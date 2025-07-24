@@ -1,0 +1,33 @@
+<div class="departments-component">
+
+    <h2>Departments</h2>
+    <p>List of departments in the company:</p>
+
+
+    <button mat-raised-button color="primary" class="add-department-button" (click)="openAddDepartmentDialog()">
+        <mat-icon>add</mat-icon>
+        Add Department
+    </button>
+
+    @if(departments.length === 0) {
+    <mat-card>
+        <mat-card-content>
+            <p>No departments found.</p>
+        </mat-card-content>
+    </mat-card>
+    }
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <mat-card>
+                <mat-card-content>
+                    @for(dept of departments; track dept.id){
+                    <p>{{dept.name}}</p>
+                    }
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+
+</div>

@@ -5,10 +5,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DepartmentCreateDto, DepartmentsClient } from 'src/app/client';
 
 @Component({
-    selector: 'app-dept-create-dialog',
-    templateUrl: './dept-create-dialog.component.html',
-    styleUrls: ['./dept-create-dialog.component.scss'],
-    standalone: false
+  selector: 'app-dept-create-dialog',
+  templateUrl: './dept-create-dialog.component.html',
+  styleUrls: ['./dept-create-dialog.component.scss'],
+  standalone: false
 })
 export class DeptCreateDialogComponent {
 
@@ -29,6 +29,11 @@ export class DeptCreateDialogComponent {
       companyId: this.data.companyId,
       name: this.departmentForm.get("name")?.value
     });
+
+    if (!dept.name) {
+      this._snackBar.open("Department name is required", "", { duration: 2000, panelClass: ['error-snackbar'] });
+      return;
+    }
 
     this.departmentClient.postDepartment(dept).subscribe({
       next: (val) => {

@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { CompaniesClient, DepartmentDetailDto, DepartmentsClient, EmployeeAddress, EmployeeAvatarDetail, EmployeeCreateDto, EmployeeDetailDto, EmployeeListDto, EmployeesClient, FileParameter, KeyValuePairOfGuidAndString } from 'src/app/client';
+import { CompaniesClient, DepartmentDetailDto, DepartmentsClient, EmployeeAddress, EmployeeCreateDto, EmployeeDetailDto, EmployeeListDto, EmployeesClient, FileParameter, KeyValuePairOfGuidAndString } from 'src/app/client';
 import { startWith, debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RandomUser } from 'src/app/models/RandomUser';
@@ -257,7 +257,8 @@ export class UserFormComponent implements OnInit {
       // creating
       var address = new EmployeeAddress({ ...form.value.address });
       var ef2 = new EmployeeCreateDto({ ...form.value });
-
+      ef2.username = form.value.userName;
+      console.log("NEW EMPLOYEE DEETS: " + ef2.username);
       ef2.address = address;
 
       this.employeeService.createEmployee(null, ef2).subscribe({
