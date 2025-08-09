@@ -28,8 +28,7 @@ export class UserFormComponent implements OnInit {
   titles: string[];
   managers: EmployeeListDto[] = [];
   departments: DepartmentDetailDto[];
-  employeeTypes: string[] = ["User", "Manager", "HRManager", "CompanyAdmin", "Admin"];// Need to filter these depending on the logged in user type
-
+  employeeTypes: string[] = [];
   public employeeType: string = "User";
 
   constructor(
@@ -145,6 +144,10 @@ export class UserFormComponent implements OnInit {
     })
     this.employeeService.getTitles().subscribe((result) => {
       this.titles = result;
+    });
+
+    this.employeeService.getRoles().subscribe((result) => {
+      this.employeeTypes = result;
     });
 
     this.loading = false;
