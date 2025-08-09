@@ -8,7 +8,6 @@ import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './_helpers/auth.guard';
 import { AccountClient, CompaniesClient, CompanyConfigClient, DepartmentsClient, EmployeesClient, LeaveRequestsClient, NotesClient } from './client';
 import { environment } from 'src/environments/environment';
-import { D } from 'node_modules/@angular/cdk/bidi-module.d-IN1Vp56w';
 import { DepartmentsComponent } from './departments/departments.component';
 
 const routes: Routes = [

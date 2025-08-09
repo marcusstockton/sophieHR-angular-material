@@ -24,10 +24,8 @@ export class DepartmentsComponent {
     private _snackBar: MatSnackBar,
     readonly dialog: MatDialog,
   ) {
-    // Initialization code can go here 
 
     this.user = this.tokenStorageService.getUser();
-
 
     this.departmentClient.getDepartmentsByCompanyId(this.user?.companyId!).subscribe(departments => {
       this.departments = departments;
@@ -40,7 +38,6 @@ export class DepartmentsComponent {
 
 
   public openAddDepartmentDialog() {
-    // console.log("Open Note Dialog hit");
     const dialogRef = this.dialog.open(DeptCreateDialogComponent, { width: '600px', data: { companyId: this.user?.companyId } });
     dialogRef.afterClosed().subscribe({
       next: (res: any) => {

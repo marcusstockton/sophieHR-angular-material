@@ -246,8 +246,19 @@
                 </mat-form-field>
             </div>
             <div class="row">
+                <mat-form-field class="column">
+                    <mat-label>Employee Type</mat-label>
+                    <mat-select [(value)]="employeeType">
+                        <mat-option *ngFor="let type of employeeTypes" [value]="type">
+                            {{type}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="row">
                 <button type="submit" mat-raised-button color="primary">Save</button>
-                <button mat-raised-button routerLink="..">Back</button>
+                <button type="button" mat-raised-button routerLink="..">Back</button>
             </div>
 
             <!-- <div *ngFor="let err in userForm?.errors">{{err}}</div> -->

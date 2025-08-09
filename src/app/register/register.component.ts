@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { AccountClient, RegisterUserDto } from '../client';
 
 @Component({
-    selector: 'app-register',
-    templateUrl: './register.component.html',
-    styleUrls: ['./register.component.scss'],
-    standalone: false
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss'],
+  standalone: false
 })
 export class RegisterComponent {
 
@@ -34,7 +34,6 @@ export class RegisterComponent {
     this.authService.registerNewAdminUser(userReg).subscribe(
       {
         next: (result) => {
-          // console.log(result);
           this.isSuccessful = true;
           this.isSignUpFailed = false;
         }, error: (err) => {

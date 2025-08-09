@@ -92,7 +92,7 @@ export class CompanyFormComponent implements OnInit {
           this._snackBar.open(err, "Ok", { duration: 5000, panelClass: ['error-snackbar'] })
         },
         complete: () => {
-          // console.log('HTTP request completed.');
+          // HTTP request completed
         }
       }
     );
@@ -120,21 +120,17 @@ export class CompanyFormComponent implements OnInit {
   }
 
   submitCompany() {
-    // console.log(this.companyForm)
     if (this.companyForm.valid) {
       if (this.editing) {
         let updatedCompany: CompanyDetailNoLogo = this.companyForm.value; // Change the type for the post
         this._companyService.putCompany(this.companyId!, updatedCompany).subscribe({
           next: (res) => {
-            // console.log(res.data);
             this.router.navigate(['/company/list']);
           },
           error: (err) => {
-            // console.log("Error updating company" + err);
             this._snackBar.open(err, "Ok", { duration: 5000, panelClass: ['error-snackbar'] })
           },
           complete: () => {
-            // console.log("Update Company Completed");
             this._snackBar.open("Successfully updated the company details", "OK", { duration: 2000, panelClass: ['success-snackbar'] });
           }
         });
@@ -142,15 +138,12 @@ export class CompanyFormComponent implements OnInit {
         var companyDto: CompanyCreateDto = this.companyForm.value;
         this._companyService.postCompany(companyDto).subscribe({
           next: (res) => {
-            // console.log(res);
             this.router.navigate(["/company/list"]);
           },
           error: (err) => {
-            // console.log("Error creating company" + err);
             this._snackBar.open(err, "Ok", { panelClass: ['error-snackbar'] })
           },
           complete: () => {
-            // console.log("Create Company Completed");
             this._snackBar.open("Successfully Created the company", "OK", { duration: 2000, panelClass: ['success-snackbar'] });
           }
         })

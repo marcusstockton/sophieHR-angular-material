@@ -56,7 +56,6 @@ export class NoteFormDialogComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    // console.log(this.form.getRawValue());
 
     if (this.noteData.id) {
       // Edit
@@ -96,7 +95,6 @@ export class NoteFormDialogComponent implements OnInit {
   }
 
   deleteNote(id: string) {
-    console.log(`Deleting note id ${id}`);
     this.notesClient.deleteNotes(id).subscribe({
       next: result => {
         this._snackBar.open("Note created", "OK", { duration: 5000, panelClass: ["success-snackbar"] });

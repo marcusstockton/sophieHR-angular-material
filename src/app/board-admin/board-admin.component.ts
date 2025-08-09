@@ -68,7 +68,6 @@ export class BoardAdminComponent implements OnInit, AfterViewInit {
   }
 
   getEmployeeRecord(row: any) {
-    // console.log(JSON.stringify(row));
     this.router.navigate(['/user/' + row.id]);
   }
 
@@ -90,7 +89,6 @@ export class BoardAdminComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // console.log('The dialog was closed');
       this.getDepartmentsForCompany(this.companyId);
     });
   }

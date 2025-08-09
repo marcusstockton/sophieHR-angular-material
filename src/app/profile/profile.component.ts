@@ -3,10 +3,10 @@ import { TokenStorageService } from '../_services/token-storage.service';
 import * as dayjs from 'dayjs';
 
 @Component({
-    selector: 'app-profile',
-    templateUrl: './profile.component.html',
-    styleUrls: ['./profile.component.scss'],
-    standalone: false
+  selector: 'app-profile',
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.scss'],
+  standalone: false
 })
 export class ProfileComponent implements OnInit {
 
@@ -17,7 +17,6 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = this.token.getUser();
     this.tokenExpiry = dayjs.default(this.currentUser.expiredTime);
-    // console.log(this.currentUser);
   }
 
 }

@@ -37,7 +37,6 @@ export class CompanyListComponent implements OnInit, AfterViewInit {
           this.dataSource.data = result;
         },
         error: (err) => {
-          // console.log(err);
           let errorMessage = "";
           switch (err.status) {
             case HttpStatusCode.Forbidden:

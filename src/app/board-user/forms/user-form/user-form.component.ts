@@ -28,6 +28,9 @@ export class UserFormComponent implements OnInit {
   titles: string[];
   managers: EmployeeListDto[] = [];
   departments: DepartmentDetailDto[];
+  employeeTypes: string[] = ["User", "Manager", "HRManager", "CompanyAdmin", "Admin"];// Need to filter these depending on the logged in user type
+
+  public employeeType: string = "User";
 
   constructor(
     private formBuilder: FormBuilder,
@@ -83,7 +86,6 @@ export class UserFormComponent implements OnInit {
           const id = this.route.snapshot.paramMap.get('userid');
           this.http.post(`https://localhost:7189/api/Employees/${id}/upload-avatar`, formData).subscribe({
             next: res => {
-              // console.log(res);
               this._snackBar.open("Avatar updated", "OK", { duration: 5000, panelClass: ["success-snackbar"] });
             }, error: err => this._snackBar.open(err, "Ok", { duration: 5000, panelClass: ["error-snackbar"] })
           })
@@ -121,7 +123,7 @@ export class UserFormComponent implements OnInit {
         postcode: [null, [Validators.required]],
         county: [null, [Validators.required]],
       }),
-      managerId: [null, [Validators.required]],
+      managerId: [null],
       avatar: [null, [Validators.required]],
       departmentId: [null],
       companyId: [null, [Validators.required]],
@@ -250,7 +252,6 @@ export class UserFormComponent implements OnInit {
             duration: 5000,
             panelClass: ['error-snackbar']
           });
-          // console.log(x)
         }
       })
     } else {
@@ -261,13 +262,12 @@ export class UserFormComponent implements OnInit {
       console.log("NEW EMPLOYEE DEETS: " + ef2.username);
       ef2.address = address;
 
-      this.employeeService.createEmployee(null, ef2).subscribe({
+      this.employeeService.createEmployee(this.employeeType, ef2).subscribe({
         next: (result: EmployeeDetailDto) => {
           if (result.id) {
             var formData = form.controls['avatar'].value;
             this.http.post(`https://localhost:7189/api/Employees/${result.id}/upload-avatar`, formData).subscribe({
               next: res => {
-                // console.log(res);
                 this._snackBar.open("Employee created successfully", "Ok", { duration: 5000, panelClass: ["success-snackbar"] })
               }, error: err => this._snackBar.open(`An Error Occured ${err}`, "OK", {
                 duration: 5000,
@@ -277,7 +277,6 @@ export class UserFormComponent implements OnInit {
           }
         },
         error: (err: any) => {
-          // console.log(err);
           this._snackBar.open(`An Error Occured ${err}`, "OK", {
             duration: 5000,
             panelClass: ['error-snackbar']
@@ -290,7 +289,6 @@ export class UserFormComponent implements OnInit {
   }
 
   updateTitle(event: any) {
-    // console.log(event);
     this.userForm.controls['title'].setValue(event.value);
   }
 
@@ -306,8 +304,6 @@ export class UserFormComponent implements OnInit {
         validArr.push(name);
       }
     }
-    // console.log(`valid count : ${validArr.length}`)
-    // console.log(`invalid count : ${invalidArr.length}`)
   }
 
 
@@ -383,5 +379,6 @@ export class UserFormComponent implements OnInit {
     if (!word) return word;
     return word[0].toUpperCase() + word.substr(1).toLowerCase();
   }
+
 
 }
