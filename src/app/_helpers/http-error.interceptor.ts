@@ -45,16 +45,24 @@ export class HttpErrorInterceptor implements HttpInterceptor {
           const errorObj = JSON.parse(errorText);
 
           let errorMsg = '';
-          if (errorObj.errors && errorObj.errors.id) {
-            errorObj.errors.id.forEach((x: string) => {
-              errorMsg += `${x}\n`;
+          if (errorObj.errors) {
+            // Collect all error messages from all keys
+            Object.values(errorObj.errors).forEach((err: any) => {
+              if (Array.isArray(err.errors) && err.errors.length > 0) {
+                err.errors.forEach((e: any) => {
+                  if (e.errorMessage) {
+                    errorMsg += `${e.errorMessage}\n`;
+                  }
+                });
+              }
             });
-          } else {
+          }
+          if (!errorMsg) {
             errorMsg = errorObj.detail || 'An unknown error occurred.';
           }
 
-          this._snackBar.open(errorMsg, "Ok", { duration: 5000, panelClass: ['warn-snackbar'] });
-          observer.error(new Error(errorMsg));
+          this._snackBar.open(errorMsg.trim(), "Ok", { panelClass: ['warn-snackbar'] });
+          observer.error(new Error(errorMsg.trim()));
         } catch (e) {
           observer.error(new Error('Failed to parse error response.'));
         }

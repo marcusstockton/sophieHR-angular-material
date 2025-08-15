@@ -6,10 +6,10 @@ import { UserFormComponent } from './forms/user-form/user-form.component';
 
 
 const routes: Routes = [
-    { path: '', component: BoardUserComponent, canActivate: [AuthGuard] },
-    { path: 'add', component: UserFormComponent, canActivate: [AuthGuard] },
-    { path: ':userid', component: BoardUserComponent, canActivate: [AuthGuard] },
-    { path: ':userid/edit', component: UserFormComponent, canActivate: [AuthGuard] },
+  { path: '', component: BoardUserComponent, canActivate: [AuthGuard] },
+  { path: 'add', component: UserFormComponent, canActivate: [AuthGuard] },
+  { path: ':userid', component: BoardUserComponent, canActivate: [AuthGuard] },
+  { path: ':userid/edit', component: UserFormComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

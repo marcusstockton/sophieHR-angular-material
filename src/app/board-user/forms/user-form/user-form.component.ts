@@ -280,10 +280,11 @@ export class UserFormComponent implements OnInit {
           }
         },
         error: (err: any) => {
-          this._snackBar.open(`An Error Occured ${err}`, "OK", {
-            duration: 5000,
-            panelClass: ['error-snackbar']
-          })
+          console.log(err);
+          // this._snackBar.open(`${err}`, "OK", {
+          //   duration: 5000,
+          //   panelClass: ['error-snackbar']
+          // })
         }
       });
     }
@@ -346,7 +347,7 @@ export class UserFormComponent implements OnInit {
           });
         },
         error: (err) => {
-          console.log(err);
+          //console.log(err);
           this._snackBar.open(`An Error Occured ${err}`, "OK", {
             duration: 5000,
             panelClass: ['error-snackbar']

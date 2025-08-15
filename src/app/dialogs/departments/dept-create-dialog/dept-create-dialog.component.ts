@@ -31,17 +31,17 @@ export class DeptCreateDialogComponent {
     });
 
     if (!dept.name) {
-      this._snackBar.open("Department name is required", "", { duration: 2000, panelClass: ['error-snackbar'] });
+      this._snackBar.open("Department name is required", "", { duration: 10000, panelClass: ['error-snackbar'] });
       return;
     }
 
     this.departmentClient.postDepartment(dept).subscribe({
       next: (val) => {
         this._snackBar.open(`Department ${val.name} created`, "", { duration: 2000, panelClass: ['success-snackbar'] });
-        this.dialogRef.close()
+        this.dialogRef.close(val.name)
       },
       error: (err) => {
-        this._snackBar.open(err, "", { duration: 2000, panelClass: ['error-snackbar'] })
+        this._snackBar.open(err, "", { duration: 10000, panelClass: ['error-snackbar'] })
       }
     })
   }

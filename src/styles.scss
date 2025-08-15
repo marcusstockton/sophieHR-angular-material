@@ -1,34 +1,45 @@
 // __<<ngM2ThemingMigrationEscapedComment0>>__
 // // Import material theming functions
-// @use '@angular/material' as mat;
+@use '@angular/material' as mat;
+@include mat.core();
 
-// // Copy the palettes from your selected theme (usually theme.scss).
-// $app-primary: mat-palette($mat-grey);
-// $app-accent:  mat-palette($mat-light-blue);
-// $app-warn:    mat-palette($mat-pink);
+// Import a prebuilt theme:
+// @import '@angular/material/prebuilt-themes/azure-blue.css';
 
-// // Create your Sass color vars (will be available in all the project)
-// $primary: mat-color($app-primary);
-// $accent: mat-color($app-accent);
-// $warn: mat-color($app-warn);
+
+html {
+  color-scheme: light dark;
+  @include mat.theme((color: (primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: Roboto,
+      density: 0));
+}
+
+:host {
+  background: var(--mat-sys-primary-background);
+  color: var(--mat-sys-on-primary-background);
+  border: 1px solid var(--mat-sys-outline-variant);
+  font: var(--mat-sys-body-large);
+}
 
 html,
 body {
-  height: 100%;
+  height: fit-content;
+  width: 100%;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
 .full-height {
-  height: 100vh;
+  height: calc(100% - var(--mat-toolbar-standard-height))
 }
 
 body {
   display: flex;
   flex-direction: column;
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  // font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .row {
@@ -65,27 +76,59 @@ body {
   }
 }
 
-.mat-mdc-snack-bar-container {
+.mdc-snackbar mat-mdc-snack-bar-container {
   &.warn-snackbar {
-    --mdc-snackbar-container-color: #fff3cd;
-    --mat-snack-bar-button-color: black;
-    --mdc-snackbar-supporting-text-color: #856404;
+    --mdc-snackbar-container-color: #fff3cd !important;
+    --mat-snack-bar-button-color: black !important;
+    --mdc-snackbar-supporting-text-color: #856404 !important;
+    background-color: #fff3cd !important;
+    color: #856404 !important;
   }
 }
 
-.container {
-  padding: 10px;
+// .container {
+//   padding: 10px;
+// }
+
+// app-root {
+//   display: flex;
+//   flex-direction: column;
+//   height: 100%;
+
+// }
+
+// .sidenav-container {
+//   // display: flex;
+//   // flex-direction: row;
+//   height: 100%;
+// }
+
+
+
+.example-full-width {
+  width: 100%;
 }
 
-app-root {
+.body-content {
+  background: var(--mat-sys-background) !important;
+  color: var(--mat-sys-on-background) !important;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: calc(100vh);
 }
 
-.sidenav-container {
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-  /* Full height of the viewport */
+.button {
+  border: solid 1px red;
+  @include mat.theme((color: mat.$azure-palette,
+    ));
+}
+
+.accent {
+  @include mat.theme((color: mat.$magenta-palette,
+    ));
+}
+
+.warn {
+  @include mat.theme((color: mat.$red-palette,
+    ));
 }

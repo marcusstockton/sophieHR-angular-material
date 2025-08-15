@@ -68,6 +68,13 @@ router-outlet {
   z-index: 1000; // Ensure it stays above other elements
 }
 
+.mat-toolbar {
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+  border: 1px solid var(--mat-sys-outline-variant);
+  font: var(--mat-sys-body-large);
+}
+
 :host ::ng-deep .footer-buttons {
   display: flex;
   justify-content: flex-start;
@@ -93,3 +100,8 @@ footer>.mat-list-item {
   align-items: center; // Center the button vertically within the footer
   width: 100%;
 }
+
+// .content {
+//   background: var(--mat-sys-background) !important;
+//   color: var(--mat-sys-on-background) !important;
+// }
