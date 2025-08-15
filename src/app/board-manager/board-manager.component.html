@@ -11,6 +11,12 @@
     </div>
     <h2>Welcome Manager {{this.user['userName']}}</h2>
 
+    <div>
+      <button mat-raised-button color="primary">Create Employee</button>
+      <button mat-raised-button color="accent" [routerLink]="['/departments']">Departments</button>
+      <button mat-raised-button color="warn" [routerLink]="['/company/list']">Companies</button>
+    </div>
+
     <div class="container" *ngIf="!isLoading && company">
 
       <div class="item">

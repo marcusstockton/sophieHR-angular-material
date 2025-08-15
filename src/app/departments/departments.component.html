@@ -4,12 +4,10 @@
     <p>List of departments in the company:</p>
 
     <div class="flex-row">
-        <button mat-flat-button class="button" (click)="openAddDepartmentDialog()">
+        <button mat-flat-button color="primary" (click)="openAddDepartmentDialog()">
             <mat-icon>add</mat-icon>
             Add Department
         </button>
-        <button mat-flat-button class="accent">Some accent button</button>
-        <button mat-flat-button class="warn">Some error button</button>
     </div>
     @if(departments.length === 0) {
     <mat-card>

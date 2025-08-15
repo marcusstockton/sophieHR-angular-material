@@ -11,7 +11,7 @@ import { DeptCreateDialogComponent } from '../dialogs/departments/dept-create-di
   selector: 'app-departments',
   imports: [MaterialModule],
   templateUrl: './departments.component.html',
-  styleUrls: ['./departments.component.scss', '../../styles.scss'],
+  styleUrl: './departments.component.scss',
   standalone: true,
 })
 export class DepartmentsComponent {
