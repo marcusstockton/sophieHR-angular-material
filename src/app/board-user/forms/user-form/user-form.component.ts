@@ -139,7 +139,7 @@ export class UserFormComponent implements OnInit {
         this.userForm.controls['companyId'].setValue(result[0].key);
         this.getManagersForComany(result[0].key!);
         this.getDepartmentsForCompany(result[0].key!);
-        this.loading = false;
+        // this.loading = false;
       }
     })
     this.employeeService.getTitles().subscribe((result) => {
@@ -150,8 +150,6 @@ export class UserFormComponent implements OnInit {
       this.employeeTypes = result;
     });
 
-    this.loading = false;
-
     const id = this.route.snapshot.paramMap.get('userid');
     if (id) {
       this.loading = true;
@@ -160,44 +158,12 @@ export class UserFormComponent implements OnInit {
       this.employeeService.getEmployee(id).subscribe({
         next: user => {
           this.imageSrc = this.sanitizer.bypassSecurityTrustUrl("data:image/png;base64, " + user.avatar?.avatar);
-          this.userForm.patchValue({
-            id: user.id,
-            firstName: user.firstName,
-            middleName: user.middleName,
-            lastName: user.lastName,
-            userName: user.userName,
-            title: user.title,
-            gender: user.gender,
-            workEmailAddress: user.workEmailAddress,
-            personalEmailAddress: user.personalEmailAddress,
-            workPhoneNumber: user.workPhoneNumber,
-            workMobileNumber: user.workMobileNumber,
-            phoneNumber: user.phoneNumber,
-            personalMobileNumber: user.personalMobileNumber,
-            jobTitle: user.jobTitle,
-            holidayAllowance: user.holidayAllowance,
-            dateOfBirth: user.dateOfBirth,
-            startOfEmployment: user.startOfEmployment,
-            address: {
-              line1: user.address?.line1,
-              line2: user.address?.line2,
-              line3: user.address?.line3,
-              line4: user.address?.line4,
-              postcode: user.address?.postcode,
-              county: user.address?.county,
-            },
-            managerId: user.managerId,
-            avatar: user.avatar,
-            employeeAvatarId: user.avatar?.id,
-            departmentId: user.department?.id,
-            companyId: user.company?.id,
-            passportNumber: user.passportNumber,
-            nationalInsuranceNumber: user.nationalInsuranceNumber
-          });
-          this.loading = false;
+          this.userForm.patchValue(this.mapEmployeeToForm(user));
+          // this.loading = false;
         }
-      })
+      });
     }
+    this.loading = false;
   }
   companyChange() {
     this.userForm.controls['companyId'].setValue(this.companies.find(x => x.key == this.companyId));
@@ -250,11 +216,8 @@ export class UserFormComponent implements OnInit {
             panelClass: ['success-snackbar']
           });
         },
-        error: x => {
-          this._snackBar.open(`An Error Occured ${x}`, "OK", {
-            duration: 5000,
-            panelClass: ['error-snackbar']
-          });
+        error: err => {
+          this.showError(`An Error Occured ${err}`);
         }
       })
     } else {
@@ -272,19 +235,13 @@ export class UserFormComponent implements OnInit {
             this.http.post(`https://localhost:7189/api/Employees/${result.id}/upload-avatar`, formData).subscribe({
               next: res => {
                 this._snackBar.open("Employee created successfully", "Ok", { duration: 5000, panelClass: ["success-snackbar"] })
-              }, error: err => this._snackBar.open(`An Error Occured ${err}`, "OK", {
-                duration: 5000,
-                panelClass: ['error-snackbar']
-              })
+              }, error: err =>
+                this.showError(`An Error Occured ${err}`)
             })
           }
         },
         error: (err: any) => {
-          console.log(err);
-          // this._snackBar.open(`${err}`, "OK", {
-          //   duration: 5000,
-          //   panelClass: ['error-snackbar']
-          // })
+          this.showError(`An Error Occured ${err}`);
         }
       });
     }
@@ -308,6 +265,48 @@ export class UserFormComponent implements OnInit {
         validArr.push(name);
       }
     }
+  }
+
+
+  private mapEmployeeToForm(user: EmployeeDetailDto): any {
+    return {
+      id: user.id,
+      firstName: user.firstName,
+      middleName: user.middleName,
+      lastName: user.lastName,
+      userName: user.userName,
+      title: user.title,
+      gender: user.gender,
+      workEmailAddress: user.workEmailAddress,
+      personalEmailAddress: user.personalEmailAddress,
+      workPhoneNumber: user.workPhoneNumber,
+      workMobileNumber: user.workMobileNumber,
+      phoneNumber: user.phoneNumber,
+      personalMobileNumber: user.personalMobileNumber,
+      jobTitle: user.jobTitle,
+      holidayAllowance: user.holidayAllowance,
+      dateOfBirth: user.dateOfBirth,
+      startOfEmployment: user.startOfEmployment,
+      address: {
+        line1: user.address?.line1,
+        line2: user.address?.line2,
+        line3: user.address?.line3,
+        line4: user.address?.line4,
+        postcode: user.address?.postcode,
+        county: user.address?.county,
+      },
+      managerId: user.managerId,
+      avatar: user.avatar,
+      employeeAvatarId: user.avatar?.id,
+      departmentId: user.department?.id,
+      companyId: user.company?.id,
+      passportNumber: user.passportNumber,
+      nationalInsuranceNumber: user.nationalInsuranceNumber
+    };
+  }
+
+  private showError(message: string) {
+    this._snackBar.open(message, "OK", { duration: 5000, panelClass: ['error-snackbar'] });
   }
 
 
@@ -347,36 +346,11 @@ export class UserFormComponent implements OnInit {
           });
         },
         error: (err) => {
-          //console.log(err);
-          this._snackBar.open(`An Error Occured ${err}`, "OK", {
-            duration: 5000,
-            panelClass: ['error-snackbar']
-          })
+          this.showError(`An Error Occured ${err}`);
         }
       }
     )
 
-    // this.http.get<RandomUser>(url).subscribe(data => {
-    //   this.userForm.patchValue({
-    //     firstName: data.results[0].name.first,
-    //     lastName: data.results[0].name.last,
-    //     userName: data.results[0].login.username + '@example.com',
-    //     title: data.results[0].name.title,
-    //     gender: this.titleCaseWord(data.results[0].gender),
-    //     workEmailAddress: data.results[0].email,
-    //     workPhoneNumber: data.results[0].phone,
-    //     workMobileNumber: data.results[0].cell,
-    //     dateOfBirth: new Date(data.results[0].dob.date),
-    //     startOfEmployment: new Date(),
-    //     holidayAllowance: (Math.random() * 40 | 7) + 1,
-    //     nationalInsuranceNumber: data.results[0].id.value.replace(/\s/g, ""),
-    //     address: {
-    //       line1: data.results[0].location.street.number + " " + data.results[0].location.street.name,
-    //       postcode: data.results[0].location.postcode,
-    //       county: data.results[0].location.state,
-    //     },
-    //   });
-    // });
   }
   // TODO: Remove before this goes anywhere other than a dev env lol
   titleCaseWord(word: string) {

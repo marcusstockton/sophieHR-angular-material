@@ -42,6 +42,10 @@ Get UK Bank holidays - <https://www.gov.uk/bank-holidays.json>
 
 Calendar library - <https://mattlewis92.github.io/angular-calendar/docs/>
 
+## TODO
+
+Update the map functionality to use https://leafletjs.com/ passing in the lat and lon.
+
 ## Update Commands
 
 ng update

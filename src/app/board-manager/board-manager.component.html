@@ -5,8 +5,11 @@
   </div>
   <div *ngIf="!isLoading">
     <div class="row" *ngIf="this.companyMap">
-      <div class="column">
+      <!-- <div class="column">
         <img mat-card-image src="data:image/png;base64,{{this.companyMap}}" class="companyMap" alt="Company Map" />
+      </div> -->
+      <div class="column">
+        <app-map [lat]="company.address?.lat" [lng]="company.address?.lon"></app-map>
       </div>
     </div>
     <h2>Welcome Manager {{this.user['userName']}}</h2>

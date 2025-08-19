@@ -18,6 +18,7 @@ import { BoardUserModule } from './board-user/board-user.module';
 import { CompanyModule } from './company/company.module';
 import { BoardAdminModule } from './board-admin/board-admin.module';
 import { HttpErrorInterceptor } from './_helpers/http-error.interceptor';
+import { MapComponent } from "./address/map/map.component";
 
 
 @NgModule({
@@ -38,7 +39,7 @@ import { HttpErrorInterceptor } from './_helpers/http-error.interceptor';
         ReactiveFormsModule,
         BoardUserModule,
         CompanyModule,
-        BoardAdminModule], providers: [
+        BoardAdminModule, MapComponent], providers: [
             {
                 provide: HTTP_INTERCEPTORS,
                 useClass: AuthInterceptor,
