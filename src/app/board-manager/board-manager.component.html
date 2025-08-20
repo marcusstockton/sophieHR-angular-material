@@ -4,7 +4,7 @@
     <mat-spinner color="accent" diameter="50" *ngIf="isLoading"></mat-spinner>
   </div>
   <div *ngIf="!isLoading">
-    <div class="row" *ngIf="this.companyMap">
+    <div class="row">
       <!-- <div class="column">
         <img mat-card-image src="data:image/png;base64,{{this.companyMap}}" class="companyMap" alt="Company Map" />
       </div> -->
@@ -14,10 +14,14 @@
     </div>
     <h2>Welcome Manager {{this.user['userName']}}</h2>
 
-    <div>
-      <button mat-raised-button color="primary">Create Employee</button>
-      <button mat-raised-button color="accent" [routerLink]="['/departments']">Departments</button>
-      <button mat-raised-button color="warn" [routerLink]="['/company/list']">Companies</button>
+    <div class="row">
+      <div class="column">
+        <!-- TODO: Add chartjs and implment a chart to show employee churn by month -->
+        @if(company && company.id) {
+        <h3>Employee Count by Month</h3>
+        <app-employee-count-chart [companyId]="company.id"></app-employee-count-chart>
+        }
+      </div>
     </div>
 
     <div class="container" *ngIf="!isLoading && company">

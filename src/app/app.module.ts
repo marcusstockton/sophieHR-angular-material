@@ -19,6 +19,8 @@ import { CompanyModule } from './company/company.module';
 import { BoardAdminModule } from './board-admin/board-admin.module';
 import { HttpErrorInterceptor } from './_helpers/http-error.interceptor';
 import { MapComponent } from "./address/map/map.component";
+import { EmployeeCountChartComponent } from "./board-manager/employee-count-chart/employee-count-chart.component";
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 
 @NgModule({
@@ -39,7 +41,7 @@ import { MapComponent } from "./address/map/map.component";
         ReactiveFormsModule,
         BoardUserModule,
         CompanyModule,
-        BoardAdminModule, MapComponent], providers: [
+        BoardAdminModule, MapComponent, EmployeeCountChartComponent], providers: [
             {
                 provide: HTTP_INTERCEPTORS,
                 useClass: AuthInterceptor,
@@ -51,6 +53,7 @@ import { MapComponent } from "./address/map/map.component";
                 multi: true
             },
             provideHttpClient(withInterceptorsFromDi()),
+            provideCharts(withDefaultRegisterables()),
         ]
 })
 export class AppModule { }
