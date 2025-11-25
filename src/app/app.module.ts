@@ -20,7 +20,7 @@ import { BoardAdminModule } from './board-admin/board-admin.module';
 import { HttpErrorInterceptor } from './_helpers/http-error.interceptor';
 import { MapComponent } from "./address/map/map.component";
 import { EmployeeCountChartComponent } from "./board-manager/employee-count-chart/employee-count-chart.component";
-import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { provideCharts, withDefaultRegisterables, BaseChartDirective } from 'ng2-charts';
 
 
 @NgModule({
@@ -33,7 +33,8 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
         BoardManagerComponent,
         DeptCreateDialogComponent,
     ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
+    imports: [
+        BrowserModule,
         AppRoutingModule,
         FormsModule,
         BrowserAnimationsModule,
@@ -41,19 +42,25 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
         ReactiveFormsModule,
         BoardUserModule,
         CompanyModule,
-        BoardAdminModule, MapComponent, EmployeeCountChartComponent], providers: [
-            {
-                provide: HTTP_INTERCEPTORS,
-                useClass: AuthInterceptor,
-                multi: true
-            },
-            {
-                provide: HTTP_INTERCEPTORS,
-                useClass: HttpErrorInterceptor,
-                multi: true
-            },
-            provideHttpClient(withInterceptorsFromDi()),
-            provideCharts(withDefaultRegisterables()),
-        ]
+        BoardAdminModule,
+        BaseChartDirective,
+        MapComponent,
+        EmployeeCountChartComponent
+    ],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: HttpErrorInterceptor,
+            multi: true
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideCharts(withDefaultRegisterables()),
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

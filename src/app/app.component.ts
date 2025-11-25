@@ -6,10 +6,10 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { CompaniesClient, KeyValuePairOfGuidAndString } from './client';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
-    standalone: false
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
+  standalone: false
 })
 export class AppComponent {
   role: string | undefined;
@@ -73,12 +73,12 @@ export class AppComponent {
     this.userService.updateCompanyId("");
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: { target: { innerWidth: number; }; }) {
-    if (event.target.innerWidth < 500) {
+  @HostListener('window:resize')
+  onResize() {
+    const width = window.innerWidth;
+    if (width < 500) {
       this.sidenav.close();
-    }
-    if (event.target.innerWidth > 500) {
+    } else {
       this.sidenav.open();
     }
   }

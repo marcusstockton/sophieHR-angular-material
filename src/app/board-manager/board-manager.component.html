@@ -1,16 +1,16 @@
 <div class="manager">
   @if (isLoading) {
-    <div>
-      <p>Loading...</p>
-      @if (isLoading) {
-        <mat-spinner color="accent" diameter="50"></mat-spinner>
-      }
-    </div>
+  <div>
+    <p>Loading...</p>
+    @if (isLoading) {
+    <mat-spinner color="accent" diameter="50"></mat-spinner>
+    }
+  </div>
   }
-  @if (!isLoading) {
-    <div>
-      <div class="row">
-        <!-- <div class="column">
+  @if (!isLoading && company) {
+  <div>
+    <div class="row">
+      <!-- <div class="column">
         <img mat-card-image src="data:image/png;base64,{{this.companyMap}}" class="companyMap" alt="Company Map" />
       </div> -->
       <div class="column">
@@ -22,42 +22,42 @@
       <div class="column">
         <!-- TODO: Add chartjs and implment a chart to show employee churn by month -->
         @if(company && company.id) {
-          <h3>Employee Count by Month</h3>
-          <app-employee-count-chart [companyId]="company.id"></app-employee-count-chart>
+        <h3>Employee Count by Month</h3>
+        <app-employee-count-chart [companyId]="company.id"></app-employee-count-chart>
         }
       </div>
     </div>
     @if (!isLoading && company) {
-      <div class="container">
-        <div class="item">
-          @if (company.logo) {
-            <mat-card appearance="outlined" class="image-card">
-              <img mat-card-image src="data:image/png;base64,{{company.logo}}" alt="Company Logo" />
-            </mat-card>
-          }
-        </div>
-        <div class="item">
-          <mat-card appearance="outlined">
-            <mat-card-title>Employee Count</mat-card-title>
-            <mat-card-content class="centre-card">
-              <h1>{{dataSource.data.length}}</h1>
-            </mat-card-content>
-          </mat-card>
-        </div>
-        <div class="item">
-          <mat-card appearance="outlined">
-            <mat-card-title>
-              {{company.name}}
-            </mat-card-title>
-            <mat-card-content>
-              <p><small>{{company.address?.line1}} {{company.address?.line2}} {{company.address?.line3}}
-              {{company.address?.line4}}</small></p>
-              <p><small>{{company.address?.county}}</small></p>
-              <p><small>{{company.address?.postcode | uppercase}}</small></p>
-            </mat-card-content>
-          </mat-card>
-        </div>
+    <div class="container">
+      <div class="item">
+        @if (company.logo) {
+        <mat-card appearance="outlined" class="image-card">
+          <img mat-card-image src="data:image/png;base64,{{company.logo}}" alt="Company Logo" />
+        </mat-card>
+        }
       </div>
+      <div class="item">
+        <mat-card appearance="outlined">
+          <mat-card-title>Employee Count</mat-card-title>
+          <mat-card-content class="centre-card">
+            <h1>{{dataSource.data.length}}</h1>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="item">
+        <mat-card appearance="outlined">
+          <mat-card-title>
+            {{company.name}}
+          </mat-card-title>
+          <mat-card-content>
+            <p><small>{{company.address?.line1}} {{company.address?.line2}} {{company.address?.line3}}
+                {{company.address?.line4}}</small></p>
+            <p><small>{{company.address?.county}}</small></p>
+            <p><small>{{company.address?.postcode | uppercase}}</small></p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
     }
     <div class="row">
       <mat-card class="card-table">
@@ -69,9 +69,9 @@
             </mat-form-field>
             <div class="mat-elevation-z8">
               @if (isLoading) {
-                <div class="spinner-container">
-                  <mat-spinner diameter="25"></mat-spinner>
-                </div>
+              <div class="spinner-container">
+                <mat-spinner diameter="25"></mat-spinner>
+              </div>
               }
               <table mat-table [dataSource]="dataSource" matSort>
                 <ng-container matColumnDef="firstName">
@@ -113,7 +113,7 @@
                 </tr>
               </table>
               @if (dataSource.data.length === 0 && !isLoading) {
-                <div>No data</div>
+              <div>No data</div>
               }
               <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
             </div>
@@ -122,6 +122,6 @@
       </mat-card>
     </div>
   </div>
-}
+  }
 
 </div>
