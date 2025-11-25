@@ -6,9 +6,11 @@
         <mat-form-field appearance="fill">
           <mat-label>Leave Type</mat-label>
           <mat-select placeholder="Leave Type" formControlName="leaveType">
-            <mat-option *ngFor="let x of this.leaveTypes | keyvalue" [value]="x.key">
-              {{x.value}}
-            </mat-option>
+            @for (x of this.leaveTypes | keyvalue; track x) {
+              <mat-option [value]="x.key">
+                {{x.value}}
+              </mat-option>
+            }
           </mat-select>
         </mat-form-field>
       </div>
@@ -19,89 +21,89 @@
           <mat-label>Start Date</mat-label>
           <input matInput [matDatepicker]="sdpicker" formControlName="startDate" placeholder="Start Date"
             (dateChange)="startDateChange($event.value)">
-          <mat-hint>DD/MM/YYYY</mat-hint>
-          <mat-datepicker-toggle matSuffix [for]="sdpicker"></mat-datepicker-toggle>
-          <mat-datepicker #sdpicker></mat-datepicker>
-        </mat-form-field>
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="sdpicker"></mat-datepicker-toggle>
+            <mat-datepicker #sdpicker></mat-datepicker>
+          </mat-form-field>
 
-        <!-- <mat-slide-toggle style="padding-left:10px;" *ngIf="isMultiDay" (change)="startDatePartial($event.checked)">Half
-          Day</mat-slide-toggle> -->
+          <!-- <mat-slide-toggle style="padding-left:10px;" *ngIf="isMultiDay" (change)="startDatePartial($event.checked)">Half
+        Day</mat-slide-toggle> -->
 
         <!-- <mat-form-field appearance="fill" *ngIf="startDatePartialDay">
-          <mat-label>Length</mat-label>
-          <mat-select>
-            <mat-option *ngFor="let dateOption of startDateOptions" [value]="dateOption.id">
-              {{dateOption.name}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field> -->
-      </div>
-      <div class="column">
-        <mat-form-field appearance="fill">
-          <mat-label>End Date</mat-label>
-          <input matInput [matDatepicker]="edpicker" formControlName="endDate" placeholder="End Date"
-            (dateChange)="endDateChange($event.value)">
+        <mat-label>Length</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let dateOption of startDateOptions" [value]="dateOption.id">
+            {{dateOption.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field> -->
+    </div>
+    <div class="column">
+      <mat-form-field appearance="fill">
+        <mat-label>End Date</mat-label>
+        <input matInput [matDatepicker]="edpicker" formControlName="endDate" placeholder="End Date"
+          (dateChange)="endDateChange($event.value)">
           <mat-hint>DD/MM/YYYY</mat-hint>
           <mat-datepicker-toggle matSuffix [for]="edpicker"></mat-datepicker-toggle>
           <mat-datepicker #edpicker></mat-datepicker>
         </mat-form-field>
 
         <!-- <mat-slide-toggle style="padding-left:10px;" *ngIf="isMultiDay" (change)="endDatePartial($event.checked)">Half
-          Day</mat-slide-toggle> -->
+      Day</mat-slide-toggle> -->
 
-        <!-- <mat-form-field appearance="fill" *ngIf="endDatePartialDay">
-          <mat-label>Length</mat-label>
-          <mat-select>
-            <mat-option *ngFor="let dateOption of endDateOptions" [value]="dateOption.id">
-              {{dateOption.name}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field> -->
-      </div>
+      <!-- <mat-form-field appearance="fill" *ngIf="endDatePartialDay">
+      <mat-label>Length</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let dateOption of endDateOptions" [value]="dateOption.id">
+          {{dateOption.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field> -->
+  </div>
+</div>
+<div>
+  <!-- <mat-form-field appearance="fill" *ngIf="!isMultiDay">
+  <mat-label>Length</mat-label>
+  <mat-select>
+    <mat-option *ngFor="let dateOption of oneDateOptions" [value]="dateOption">
+      {{dateOption}}
+    </mat-option>
+  </mat-select>
+</mat-form-field> -->
+</div>
+
+<div class="row">
+  <div class="column">
+    <mat-form-field appearance="fill">
+      <mat-label>Hours (per day)</mat-label>
+      <input matInput formControlName="hours" placeholder="Hours" type="number" min="0" max="24">
+    </mat-form-field>
+  </div>
+  <div class="column">
+    <mat-form-field appearance="fill">
+      <mat-label>Normal Hours per day</mat-label>
+      <input matInput formControlName="normalHoursPerDay" placeholder="Normal hours per day" type="number" min="0"
+        max="24">
+      </mat-form-field>
     </div>
-    <div>
-      <!-- <mat-form-field appearance="fill" *ngIf="!isMultiDay">
-        <mat-label>Length</mat-label>
-        <mat-select>
-          <mat-option *ngFor="let dateOption of oneDateOptions" [value]="dateOption">
-            {{dateOption}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field> -->
-    </div>
+  </div>
 
-    <div class="row">
-      <div class="column">
-        <mat-form-field appearance="fill">
-          <mat-label>Hours (per day)</mat-label>
-          <input matInput formControlName="hours" placeholder="Hours" type="number" min="0" max="24">
-        </mat-form-field>
-      </div>
-      <div class="column">
-        <mat-form-field appearance="fill">
-          <mat-label>Normal Hours per day</mat-label>
-          <input matInput formControlName="normalHoursPerDay" placeholder="Normal hours per day" type="number" min="0"
-            max="24">
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="column">
-        <mat-form-field appearance="fill">
-          <mat-label>Comments</mat-label>
-          <textarea matInput formControlName="comments" placeholder="Enter your comments"></textarea>
-          <mat-hint>Any comments</mat-hint>
-        </mat-form-field>
-      </div>
-
+  <div class="row">
+    <div class="column">
+      <mat-form-field appearance="fill">
+        <mat-label>Comments</mat-label>
+        <textarea matInput formControlName="comments" placeholder="Enter your comments"></textarea>
+        <mat-hint>Any comments</mat-hint>
+      </mat-form-field>
     </div>
 
+  </div>
 
-  </form>
+
+</form>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-raised-button mat-dialog-close>Cancel</button>
   <button mat-raised-button color="primary" (click)="onSubmit()"
-    [disabled]="!form.valid || !form.dirty || submitted">Ok</button>
+  [disabled]="!form.valid || !form.dirty || submitted">Ok</button>
 </mat-dialog-actions>

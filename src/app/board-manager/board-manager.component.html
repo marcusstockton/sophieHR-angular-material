@@ -1,11 +1,16 @@
 <div class="manager">
-  <div *ngIf="isLoading">
-    <p>Loading...</p>
-    <mat-spinner color="accent" diameter="50" *ngIf="isLoading"></mat-spinner>
-  </div>
-  <div *ngIf="!isLoading">
-    <div class="row">
-      <!-- <div class="column">
+  @if (isLoading) {
+    <div>
+      <p>Loading...</p>
+      @if (isLoading) {
+        <mat-spinner color="accent" diameter="50"></mat-spinner>
+      }
+    </div>
+  }
+  @if (!isLoading) {
+    <div>
+      <div class="row">
+        <!-- <div class="column">
         <img mat-card-image src="data:image/png;base64,{{this.companyMap}}" class="companyMap" alt="Company Map" />
       </div> -->
       <div class="column">
@@ -13,46 +18,47 @@
       </div>
     </div>
     <h2>Welcome Manager {{this.user['userName']}}</h2>
-
     <div class="row">
       <div class="column">
         <!-- TODO: Add chartjs and implment a chart to show employee churn by month -->
         @if(company && company.id) {
-        <h3>Employee Count by Month</h3>
-        <app-employee-count-chart [companyId]="company.id"></app-employee-count-chart>
+          <h3>Employee Count by Month</h3>
+          <app-employee-count-chart [companyId]="company.id"></app-employee-count-chart>
         }
       </div>
     </div>
-
-    <div class="container" *ngIf="!isLoading && company">
-
-      <div class="item">
-        <mat-card appearance="outlined" class="image-card" *ngIf="company.logo">
-          <img mat-card-image src="data:image/png;base64,{{company.logo}}" alt="Company Logo" />
-        </mat-card>
+    @if (!isLoading && company) {
+      <div class="container">
+        <div class="item">
+          @if (company.logo) {
+            <mat-card appearance="outlined" class="image-card">
+              <img mat-card-image src="data:image/png;base64,{{company.logo}}" alt="Company Logo" />
+            </mat-card>
+          }
+        </div>
+        <div class="item">
+          <mat-card appearance="outlined">
+            <mat-card-title>Employee Count</mat-card-title>
+            <mat-card-content class="centre-card">
+              <h1>{{dataSource.data.length}}</h1>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="item">
+          <mat-card appearance="outlined">
+            <mat-card-title>
+              {{company.name}}
+            </mat-card-title>
+            <mat-card-content>
+              <p><small>{{company.address?.line1}} {{company.address?.line2}} {{company.address?.line3}}
+              {{company.address?.line4}}</small></p>
+              <p><small>{{company.address?.county}}</small></p>
+              <p><small>{{company.address?.postcode | uppercase}}</small></p>
+            </mat-card-content>
+          </mat-card>
+        </div>
       </div>
-      <div class="item">
-        <mat-card appearance="outlined">
-          <mat-card-title>Employee Count</mat-card-title>
-          <mat-card-content class="centre-card">
-            <h1>{{dataSource.data.length}}</h1>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div class="item">
-        <mat-card appearance="outlined">
-          <mat-card-title>
-            {{company.name}}
-          </mat-card-title>
-          <mat-card-content>
-            <p><small>{{company.address?.line1}} {{company.address?.line2}} {{company.address?.line3}}
-                {{company.address?.line4}}</small></p>
-            <p><small>{{company.address?.county}}</small></p>
-            <p><small>{{company.address?.postcode | uppercase}}</small></p>
-          </mat-card-content>
-        </mat-card>
-      </div>
-    </div>
+    }
     <div class="row">
       <mat-card class="card-table">
         <mat-card-content>
@@ -61,22 +67,21 @@
               <mat-label>Filter</mat-label>
               <input matInput (keyup)="applyFilter($event)" placeholder="Search" #input>
             </mat-form-field>
-
             <div class="mat-elevation-z8">
-              <div class="spinner-container" *ngIf="isLoading">
-                <mat-spinner diameter="25"></mat-spinner>
-              </div>
+              @if (isLoading) {
+                <div class="spinner-container">
+                  <mat-spinner diameter="25"></mat-spinner>
+                </div>
+              }
               <table mat-table [dataSource]="dataSource" matSort>
                 <ng-container matColumnDef="firstName">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
                   <td mat-cell *matCellDef="let row"> {{row.firstName}} </td>
                 </ng-container>
-
                 <ng-container matColumnDef="lastName">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
                   <td mat-cell *matCellDef="let row"> {{row.lastName}} </td>
                 </ng-container>
-
                 <ng-container matColumnDef="jobTitle">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> Job Title </th>
                   <td mat-cell *matCellDef="let row"> {{row.jobTitle}} </td>
@@ -85,36 +90,31 @@
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> Work Email </th>
                   <td mat-cell *matCellDef="let row"> {{row.workEmailAddress}} </td>
                 </ng-container>
-
                 <ng-container matColumnDef="workPhoneNumber">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> Work Number </th>
                   <td mat-cell *matCellDef="let row"> {{row.workPhoneNumber}} </td>
                 </ng-container>
-
                 <ng-container matColumnDef="holidayAllowance">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> Leave Allowance </th>
                   <td mat-cell *matCellDef="let row"> {{row.holidayAllowance}} </td>
                 </ng-container>
-
                 <ng-container matColumnDef="dateOfBirth">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> DoB </th>
                   <td mat-cell *matCellDef="let row"> {{row.dateOfBirth | date : 'mediumDate'}} </td>
                 </ng-container>
-
                 <ng-container matColumnDef="startOfEmployment">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </th>
                   <td mat-cell *matCellDef="let row"> {{row.startOfEmployment | date : 'mediumDate'}} </td>
                 </ng-container>
-
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="getEmployeeRecord(row)"></tr>
-
                 <tr class="mat-row" *matNoDataRow>
                   <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
                 </tr>
               </table>
-
-              <div *ngIf="dataSource.data.length === 0 && !isLoading">No data</div>
+              @if (dataSource.data.length === 0 && !isLoading) {
+                <div>No data</div>
+              }
               <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
             </div>
           </div>
@@ -122,5 +122,6 @@
       </mat-card>
     </div>
   </div>
+}
 
 </div>

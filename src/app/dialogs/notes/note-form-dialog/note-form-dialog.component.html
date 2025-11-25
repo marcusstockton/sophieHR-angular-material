@@ -1,43 +1,49 @@
 <mat-card-title class="toolbar-title">{{noteData.title}}</mat-card-title>
 <mat-dialog-content>
-    <form [formGroup]="form">
-        <div class="row">
-            <div class="column">
-                <mat-form-field appearance="fill">
-                    <mat-label>Note Type</mat-label>
-                    <mat-select formControlName="noteTypeId">
-                        <mat-option *ngFor="let notetype of noteTypes" [value]="notetype.key">
-                            {{notetype.value}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-        </div>
-        <div class="row">
-            <div class="column">
-                <mat-form-field appearance="fill" class="full-width">
-                    <mat-label>Title</mat-label>
-                    <input matInput formControlName="title" required>
-                    <mat-hint>Note Title</mat-hint>
-                </mat-form-field>
-            </div>
-        </div>
-        <div class="row">
-            <div class="column">
-                <mat-form-field appearance="fill" class="full-width">
-                    <mat-label>Content</mat-label>
-                    <textarea matInput formControlName="content" rows="10"></textarea>
-                </mat-form-field>
-            </div>
-        </div>
-    </form>
-    <small class="row" *ngIf="this.noteData.createdDate">Created on {{noteData.createdDate | date:'medium'}}</small>
-    <small class="row" *ngIf="this.noteData.updatedDate">Updated on {{noteData.updatedDate | date:'medium'}}</small>
+  <form [formGroup]="form">
+    <div class="row">
+      <div class="column">
+        <mat-form-field appearance="fill">
+          <mat-label>Note Type</mat-label>
+          <mat-select formControlName="noteTypeId">
+            @for (notetype of noteTypes; track notetype) {
+              <mat-option [value]="notetype.key">
+                {{notetype.value}}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="column">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Title</mat-label>
+          <input matInput formControlName="title" required>
+          <mat-hint>Note Title</mat-hint>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="column">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Content</mat-label>
+          <textarea matInput formControlName="content" rows="10"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+  @if (this.noteData.createdDate) {
+    <small class="row">Created on {{noteData.createdDate | date:'medium'}}</small>
+  }
+  @if (this.noteData.updatedDate) {
+    <small class="row">Updated on {{noteData.updatedDate | date:'medium'}}</small>
+  }
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button mat-raised-button color="warn" [hidden]="noteData.id == null"
-        (click)="deleteNote(noteData.id!)">Delete</button>
-    <button mat-raised-button mat-dialog-close>Cancel</button>
-    <button mat-raised-button color="primary" (click)="onSubmit()"
-        [disabled]="!form.valid || !form.dirty || submitted">Ok</button>
+  <button mat-raised-button color="warn" [hidden]="noteData.id == null"
+  (click)="deleteNote(noteData.id!)">Delete</button>
+  <button mat-raised-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()"
+  [disabled]="!form.valid || !form.dirty || submitted">Ok</button>
 </mat-dialog-actions>

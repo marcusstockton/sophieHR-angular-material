@@ -1,76 +1,87 @@
 <div id="company-form-page">
 
-    <div *ngIf="editing && companyDetails;else creating">
-        <h2>
-            Editing Company {{companyDetails.name}}
-        </h2>
-    </div>
-    <ng-template #creating>
-        <h2>Creating Company</h2>
-    </ng-template>
-
-    <div *ngIf="companyDetails?.address?.mapImage != null" id="company-map">
-        <img [src]="'data:image/jpg;base64,'+ companyDetails!.address!.mapImage" alt="company location" />
-    </div>
-
+  @if (editing && companyDetails) {
     <div>
-        <img *ngIf="companyDetails?.logo" [src]="'data:image/jpg;base64,'+ companyDetails!.logo" alt="company logo"
-            id="company-logo" />
-        <button mat-mini-fab color="primary" aria-label="Company Logo Add/Edit" (click)="openLogoDialog()">
-            <mat-icon *ngIf="!editing" matTooltip="Add company logo">add</mat-icon>
-            <mat-icon *ngIf="editing" matTooltip="Change company logo">create</mat-icon>
-        </button>
+      <h2>
+        Editing Company {{companyDetails.name}}
+      </h2>
     </div>
+  } @else {
+    <h2>Creating Company</h2>
+  }
+
+  @if (companyDetails?.address?.mapImage != null) {
+    <div id="company-map">
+      <img [src]="'data:image/jpg;base64,'+ companyDetails!.address!.mapImage" alt="company location" />
+    </div>
+  }
+
+  <div>
+    @if (companyDetails?.logo) {
+      <img [src]="'data:image/jpg;base64,'+ companyDetails!.logo" alt="company logo"
+        id="company-logo" />
+    }
+    <button mat-mini-fab color="primary" aria-label="Company Logo Add/Edit" (click)="openLogoDialog()">
+      @if (!editing) {
+        <mat-icon matTooltip="Add company logo">add</mat-icon>
+      }
+      @if (editing) {
+        <mat-icon matTooltip="Change company logo">create</mat-icon>
+      }
+    </button>
+  </div>
 
 
-    <form (ngSubmit)="submitCompany()" id="companyForm">
-        <ng-container [formGroup]="this.companyForm">
-            <mat-form-field>
-                <mat-label>Company Name</mat-label>
-                <input matInput formControlName="name" required placeholder="Enter company name" />
-            </mat-form-field>
-            <ng-container formGroupName="address">
-                <mat-form-field>
-                    <mat-label>Line 1</mat-label>
-                    <input matInput formControlName="line1" required placeholder="Line 1" />
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Line 2</mat-label>
-                    <input matInput formControlName="line2" placeholder="Line 2" />
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Line 3</mat-label>
-                    <input matInput formControlName="line3" placeholder="Line 3" />
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Line 4</mat-label>
-                    <input matInput formControlName="line4" placeholder="Line 4" />
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Post code</mat-label>
-                    <input matInput formControlName="postcode" required [matAutocomplete]="auto"
-                        placeholder="Postcode" />
-                    <mat-autocomplete #auto="matAutocomplete">
-                        <mat-option *ngFor="let option of filteredOptions | async"
-                            (onSelectionChange)="getPostcodeInfo(option)" [value]="option">
-                            {{option}}
-                        </mat-option>
-                    </mat-autocomplete>
+  <form (ngSubmit)="submitCompany()" id="companyForm">
+    <ng-container [formGroup]="this.companyForm">
+      <mat-form-field>
+        <mat-label>Company Name</mat-label>
+        <input matInput formControlName="name" required placeholder="Enter company name" />
+      </mat-form-field>
+      <ng-container formGroupName="address">
+        <mat-form-field>
+          <mat-label>Line 1</mat-label>
+          <input matInput formControlName="line1" required placeholder="Line 1" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Line 2</mat-label>
+          <input matInput formControlName="line2" placeholder="Line 2" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Line 3</mat-label>
+          <input matInput formControlName="line3" placeholder="Line 3" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Line 4</mat-label>
+          <input matInput formControlName="line4" placeholder="Line 4" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Post code</mat-label>
+          <input matInput formControlName="postcode" required [matAutocomplete]="auto"
+            placeholder="Postcode" />
+            <mat-autocomplete #auto="matAutocomplete">
+              @for (option of filteredOptions | async; track option) {
+                <mat-option
+                  (onSelectionChange)="getPostcodeInfo(option)" [value]="option">
+                  {{option}}
+                </mat-option>
+              }
+            </mat-autocomplete>
 
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>County</mat-label>
-                    <input matInput formControlName="county" required placeholder="County" />
-                </mat-form-field>
-            </ng-container>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>County</mat-label>
+            <input matInput formControlName="county" required placeholder="County" />
+          </mat-form-field>
         </ng-container>
-        <div class="button-row" fxLayout="row" fxLayoutAlign="space-between center">
-            <button mat-raised-button color="info" type="button" (click)="goBack()">Back</button>
-            <button mat-raised-button color="primary" type="submit"
-                [disabled]="!companyForm.valid || !companyForm.dirty">Submit</button>
-        </div>
+      </ng-container>
+      <div class="button-row" fxLayout="row" fxLayoutAlign="space-between center">
+        <button mat-raised-button color="info" type="button" (click)="goBack()">Back</button>
+        <button mat-raised-button color="primary" type="submit"
+        [disabled]="!companyForm.valid || !companyForm.dirty">Submit</button>
+      </div>
 
     </form>
 
 
-</div>
+  </div>

@@ -1,29 +1,28 @@
 <div class="profile">
-  <div class="container" *ngIf="currentUser; else loggedOut">
-    <header>
-      <h3>
-        <strong>{{ currentUser.userName }}</strong> Profile
-      </h3>
-    </header>
-    <p>
-      <strong>Token:</strong>
-      {{ currentUser.token.substring(0, 20) }} ...
-      {{ currentUser.token.substr(currentUser.token.length - 20) }}
-    </p>
-    <p>
-      <strong>Token Expiry: </strong> {{tokenExpiry}}
-    </p>
-    <p>
-      <strong>Email: </strong>
-      <a href="mailto:{{ currentUser.email }}">{{ currentUser.email }}</a>
-    </p>
-    <p>
-      <strong>Role: </strong> {{currentUser.role}}
-    </p>
-
-
-  </div>
-  <ng-template #loggedOut>
+  @if (currentUser) {
+    <div class="container">
+      <header>
+        <h3>
+          <strong>{{ currentUser.userName }}</strong> Profile
+        </h3>
+      </header>
+      <p>
+        <strong>Token:</strong>
+        {{ currentUser.token.substring(0, 20) }} ...
+        {{ currentUser.token.substr(currentUser.token.length - 20) }}
+      </p>
+      <p>
+        <strong>Token Expiry: </strong> {{tokenExpiry}}
+      </p>
+      <p>
+        <strong>Email: </strong>
+        <a href="mailto:{{ currentUser.email }}">{{ currentUser.email }}</a>
+      </p>
+      <p>
+        <strong>Role: </strong> {{currentUser.role}}
+      </p>
+    </div>
+  } @else {
     Please login.
-  </ng-template>
+  }
 </div>

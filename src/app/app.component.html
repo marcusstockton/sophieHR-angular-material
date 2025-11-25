@@ -1,31 +1,35 @@
 <span class="body-content">
-  <mat-toolbar *ngIf="this.tokenStorageService.isLoggedIn">
-    <button type="button" aria-label="Toggle navigation menu" mat-icon-button (click)="drawer.toggle()">
-      <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-    </button>
-    <span>Sophies Human Resources</span>
-    <span *ngIf="this.role==='Admin' && companyNames">
-    </span>
-    <span class="example-spacer"></span>
-    <ng-container *ngIf="role === 'Admin' || role === 'CompanyAdmin'">
-      <button mat-icon-button class="example-icon" matTooltip="Company Config" aria-label="Company Config"
-        (click)="companyConfig()">
-        <mat-icon>settings_applications</mat-icon>
+  @if (this.tokenStorageService.isLoggedIn) {
+    <mat-toolbar>
+      <button type="button" aria-label="Toggle navigation menu" mat-icon-button (click)="drawer.toggle()">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-    </ng-container>
-    <button mat-icon-button class="example-icon" matTooltip="View my account" aria-label="View my account"
-      (click)="viewProfile()">
-      <mat-icon>account_box</mat-icon>
-    </button>
-    <button mat-icon-button class="example-icon" aria-label="Log Out" matTooltip="Log Out" (click)="logout()">
-      <mat-icon>logout</mat-icon>
-    </button>
-  </mat-toolbar>
+      <span>Sophies Human Resources</span>
+      @if (this.role==='Admin' && companyNames) {
+        <span>
+        </span>
+      }
+      <span class="example-spacer"></span>
+      @if (role === 'Admin' || role === 'CompanyAdmin') {
+        <button mat-icon-button class="example-icon" matTooltip="Company Config" aria-label="Company Config"
+          (click)="companyConfig()">
+          <mat-icon>settings_applications</mat-icon>
+        </button>
+      }
+      <button mat-icon-button class="example-icon" matTooltip="View my account" aria-label="View my account"
+        (click)="viewProfile()">
+        <mat-icon>account_box</mat-icon>
+      </button>
+      <button mat-icon-button class="example-icon" aria-label="Log Out" matTooltip="Log Out" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </mat-toolbar>
+  }
 
   <mat-sidenav-container class="sidenav-container" [ngClass]="{'full-height': !this.tokenStorageService.isLoggedIn}">
     <mat-sidenav #drawer class="sidenav" mode="side" [opened]="(this.tokenStorageService.isLoggedIn)">
-      <ng-container [ngSwitch]="role">
-        <ng-container *ngSwitchCase="'Admin'">
+      @switch (role) {
+        @case ('Admin') {
           <mat-nav-list>
             <mat-list-item>
               <button mat-button class="menu-button" routerLink="/admin">
@@ -40,14 +44,14 @@
               </button>
             </mat-list-item>
           </mat-nav-list>
-        </ng-container>
-        <ng-container *ngSwitchCase="'Manager'">
+        }
+        @case ('Manager') {
           <ng-container *ngTemplateOutlet="managerShared"></ng-container>
-        </ng-container>
-        <ng-container *ngSwitchCase="'CompanyAdmin'">
+        }
+        @case ('CompanyAdmin') {
           <ng-container *ngTemplateOutlet="managerShared"></ng-container>
-        </ng-container>
-        <ng-container *ngSwitchCase="'User'">
+        }
+        @case ('User') {
           <mat-nav-list>
             <mat-list-item>
               <button mat-button class="menu-button" routerLink="/user">
@@ -56,8 +60,8 @@
               </button>
             </mat-list-item>
           </mat-nav-list>
-        </ng-container>
-      </ng-container>
+        }
+      }
 
       <ng-template #managerShared>
         <mat-nav-list>

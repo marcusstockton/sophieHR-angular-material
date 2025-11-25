@@ -17,39 +17,51 @@
             <mat-label>Password</mat-label>
             <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'"
               placeholder="password">
-            <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
-              [attr.aria-pressed]="hidePassword" type="button">
-              <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
-            <mat-hint>Your password</mat-hint>
-            <mat-error>Password is required</mat-error>
-          </mat-form-field>
-          <mat-error *ngIf="errorMessage">{{errorMessage}}</mat-error>
-          <div class="row">
-            <button mat-raised-button color="primary" [disabled]="!form.valid || loggingIn" type="submit">
-              Login
-            </button>
-            <div class="example-spacer"></div>
-            <mat-spinner color="accent" [diameter]="25" *ngIf="loggingIn">
-            </mat-spinner>
-          </div>
+              <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hidePassword" type="button">
+                <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-hint>Your password</mat-hint>
+              <mat-error>Password is required</mat-error>
+            </mat-form-field>
+            @if (errorMessage) {
+              <mat-error>{{errorMessage}}</mat-error>
+            }
+            <div class="row">
+              <button mat-raised-button color="primary" [disabled]="!form.valid || loggingIn" type="submit">
+                Login
+              </button>
+              <div class="example-spacer"></div>
+              @if (loggingIn) {
+                <mat-spinner color="accent" [diameter]="25">
+                </mat-spinner>
+              }
+            </div>
 
-        </form>
-        <mat-card-title>Managers</mat-card-title>
-        <mat-card-subtitle>
-          <p *ngIf="retrievingManagers">Getting some manager usernames...</p>
-          <div *ngFor="let admin of managers">
-            <small>{{admin}}</small>
-          </div>
-        </mat-card-subtitle>
-        <mat-card-title>Company Admins</mat-card-title>
-        <mat-card-subtitle>
-          <p *ngIf="retrievingManagers">Getting some HR usernames...</p>
-          <div *ngFor="let admin of admins">
-            <small>{{admin}}</small>
-          </div>
-        </mat-card-subtitle>
-      </mat-card-content>
-    </mat-card>
+          </form>
+          <mat-card-title>Managers</mat-card-title>
+          <mat-card-subtitle>
+            @if (retrievingManagers) {
+              <p>Getting some manager usernames...</p>
+            }
+            @for (admin of managers; track admin) {
+              <div>
+                <small>{{admin}}</small>
+              </div>
+            }
+          </mat-card-subtitle>
+          <mat-card-title>Company Admins</mat-card-title>
+          <mat-card-subtitle>
+            @if (retrievingManagers) {
+              <p>Getting some HR usernames...</p>
+            }
+            @for (admin of admins; track admin) {
+              <div>
+                <small>{{admin}}</small>
+              </div>
+            }
+          </mat-card-subtitle>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </div>
-</div>

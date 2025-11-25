@@ -3,7 +3,7 @@ import { DepartmentDetailDto, DepartmentsClient, IUserTokens } from '../client';
 import { TokenStorageService } from '../_services/token-storage.service';
 import { MaterialModule } from '../material/material.module';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { NgIf } from '@angular/common';
+
 import { MatDialog } from '@angular/material/dialog';
 import { DeptCreateDialogComponent } from '../dialogs/departments/dept-create-dialog/dept-create-dialog.component';
 

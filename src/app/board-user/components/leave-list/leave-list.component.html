@@ -1,32 +1,35 @@
 <mat-card appearance="outlined">
-    <mat-card-header class="leaveTitle">
-        <mat-card-title>Leave</mat-card-title>
-        <button mat-icon-button aria-label="Add Leave Request" (click)="openLeaveDialog(null)">
-            <mat-icon style="cursor: pointer;">add</mat-icon>
-        </button>
-    </mat-card-header>
-    <mat-card-content>
-        <div *ngIf="leaveRequests != null && leaveRequests.length > 0;else no_leave_requests">
-            <div *ngFor="let leaveRequest of leaveRequests">
-                <div class="row">
-                    <p class="column">Type: {{ LeaveType[leaveRequest.leaveType!]}}</p>
-                    <mat-icon fontIcon="{{getLeaveApproval(leaveRequest)}}"></mat-icon>
-                </div>
-                <div class="row">
-                    <p>Start Date: {{leaveRequest.startDate | date}} </p>
-
-                </div>
-                <div class="row">
-                    <p>End Date: {{leaveRequest.endDate | date}} </p>
-                </div>
-                <div class="row">
-                    <p>Comments: {{leaveRequest.comments}}</p>
-                </div>
-
-                <!-- TODO: Remove -->
-                <pre>{{leaveRequest | json}}</pre>
+  <mat-card-header class="leaveTitle">
+    <mat-card-title>Leave</mat-card-title>
+    <button mat-icon-button aria-label="Add Leave Request" (click)="openLeaveDialog(null)">
+      <mat-icon style="cursor: pointer;">add</mat-icon>
+    </button>
+  </mat-card-header>
+  <mat-card-content>
+    @if (leaveRequests != null && leaveRequests.length > 0) {
+      <div>
+        @for (leaveRequest of leaveRequests; track leaveRequest) {
+          <div>
+            <div class="row">
+              <p class="column">Type: {{ LeaveType[leaveRequest.leaveType!]}}</p>
+              <mat-icon fontIcon="{{getLeaveApproval(leaveRequest)}}"></mat-icon>
             </div>
-        </div>
-        <ng-template #no_leave_requests>No Leave added yet</ng-template>
-    </mat-card-content>
+            <div class="row">
+              <p>Start Date: {{leaveRequest.startDate | date}} </p>
+            </div>
+            <div class="row">
+              <p>End Date: {{leaveRequest.endDate | date}} </p>
+            </div>
+            <div class="row">
+              <p>Comments: {{leaveRequest.comments}}</p>
+            </div>
+            <!-- TODO: Remove -->
+            <pre>{{leaveRequest | json}}</pre>
+          </div>
+        }
+      </div>
+    } @else {
+      No Leave added yet
+    }
+  </mat-card-content>
 </mat-card>
