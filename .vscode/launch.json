@@ -15,8 +15,18 @@
       "userDataDir": "${workspaceFolder}/.vscode/edge-profile",
       "sourceMapPathOverrides": {
         "webpack:///./*": "${webRoot}/*",
-        "webpack:///src/*": "${webRoot}/src/*"
-      }
+        "webpack:///src/*": "${webRoot}/*",
+        "webpack:///*": "${webRoot}/*",
+        "webpack:///./src/*": "${webRoot}/*"
+      },
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/node_modules/**"
+      ],
+      "smartStep": true,
+      "outFiles": [
+        "${workspaceFolder}/dist/**/*.js"
+      ]
     },
     {
       "name": "ng serve Firefox",
@@ -31,6 +41,10 @@
           "url": "http://localhost:4200/src",
           "path": "${workspaceFolder}/src"
         }
+      ],
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/node_modules/**"
       ]
     },
     {
@@ -48,8 +62,18 @@
       "userDataDir": "${workspaceFolder}/.vscode/chrome-profile",
       "sourceMapPathOverrides": {
         "webpack:///./*": "${webRoot}/*",
-        "webpack:///src/*": "${webRoot}/src/*"
-      }
+        "webpack:///src/*": "${webRoot}/*",
+        "webpack:///*": "${webRoot}/*",
+        "webpack:///./src/*": "${webRoot}/*"
+      },
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/node_modules/**"
+      ],
+      "smartStep": true,
+      "outFiles": [
+        "${workspaceFolder}/dist/**/*.js"
+      ]
     },
     {
       "name": "ng test",

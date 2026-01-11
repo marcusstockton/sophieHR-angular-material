@@ -1,102 +1,101 @@
 <div class="user">
   @if (loading) {
-    <mat-spinner color="accent" diameter="50"></mat-spinner>
+  <mat-spinner color="accent" diameter="50"></mat-spinner>
   }
 
   @if (!loading && employeeRecord) {
-    <div class='row'>
-      <div class='column'>
-        <div>
-          <mat-card appearance="outlined" class="mat-elevation-z4">
-            <mat-card-header style="justify-content: center; text-align: center;">
-              <mat-card-title>{{employeeRecord.title}} {{employeeRecord.firstName}} {{employeeRecord.lastName}}
-              </mat-card-title>
-              <div>
-                <button mat-icon-button color="primary" (click)="editUser()">
-                  <mat-icon>edit</mat-icon>
-                </button>
-              </div>
-              <mat-card-subtitle>{{employeeRecord.jobTitle}}</mat-card-subtitle>
-              @if (employeeRecord.department?.name) {
-                <mat-card-subtitle>Department: {{employeeRecord.department?.name}}
-                </mat-card-subtitle>
-              }
-            </mat-card-header>
-            @if (userImage) {
-              <span>
-                <img mat-card-image [src]="userImage" alt="{{employeeRecord.firstName}} {{employeeRecord.lastName}}">
-              </span>
+  <div class='row'>
+    <div class='column'>
+      <div>
+        <mat-card appearance="outlined" class="mat-elevation-z4">
+          <mat-card-header style="justify-content: center; text-align: center;">
+            <mat-card-title>{{employeeRecord.title}} {{employeeRecord.firstName}} {{employeeRecord.lastName}}
+            </mat-card-title>
+            <div>
+              <button mat-icon-button color="primary" (click)="editUser()">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+            <mat-card-subtitle>{{employeeRecord.jobTitle}}</mat-card-subtitle>
+            @if (employeeRecord.department?.name) {
+            <mat-card-subtitle>Department: {{employeeRecord.department?.name}}
+            </mat-card-subtitle>
             }
-            <mat-card-content>
-              <div class="row">
-                <div class="column">
-                  <dl>
-                    <dt>Age</dt>
-                    <dd>{{employeeAge}}</dd>
-                    <dt>Identifies as</dt>
-                    <dd>{{employeeRecord.gender}}</dd>
-                    <dt>Email Address</dt>
-                    <dd><a href="mailto:{{employeeRecord.workEmailAddress}}">{{employeeRecord.workEmailAddress}}</a></dd>
-                    @if (employeeRecord.phoneNumber) {
-                      <dt>Phone Number</dt>
-                    }
-                    @if (employeeRecord.phoneNumber) {
-                      <dd><a
-                      href="tel:{{employeeRecord.phoneNumber}}">{{employeeRecord.phoneNumber}}</a></dd>
-                    }
-                    @if (employeeRecord.workMobileNumber) {
-                      <dt>Work Mobile Number</dt>
-                    }
-                    @if (employeeRecord.workMobileNumber) {
-                      <dd>{{employeeRecord.workMobileNumber}}</dd>
-                    }
-                    @if (employeeRecord.personalMobileNumber) {
-                      <dt>Personal Mobile Number</dt>
-                    }
-                    @if (employeeRecord.personalMobileNumber) {
-                      <dd>{{employeeRecord.personalMobileNumber}}</dd>
-                    }
-                    <dt>Date Of Birth</dt>
-                    <dd>{{employeeRecord.dateOfBirth | date:'mediumDate'}}</dd>
-                    <dt>Start Date</dt>
-                    <dd>{{employeeRecord.startOfEmployment | date:'mediumDate'}}</dd>
-                    <dt>Length Of Service</dt>
-                    <dd>{{employmentLength}}</dd>
-                    <dt>Passport Number</dt>
-                    <dd>{{employeeRecord.passportNumber}}</dd>
-                    <dt>National Insurance Number</dt>
-                    <dd>{{employeeRecord.nationalInsuranceNumber}}</dd>
-                  </dl>
-                </div>
-                <div class="column">
-                  <dl>
-                    <dt>Address</dt>
-                    <dd>{{employeeRecord.address?.line1}} {{employeeRecord.address?.line2}}</dd>
-                    <dd>{{employeeRecord.address?.line3}}</dd>
-                    <dd>{{employeeRecord.address?.line4}}</dd>
-                    <dd>{{employeeRecord.address?.postcode| uppercase}}</dd>
-                    <dd>{{employeeRecord.address?.county}}</dd>
-                  </dl>
-                  <dl>
-                    <dt>Holiday Allowance</dt>
-                    <dd>{{employeeRecord.holidayAllowance}} days</dd>
-                  </dl>
-                </div>
+          </mat-card-header>
+          @if (userImage) {
+          <span>
+            <img mat-card-image [src]="userImage" alt="{{employeeRecord.firstName}} {{employeeRecord.lastName}}">
+          </span>
+          }
+          <mat-card-content>
+            <div class="row">
+              <div class="column">
+                <dl>
+                  <dt>Age</dt>
+                  <dd>{{employeeAge}}</dd>
+                  <dt>Identifies as</dt>
+                  <dd>{{employeeRecord.gender}}</dd>
+                  <dt>Email Address</dt>
+                  <dd><a href="mailto:{{employeeRecord.workEmailAddress}}">{{employeeRecord.workEmailAddress}}</a></dd>
+                  @if (employeeRecord.phoneNumber) {
+                  <dt>Phone Number</dt>
+                  }
+                  @if (employeeRecord.phoneNumber) {
+                  <dd><a href="tel:{{employeeRecord.phoneNumber}}">{{employeeRecord.phoneNumber}}</a></dd>
+                  }
+                  @if (employeeRecord.workMobileNumber) {
+                  <dt>Work Mobile Number</dt>
+                  }
+                  @if (employeeRecord.workMobileNumber) {
+                  <dd>{{employeeRecord.workMobileNumber}}</dd>
+                  }
+                  @if (employeeRecord.personalMobileNumber) {
+                  <dt>Personal Mobile Number</dt>
+                  }
+                  @if (employeeRecord.personalMobileNumber) {
+                  <dd>{{employeeRecord.personalMobileNumber}}</dd>
+                  }
+                  <dt>Date Of Birth</dt>
+                  <dd>{{employeeRecord.dateOfBirth | date:'mediumDate'}}</dd>
+                  <dt>Start Date</dt>
+                  <dd>{{employeeRecord.startOfEmployment | date:'mediumDate'}}</dd>
+                  <dt>Length Of Service</dt>
+                  <dd>{{employmentLength}}</dd>
+                  <dt>Passport Number</dt>
+                  <dd>{{employeeRecord.passportNumber}}</dd>
+                  <dt>National Insurance Number</dt>
+                  <dd>{{employeeRecord.nationalInsuranceNumber}}</dd>
+                </dl>
               </div>
-            </mat-card-content>
-          </mat-card>
-        </div>
-      </div>
-      <div class="column">
-        <div class="row-50">
-          <app-notes [employeeId]="employeeRecord.id" (noteChangedEvent)="onNotesChanged($event)"></app-notes>
-        </div>
-        <div class="row-50">
-          <app-leave-list [employeeId]="employeeRecord.id"></app-leave-list>
-        </div>
-      </div>
-      <div class="row">
-        <button mat-raised-button onclick="history.back()">Go Back</button>
+              <div class="column">
+                <dl>
+                  <dt>Address</dt>
+                  <dd>{{employeeRecord.address?.line1}} {{employeeRecord.address?.line2}}</dd>
+                  <dd>{{employeeRecord.address?.line3}}</dd>
+                  <dd>{{employeeRecord.address?.line4}}</dd>
+                  <dd>{{employeeRecord.address?.postcode| uppercase}}</dd>
+                  <dd>{{employeeRecord.address?.county}}</dd>
+                </dl>
+                <dl>
+                  <dt>Holiday Allowance</dt>
+                  <dd>{{employeeRecord.holidayAllowance}} days</dd>
+                </dl>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
       </div>
     </div>
+    <div class="column">
+      <div class="row-50">
+        <app-notes [employeeId]="employeeRecord.id" (noteChangedEvent)="onNotesChanged($event)"></app-notes>
+      </div>
+      <div class="row-50">
+        <app-leave-list [employeeId]="employeeRecord.id"></app-leave-list>
+      </div>
+    </div>
+    <div class="row">
+      <button mat-raised-button onclick="history.back()">Go Back</button>
+    </div>
+  </div>
   }

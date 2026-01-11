@@ -1,10 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { CompaniesClient, DepartmentDetailDto, DepartmentsClient, EmployeeAddress, EmployeeCreateDto, EmployeeDetailDto, EmployeeListDto, EmployeesClient, FileParameter, KeyValuePairOfGuidAndString } from 'src/app/client';
+import { Observable, Subscription } from 'rxjs';
+import { CompaniesClient, DepartmentDetailDto, DepartmentsClient, EmployeeAddress, EmployeeCreateDto, EmployeeDetailDto, EmployeeListDto, EmployeesClient, KeyValuePairOfGuidAndString } from 'src/app/client';
 import { startWith, debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RandomUser } from 'src/app/models/RandomUser';
@@ -15,7 +15,7 @@ import { RandomUser } from 'src/app/models/RandomUser';
   styleUrls: ['./user-form.component.scss'],
   standalone: false
 })
-export class UserFormComponent implements OnInit {
+export class UserFormComponent implements OnInit, OnDestroy {
   imageSrc: any;
   userForm: FormGroup;
   public editing: boolean = false;
@@ -30,6 +30,8 @@ export class UserFormComponent implements OnInit {
   departments: DepartmentDetailDto[];
   employeeTypes: string[] = [];
   public employeeType: string = "User";
+  private routeSub: Subscription;
+  private currentUserId: string | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,7 +41,8 @@ export class UserFormComponent implements OnInit {
     private deptService: DepartmentsClient,
     private sanitizer: DomSanitizer,
     private http: HttpClient,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private cdr: ChangeDetectorRef
   ) {
 
   }
@@ -82,7 +85,7 @@ export class UserFormComponent implements OnInit {
         formData.append("avatar", file);
         if (this.editing) {
 
-          const id = this.route.snapshot.paramMap.get('userid');
+          const id = this.currentUserId;
           this.http.post(`https://localhost:7189/api/Employees/${id}/upload-avatar`, formData).subscribe({
             next: res => {
               this._snackBar.open("Avatar updated", "OK", { duration: 5000, panelClass: ["success-snackbar"] });
@@ -150,21 +153,46 @@ export class UserFormComponent implements OnInit {
       this.employeeTypes = result;
     });
 
-    const id = this.route.snapshot.paramMap.get('userid');
-    if (id) {
-      this.loading = true;
-      this.editing = true;
-
-      this.employeeService.getEmployee(id).subscribe({
-        next: user => {
-          this.imageSrc = this.sanitizer.bypassSecurityTrustUrl("data:image/png;base64, " + user.avatar?.avatar);
-          this.userForm.patchValue(this.mapEmployeeToForm(user));
-          // this.loading = false;
-        }
-      });
-    }
-    this.loading = false;
+    // Subscribe to param changes
+    this.routeSub = this.route.paramMap.subscribe(params => {
+      this.currentUserId = params.get('userid');
+      if (this.currentUserId) {
+        this.loadEmployee(this.currentUserId);
+      } else {
+        this.editing = false;
+        this.loading = false;
+      }
+    });
   }
+
+  ngOnDestroy(): void {
+    if (this.routeSub) {
+      this.routeSub.unsubscribe();
+    }
+  }
+
+  private loadEmployee(id: string): void {
+    console.log('Loading employee for edit:', id);
+    this.loading = true;
+    this.editing = true;
+
+    this.employeeService.getEmployee(id).subscribe({
+      next: user => {
+        console.log('Employee loaded for edit:', user.firstName);
+        this.imageSrc = this.sanitizer.bypassSecurityTrustUrl("data:image/png;base64, " + user.avatar?.avatar);
+        this.userForm.patchValue(this.mapEmployeeToForm(user));
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: err => {
+        console.log('Error loading employee:', err);
+        this.loading = false;
+        this.showError(`An Error Occured ${err}`);
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
   companyChange() {
     this.userForm.controls['companyId'].setValue(this.companies.find(x => x.key == this.companyId));
 
@@ -204,7 +232,7 @@ export class UserFormComponent implements OnInit {
       return;
     }
     if (this.editing) {
-      var employeeId = this.route.snapshot.paramMap.get('userid');
+      var employeeId = this.currentUserId;
       var address = new EmployeeAddress({ ...form.value.address });
       var empDetails = new EmployeeDetailDto({ ...form.value });
       empDetails.address = address;
