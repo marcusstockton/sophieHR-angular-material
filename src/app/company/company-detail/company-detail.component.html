@@ -1,22 +1,23 @@
-@if (company) {
-  <div class="company-detail">
-    <div class="item1">
-      <div><img src="data:image/png;base64,{{company.address?.mapImage}}" alt="{{company.name}}" id="mapImage" /></div>
-    </div>
-    <div class="item2">Menu</div>
-    <div class="item3">Main</div>
-    <div class="item4">Right</div>
-    <div class="item6"><img src="data:image/png;base64,{{company.logo}}" alt="placeholder" id="logo" /></div>
-    <div class="item5">
-      <footer>
-        <div class="footer-buttons">
-          <button mat-raised-button (click)="back()"> Back</button>
-          <button mat-raised-button color="accent" [routerLink]="['./edit']"> Edit</button>
-        </div>
-      </footer>
+<div *ngIf="company" class="company-detail">
+  <div class="item1">
+    <div>
+      <img src="data:image/png;base64,{{company?.address?.mapImage}}" alt="{{company?.name}}" id="mapImage" />
     </div>
   </div>
-}
+  <div class="item2">Menu</div>
+  <div class="item3">Main</div>
+  <div class="item4">Right</div>
+  <div class="item6"><img src="data:image/png;base64,{{company.logo}}" alt="placeholder" id="logo" /></div>
+  <div class="item5">
+    <footer>
+      <div class="footer-buttons">
+        <button mat-raised-button (click)="back()"> Back</button>
+        <button mat-raised-button color="accent" [routerLink]="['./edit']"> Edit</button>
+      </div>
+    </footer>
+  </div>
+</div>
+
 <!-- <span *ngIf="company"> -->
 
 <!-- <div class="grid-container">

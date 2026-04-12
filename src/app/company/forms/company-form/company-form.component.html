@@ -1,32 +1,30 @@
 <div id="company-form-page">
 
   @if (editing && companyDetails) {
-    <div>
-      <h2>
-        Editing Company {{companyDetails.name}}
-      </h2>
-    </div>
+  <div>
+    <h2>
+      Editing Company {{companyDetails.name}}
+    </h2>
+  </div>
   } @else {
-    <h2>Creating Company</h2>
+  <h2>Creating Company</h2>
   }
 
-  @if (companyDetails?.address?.mapImage != null) {
-    <div id="company-map">
-      <img [src]="'data:image/jpg;base64,'+ companyDetails!.address!.mapImage" alt="company location" />
-    </div>
-  }
+  <div class="column"
+    *ngIf="companyForm.get('address.lat')?.value != null && companyForm.get('address.lat')?.value !== 0 && companyForm.get('address.lon')?.value != null && companyForm.get('address.lon')?.value !== 0">
+    <app-map [lat]="companyForm.get('address.lat')?.value" [lng]="companyForm.get('address.lon')?.value"></app-map>
+  </div>
 
   <div>
     @if (companyDetails?.logo) {
-      <img [src]="'data:image/jpg;base64,'+ companyDetails!.logo" alt="company logo"
-        id="company-logo" />
+    <img [src]="'data:image/jpg;base64,'+ companyDetails!.logo" alt="company logo" id="company-logo" />
     }
     <button mat-mini-fab color="primary" aria-label="Company Logo Add/Edit" (click)="openLogoDialog()">
       @if (!editing) {
-        <mat-icon matTooltip="Add company logo">add</mat-icon>
+      <mat-icon matTooltip="Add company logo">add</mat-icon>
       }
       @if (editing) {
-        <mat-icon matTooltip="Change company logo">create</mat-icon>
+      <mat-icon matTooltip="Change company logo">create</mat-icon>
       }
     </button>
   </div>
@@ -57,31 +55,29 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>Post code</mat-label>
-          <input matInput formControlName="postcode" required [matAutocomplete]="auto"
-            placeholder="Postcode" />
-            <mat-autocomplete #auto="matAutocomplete">
-              @for (option of filteredOptions | async; track option) {
-                <mat-option
-                  (onSelectionChange)="getPostcodeInfo(option)" [value]="option">
-                  {{option}}
-                </mat-option>
-              }
-            </mat-autocomplete>
+          <input matInput formControlName="postcode" required [matAutocomplete]="auto" placeholder="Postcode" />
+          <mat-autocomplete #auto="matAutocomplete">
+            @for (option of filteredOptions | async; track option) {
+            <mat-option (onSelectionChange)="getPostcodeInfo(option)" [value]="option">
+              {{option}}
+            </mat-option>
+            }
+          </mat-autocomplete>
 
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>County</mat-label>
-            <input matInput formControlName="county" required placeholder="County" />
-          </mat-form-field>
-        </ng-container>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>County</mat-label>
+          <input matInput formControlName="county" required placeholder="County" />
+        </mat-form-field>
       </ng-container>
-      <div class="button-row" fxLayout="row" fxLayoutAlign="space-between center">
-        <button mat-raised-button color="info" type="button" (click)="goBack()">Back</button>
-        <button mat-raised-button color="primary" type="submit"
+    </ng-container>
+    <div class="button-row" fxLayout="row" fxLayoutAlign="space-between center">
+      <button mat-raised-button color="info" type="button" (click)="goBack()">Back</button>
+      <button mat-raised-button color="primary" type="submit"
         [disabled]="!companyForm.valid || !companyForm.dirty">Submit</button>
-      </div>
+    </div>
 
-    </form>
+  </form>
 
 
-  </div>
+</div>

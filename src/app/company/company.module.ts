@@ -10,6 +10,7 @@ import { CompanyLogoDialogComponent } from './dialogs/company-logo-dialog/compan
 import { RouterModule } from '@angular/router';
 import { CompanyConfigComponent } from './company-config/company-config.component';
 import { CompanyConfigFormComponent } from './forms/company-config-form/company-config-form.component';
+import { MapComponent } from "src/app/address/map/map.component";
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { CompanyConfigFormComponent } from './forms/company-config-form/company-
     CompanyRoutingModule,
     CompanyRoutingModule,
     RouterModule,
+    MapComponent
   ],
   exports: [
     CompanyDetailComponent,

@@ -26,9 +26,11 @@ export class CompanyDetailComponent {
     if (!this._companyId) {
       this.route.params.subscribe(params => {
         this.companyId = params['companyid'];
+        this.getCompanyDetails(this.companyId);
       });
+    } else {
+      this.getCompanyDetails(this._companyId);
     }
-    this.getCompanyDetails(this._companyId);
   }
 
   getCompanyDetails(companyId: string) {

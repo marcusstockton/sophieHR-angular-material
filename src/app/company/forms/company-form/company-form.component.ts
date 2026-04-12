@@ -105,16 +105,6 @@ export class CompanyFormComponent implements OnInit {
         this.companyForm.get("address.county")?.patchValue(this.postcodeLookupData.admin_county != null ? this.postcodeLookupData.admin_county : this.postcodeLookupData.admin_district);
         this.companyForm.get("address.lat")?.patchValue(this.postcodeLookupData.latitude);
         this.companyForm.get("address.lon")?.patchValue(this.postcodeLookupData.longitude);
-
-        this._companyService.getMapFromLatLong(this.postcodeLookupData.latitude!, this.postcodeLookupData.longitude!, undefined, undefined, undefined)
-          .subscribe((mapStr) => {
-            this.companyForm.get("address.mapImage")?.patchValue(mapStr);
-            if (this.editing) {
-              this.companyDetails!.address!.mapImage = mapStr
-            } else {
-              this.companyDetails = new CompanyCreateDto({ address: new AddressCreateDto({ mapImage: mapStr }) });
-            }
-          })
       })
     }
   }
