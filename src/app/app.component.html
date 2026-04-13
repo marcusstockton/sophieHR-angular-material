@@ -25,72 +25,72 @@
   </ng-container>
 
   <mat-sidenav-container class="sidenav-container" [ngClass]="{'full-height': !tokenStorageService.isLoggedIn}">
-    <mat-sidenav #drawer class="sidenav" mode="side" [opened]="(this.tokenStorageService.isLoggedIn)">
-      <ng-container [ngSwitch]="role">
-        <ng-container *ngSwitchCase="'Admin'">
+    <mat-sidenav #drawer class="sidenav" mode="side" [opened]="tokenStorageService.isLoggedIn">
+      <div class="sidenav-menu">
+        <ng-container [ngSwitch]="role">
+          <ng-container *ngSwitchCase="'Admin'">
+            <mat-nav-list>
+              <mat-list-item>
+                <button mat-button class="menu-button" routerLink="/admin">
+                  <mat-icon>home</mat-icon>
+                  <span> Home</span>
+                </button>
+              </mat-list-item>
+              <mat-list-item>
+                <button mat-button class="menu-button" routerLink="/company/list">
+                  <mat-icon>business</mat-icon>
+                  <span> Companies</span>
+                </button>
+              </mat-list-item>
+            </mat-nav-list>
+          </ng-container>
+          <ng-container *ngSwitchCase="'Manager'">
+            <ng-container *ngTemplateOutlet="managerShared"></ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="'CompanyAdmin'">
+            <ng-container *ngTemplateOutlet="managerShared"></ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="'User'">
+            <mat-nav-list>
+              <mat-list-item>
+                <button mat-button class="menu-button" routerLink="/user">
+                  <mat-icon>home</mat-icon>
+                  <span> Home</span>
+                </button>
+              </mat-list-item>
+            </mat-nav-list>
+          </ng-container>
+        </ng-container>
+
+        <ng-template #managerShared>
           <mat-nav-list>
             <mat-list-item>
-              <button mat-button class="menu-button" routerLink="/admin">
+              <button mat-button class="menu-button" routerLink="/manager">
                 <mat-icon>home</mat-icon>
                 <span> Home</span>
               </button>
             </mat-list-item>
             <mat-list-item>
-              <button mat-button class="menu-button" routerLink="/company/list">
-                <mat-icon>business</mat-icon>
-                <span> Companies</span>
+              <button mat-button class="menu-button" [routerLink]="['/user/add']">
+                <mat-icon>person_add</mat-icon>
+                <span> Add Employee</span>
               </button>
             </mat-list-item>
-          </mat-nav-list>
-        </ng-container>
-        <ng-container *ngSwitchCase="'Manager'">
-          <ng-container *ngTemplateOutlet="managerShared"></ng-container>
-        </ng-container>
-        <ng-container *ngSwitchCase="'CompanyAdmin'">
-          <ng-container *ngTemplateOutlet="managerShared"></ng-container>
-        </ng-container>
-        <ng-container *ngSwitchCase="'User'">
-          <mat-nav-list>
             <mat-list-item>
-              <button mat-button class="menu-button" routerLink="/user">
-                <mat-icon>home</mat-icon>
-                <span> Home</span>
+              <button mat-button class="menu-button" [routerLink]="['/departments']">
+                <mat-icon>dns</mat-icon>
+                <span> Departments</span>
               </button>
             </mat-list-item>
           </mat-nav-list>
-        </ng-container>
-      </ng-container>
+        </ng-template>
+      </div>
 
-      <ng-template #managerShared>
-        <mat-nav-list>
-          <mat-list-item>
-            <button mat-button class="menu-button" routerLink="/manager">
-              <mat-icon>home</mat-icon>
-              <span> Home</span>
-            </button>
-          </mat-list-item>
-          <mat-list-item>
-            <button mat-button class="menu-button" [routerLink]="['/user/add']">
-              <mat-icon>person_add</mat-icon>
-              <span> Add Employee</span>
-            </button>
-          </mat-list-item>
-          <mat-list-item>
-            <button mat-button class="menu-button" [routerLink]="['/departments']">
-              <mat-icon>dns</mat-icon>
-              <span> Departments</span>
-            </button>
-          </mat-list-item>
-        </mat-nav-list>
-      </ng-template>
-
-      <mat-nav-list>
-        <footer>
-          <button mat-icon-button (click)="sidenav.toggle()">
-            <mat-icon>chevron_left</mat-icon>
-          </button>
-        </footer>
-      </mat-nav-list>
+      <div class="sidenav-footer">
+        <button mat-icon-button (click)="drawer.toggle()">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+      </div>
     </mat-sidenav>
     <mat-sidenav-content>
       <router-outlet></router-outlet>
