@@ -1,67 +1,65 @@
-<span class="body-content">
-  @if (this.tokenStorageService.isLoggedIn) {
-  <mat-toolbar>
-    <button type="button" aria-label="Toggle navigation menu" mat-icon-button (click)="drawer.toggle()">
-      <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-    </button>
-    <span>Sophies Human Resources</span>
-    @if (this.role==='Admin' && companyNames) {
-    <span>
-    </span>
-    }
-    <span class="example-spacer"></span>
-    @if (role === 'Admin' || role === 'CompanyAdmin') {
-    <button mat-icon-button class="example-icon" matTooltip="Company Config" aria-label="Company Config"
-      (click)="companyConfig()">
-      <mat-icon>settings_applications</mat-icon>
-    </button>
-    }
-    <button mat-icon-button class="example-icon" matTooltip="View my account" aria-label="View my account"
-      (click)="viewProfile()">
-      <mat-icon>account_box</mat-icon>
-    </button>
-    <button mat-icon-button class="example-icon" aria-label="Log Out" matTooltip="Log Out" (click)="logout()">
-      <mat-icon>logout</mat-icon>
-    </button>
-  </mat-toolbar>
-  }
+<div class="body-content">
+  <ng-container *ngIf="tokenStorageService.isLoggedIn">
+    <mat-toolbar>
+      <button type="button" aria-label="Toggle navigation menu" mat-icon-button (click)="drawer.toggle()">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>Sophies Human Resources</span>
+      <ng-container *ngIf="role === 'Admin' && companyNames?.length">
+        <span>
+        </span>
+      </ng-container>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" matTooltip="Company Config" aria-label="Company Config"
+        *ngIf="role === 'Admin' || role === 'CompanyAdmin'" (click)="companyConfig()">
+        <mat-icon>settings_applications</mat-icon>
+      </button>
+      <button mat-icon-button class="example-icon" matTooltip="View my account" aria-label="View my account"
+        (click)="viewProfile()">
+        <mat-icon>account_box</mat-icon>
+      </button>
+      <button mat-icon-button class="example-icon" aria-label="Log Out" matTooltip="Log Out" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </mat-toolbar>
+  </ng-container>
 
-  <mat-sidenav-container class="sidenav-container" [ngClass]="{'full-height': !this.tokenStorageService.isLoggedIn}">
+  <mat-sidenav-container class="sidenav-container" [ngClass]="{'full-height': !tokenStorageService.isLoggedIn}">
     <mat-sidenav #drawer class="sidenav" mode="side" [opened]="(this.tokenStorageService.isLoggedIn)">
-      @switch (role) {
-      @case ('Admin') {
-      <mat-nav-list>
-        <mat-list-item>
-          <button mat-button class="menu-button" routerLink="/admin">
-            <mat-icon>home</mat-icon>
-            <span> Home</span>
-          </button>
-        </mat-list-item>
-        <mat-list-item>
-          <button mat-button class="menu-button" routerLink="/company/list">
-            <mat-icon>business</mat-icon>
-            <span> Companies</span>
-          </button>
-        </mat-list-item>
-      </mat-nav-list>
-      }
-      @case ('Manager') {
-      <ng-container *ngTemplateOutlet="managerShared"></ng-container>
-      }
-      @case ('CompanyAdmin') {
-      <ng-container *ngTemplateOutlet="managerShared"></ng-container>
-      }
-      @case ('User') {
-      <mat-nav-list>
-        <mat-list-item>
-          <button mat-button class="menu-button" routerLink="/user">
-            <mat-icon>home</mat-icon>
-            <span> Home</span>
-          </button>
-        </mat-list-item>
-      </mat-nav-list>
-      }
-      }
+      <ng-container [ngSwitch]="role">
+        <ng-container *ngSwitchCase="'Admin'">
+          <mat-nav-list>
+            <mat-list-item>
+              <button mat-button class="menu-button" routerLink="/admin">
+                <mat-icon>home</mat-icon>
+                <span> Home</span>
+              </button>
+            </mat-list-item>
+            <mat-list-item>
+              <button mat-button class="menu-button" routerLink="/company/list">
+                <mat-icon>business</mat-icon>
+                <span> Companies</span>
+              </button>
+            </mat-list-item>
+          </mat-nav-list>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Manager'">
+          <ng-container *ngTemplateOutlet="managerShared"></ng-container>
+        </ng-container>
+        <ng-container *ngSwitchCase="'CompanyAdmin'">
+          <ng-container *ngTemplateOutlet="managerShared"></ng-container>
+        </ng-container>
+        <ng-container *ngSwitchCase="'User'">
+          <mat-nav-list>
+            <mat-list-item>
+              <button mat-button class="menu-button" routerLink="/user">
+                <mat-icon>home</mat-icon>
+                <span> Home</span>
+              </button>
+            </mat-list-item>
+          </mat-nav-list>
+        </ng-container>
+      </ng-container>
 
       <ng-template #managerShared>
         <mat-nav-list>
@@ -98,4 +96,4 @@
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
-</span>
+</div>

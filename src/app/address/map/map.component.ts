@@ -14,6 +14,7 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   private companyMap?: L.Map;
   private companyMarker?: L.Marker;
+  private viewInitialized = false;
 
   public options: any;
 
@@ -40,8 +41,10 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    // only initialise now if coordinates are already available
-    if (this.lat != null && this.lng != null) {
+    this.viewInitialized = true;
+
+    // only initialise now if coordinates are already available and map has not been created yet
+    if (this.lat != null && this.lng != null && !this.companyMap) {
       this.initMap();
     }
   }
@@ -49,6 +52,10 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     // handle late arrival of inputs: create or update map when coords change
     if ((changes['lat'] || changes['lng']) && this.lat != null && this.lng != null) {
+      if (!this.viewInitialized) {
+        return;
+      }
+
       if (!this.companyMap) {
         this.initMap();
         return;

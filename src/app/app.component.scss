@@ -30,8 +30,8 @@
   display: flex;
   flex-direction: row;
   /* Ensures the sidenav and content are side by side */
-  height: 100%;
-  /* Full height of the parent container */
+  height: 100vh;
+  /* Full height of the viewport */
   box-sizing: border-box;
 }
 

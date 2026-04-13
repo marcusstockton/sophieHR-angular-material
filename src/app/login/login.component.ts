@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AccountClient, UserLogins } from '../client';
@@ -23,14 +23,15 @@ export class LoginComponent implements OnInit {
   hidePassword: boolean = true;
   userId: string;
 
-  managers: string[];
-  admins: string[];
+  managers: string[] = [];
+  admins: string[] = [];
 
   constructor(
     private authService: AccountClient,
     private tokenStorage: TokenStorageService,
     private fb: UntypedFormBuilder,
-    private router: Router) { }
+    private router: Router,
+    private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -81,15 +82,26 @@ export class LoginComponent implements OnInit {
 
     this.authService.getListOfCompanyAdmins().subscribe({
       next: x => {
-        this.admins = x;
+        this.admins = x ?? [];
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.admins = [];
+        this.cdr.detectChanges();
       }
-    })
-    this.authService.getListOfManagers().subscribe((managers) => {
-      this.managers = managers;
-      this.retrievingManagers = false;
-    }, (err) => {
-      this.retrievingManagers = false;
-    })
+    });
+
+    this.authService.getListOfManagers().subscribe({
+      next: managers => {
+        this.managers = managers ?? [];
+        this.retrievingManagers = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.retrievingManagers = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   redirectUser(role: string) {
