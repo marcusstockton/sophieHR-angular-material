@@ -1,5 +1,5 @@
 import { Component, HostListener, ViewChild } from '@angular/core';
-import { NavigationStart, Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { TokenStorageService } from './_services/token-storage.service';
 import { UserService } from './_services/user.service';
 import { MatSidenav } from '@angular/material/sidenav';
@@ -17,6 +17,8 @@ export class AppComponent {
   isExpanded: boolean;
   companyNames: KeyValuePairOfGuidAndString[] = [];
   companyId?: string;
+  showShell = false;
+  private hideShellRoutes = ['/login'];
 
   @ViewChild(MatSidenav) sidenav: MatSidenav;
   constructor(
@@ -25,10 +27,10 @@ export class AppComponent {
     private userService: UserService,
     private companyService: CompaniesClient,
   ) {
+    this.updateLayoutVisibility(this.router.url);
 
     router.events.subscribe(Event => {
       if (Event instanceof NavigationStart) {
-        //you code for checking and navigation
         if (this.tokenStorageService.getToken()) {
           this.isExpanded = true;
           const user = this.tokenStorageService.getUser();
@@ -39,7 +41,17 @@ export class AppComponent {
           }
         }
       }
+
+      if (Event instanceof NavigationEnd) {
+        this.updateLayoutVisibility(Event.urlAfterRedirects);
+      }
     });
+  }
+
+  private updateLayoutVisibility(url: string): void {
+    const trimmedUrl = url.split('?')[0].split(';')[0];
+    const isLoginRoute = this.hideShellRoutes.some(route => trimmedUrl.startsWith(route));
+    this.showShell = this.tokenStorageService.isLoggedIn && !isLoginRoute;
   }
 
   logout(): void {

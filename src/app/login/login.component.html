@@ -24,28 +24,40 @@
             <mat-hint>Your password</mat-hint>
             <mat-error>Password is required</mat-error>
           </mat-form-field>
-          <mat-error *ngIf="errorMessage">{{errorMessage}}</mat-error>
+          @if (errorMessage) {
+            <mat-error>{{errorMessage}}</mat-error>
+          }
           <div class="row">
             <button mat-raised-button color="primary" [disabled]="!form.valid || loggingIn" type="submit">
               Login
             </button>
             <div class="example-spacer"></div>
-            <mat-spinner *ngIf="loggingIn" color="accent" [diameter]="25"></mat-spinner>
+            @if (loggingIn) {
+              <mat-spinner color="accent" [diameter]="25"></mat-spinner>
+            }
           </div>
         </form>
         <mat-card-title>Managers</mat-card-title>
         <mat-card-subtitle>
-          <p *ngIf="retrievingManagers">Getting some manager usernames...</p>
-          <div *ngFor="let admin of managers">
-            <small>{{admin}}</small>
-          </div>
+          @if (retrievingManagers) {
+            <p>Getting some manager usernames...</p>
+          }
+          @for (admin of managers; track admin) {
+            <div>
+              <small>{{admin}}</small>
+            </div>
+          }
         </mat-card-subtitle>
         <mat-card-title>Company Admins</mat-card-title>
         <mat-card-subtitle>
-          <p *ngIf="retrievingManagers">Getting some HR usernames...</p>
-          <div *ngFor="let admin of admins">
-            <small>{{admin}}</small>
-          </div>
+          @if (retrievingManagers) {
+            <p>Getting some HR usernames...</p>
+          }
+          @for (admin of admins; track admin) {
+            <div>
+              <small>{{admin}}</small>
+            </div>
+          }
         </mat-card-subtitle>
       </mat-card-content>
     </mat-card>
