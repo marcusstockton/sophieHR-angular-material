@@ -1,12 +1,22 @@
-#logo {
-  border-radius: 8px;
-  width: 300px;
-  // max-width: 50%;
-  height: auto;
-  // display: block;
-  object-fit: cover;
+.company-detail {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-areas:
+    'logo . header header header header'
+    'menu main main main right right'
+    'footer footer footer footer footer footer';
+  grid-template-rows: auto 1.5fr auto;
+  grid-gap: 10px;
+  background-color: #2196F3;
 }
 
+.company-detail>div {
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  padding: 20px 0;
+  font-size: 30px;
+  min-height: 100px;
+}
 
 .detail-card {
   text-align: center;
@@ -43,28 +53,10 @@ img {
   height: auto; // Maintains aspect ratio for images
 }
 
-.company-detail {
-  display: grid;
-  grid-template-areas:
-    'logo . header header header header'
-    'menu main main main right right'
-    'footer footer footer footer footer footer';
-  grid-template-rows: 1fr 1.5fr auto;
-  grid-gap: 10px;
-  background-color: #2196F3;
-  // padding: 10px, 10px, 0px, 10px;
-  height: calc(100vh - 82px);
-}
-
-.company-detail>div {
-  background-color: rgba(255, 255, 255, 0.8);
-  text-align: center;
-  padding: 20px 0;
-  font-size: 30px;
-}
-
-#mapImage {
-  width: fit-content;
-  height: fit-content;
+#mapImage,
+#logo {
+  display: block;
+  width: 100%;
+  height: auto;
   object-fit: cover;
 }

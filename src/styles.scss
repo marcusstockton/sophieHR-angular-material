@@ -14,6 +14,16 @@ html {
       ),
       typography: Roboto,
       density: 0));
+
+  /* Define styles for light theme */
+  &.theme-light {
+    color-scheme: light;
+  }
+
+  /* Define styles for dark theme */
+  &.theme-dark {
+    color-scheme: dark;
+  }
 }
 
 :host {

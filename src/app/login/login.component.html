@@ -25,7 +25,7 @@
             <mat-error>Password is required</mat-error>
           </mat-form-field>
           @if (errorMessage) {
-            <mat-error>{{errorMessage}}</mat-error>
+          <mat-error>{{errorMessage}}</mat-error>
           }
           <div class="row">
             <button mat-raised-button color="primary" [disabled]="!form.valid || loggingIn" type="submit">
@@ -33,30 +33,30 @@
             </button>
             <div class="example-spacer"></div>
             @if (loggingIn) {
-              <mat-spinner color="accent" [diameter]="25"></mat-spinner>
+            <mat-spinner color="accent" [diameter]="25"></mat-spinner>
             }
           </div>
         </form>
-        <mat-card-title>Managers</mat-card-title>
+        <mat-card-title class="title">Managers</mat-card-title>
         <mat-card-subtitle>
           @if (retrievingManagers) {
-            <p>Getting some manager usernames...</p>
+          <p>Getting some manager usernames...</p>
           }
           @for (admin of managers; track admin) {
-            <div>
-              <small>{{admin}}</small>
-            </div>
+          <div>
+            <small>{{admin}}</small>
+          </div>
           }
         </mat-card-subtitle>
-        <mat-card-title>Company Admins</mat-card-title>
+        <mat-card-title class="title">Company Admins</mat-card-title>
         <mat-card-subtitle>
           @if (retrievingManagers) {
-            <p>Getting some HR usernames...</p>
+          <p>Getting some HR usernames...</p>
           }
           @for (admin of admins; track admin) {
-            <div>
-              <small>{{admin}}</small>
-            </div>
+          <div>
+            <small>{{admin}}</small>
+          </div>
           }
         </mat-card-subtitle>
       </mat-card-content>

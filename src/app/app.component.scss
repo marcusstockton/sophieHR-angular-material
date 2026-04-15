@@ -74,7 +74,7 @@
 }
 
 router-outlet {
-  // flex: 1; // Make the router-outlet take up all available height
+  //flex: 1; // Make the router-outlet take up all available height
   // max-height: 100%; // Prevent it from overflowing the parent container
   display: flex;
   flex-direction: column;
