@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompaniesClient, CompanyDetailDto } from 'src/app/client';
 import { HttpStatusCode } from '@angular/common/http';
@@ -19,7 +19,7 @@ export class CompanyDetailComponent {
     this._companyId = value;
   }
   constructor(private readonly companyService: CompaniesClient,
-    private route: ActivatedRoute, private router: Router, private location: Location) { }
+    private route: ActivatedRoute, private router: Router, private location: Location, private cdr: ChangeDetectorRef) { }
 
 
   ngOnInit() {
@@ -37,6 +37,7 @@ export class CompanyDetailComponent {
     this.companyService.getCompany(this.companyId).subscribe({
       next: (result: CompanyDetailDto) => {
         this.company = result;
+        this.cdr.markForCheck();
       },
       error: (err) => {
         if (err.status == HttpStatusCode.NotFound) {
