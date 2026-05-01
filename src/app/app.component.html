@@ -26,7 +26,8 @@
     </mat-toolbar>
 
     <mat-sidenav-container class="sidenav-container" [ngClass]="{'full-height': !tokenStorageService.isLoggedIn}">
-      <mat-sidenav #drawer class="sidenav" mode="side" [opened]="tokenStorageService.isLoggedIn">
+      <mat-sidenav #drawer class="sidenav" [mode]="drawer.opened ? 'side' : 'over'"
+        [opened]="tokenStorageService.isLoggedIn" (openedChange)="onDrawerToggle($event)">
         <div class="sidenav-menu">
           @switch (role) {
           @case ('Admin') {
@@ -93,7 +94,7 @@
           </button>
         </div>
       </mat-sidenav>
-      <mat-sidenav-content>
+      <mat-sidenav-content [style.margin-left]="drawer.opened ? null : '0'">
         <router-outlet></router-outlet>
       </mat-sidenav-content>
     </mat-sidenav-container>

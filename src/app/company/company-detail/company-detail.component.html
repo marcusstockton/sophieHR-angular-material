@@ -3,7 +3,7 @@
   <div class="item1">
     <div>
       <!-- <img src="data:image/png;base64,{{company?.address?.mapImage}}" alt="{{company?.name}}" id="mapImage" /> -->
-      @if(company?.address?.lat && company?.address?.lon) {
+      @if(company.address?.lat && company.address?.lon) {
       <app-map [lat]="company.address?.lat" [lng]="company.address?.lon"></app-map>
       }@else {
       <p>Map data not available</p>

@@ -18,6 +18,7 @@ export class AppComponent {
   companyNames: KeyValuePairOfGuidAndString[] = [];
   companyId?: string;
   showShell = false;
+  drawerOpen = false;
   private hideShellRoutes = ['/login'];
 
   @ViewChild(MatSidenav) sidenav: MatSidenav;
@@ -27,6 +28,7 @@ export class AppComponent {
     private userService: UserService,
     private companyService: CompaniesClient,
   ) {
+    this.drawerOpen = this.tokenStorageService.isLoggedIn;
     this.updateLayoutVisibility(this.router.url);
 
     router.events.subscribe(Event => {
@@ -93,5 +95,9 @@ export class AppComponent {
     } else {
       this.sidenav.open();
     }
+  }
+
+  onDrawerToggle(isOpen: boolean) {
+    this.drawerOpen = isOpen;
   }
 }
