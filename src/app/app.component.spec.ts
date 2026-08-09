@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { MatSidenav } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { CompaniesClient } from './client';
@@ -17,7 +18,7 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent
       ],
-      providers:[
+      providers: [
         { provide: TokenStorageService, useValue: mockTokenStorageService },
         { provide: UserService, useValue: mockUserService },
         { provide: CompaniesClient, useValue: mockCompaniesClient }
@@ -29,6 +30,14 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
+  });
+
+  it('should not throw when the sidenav is not initialized yet', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    app.sidenav = undefined as unknown as MatSidenav;
+
+    expect(() => app.onResize()).not.toThrow();
   });
 
 });

@@ -21,9 +21,12 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
   private initMap(): void {
     // create map instance and keep a reference so we can update it later
     this.companyMap = L.map('companyMap').setView([this.lat, this.lng], 17);
+    this.companyMap.zoomControl.remove();
+    this.companyMap.dragging.disable();
 
     tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
+      maxZoom: 17,
+      minZoom: 17,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(this.companyMap);
 

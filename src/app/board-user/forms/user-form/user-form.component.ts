@@ -74,26 +74,27 @@ export class UserFormComponent implements OnInit, OnDestroy {
   }
 
   onFileChange(event: any) {
-    const reader = new FileReader();
-
     if (event.target.files && event.target.files.length) {
       const [file] = event.target.files;
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.imageSrc = reader.result as string;
-        const formData = new FormData();
-        formData.append("avatar", file);
-        if (this.editing) {
+      const objectUrl = URL.createObjectURL(file);
+      this.imageSrc = this.sanitizer.bypassSecurityTrustUrl(objectUrl);
+      this.cdr.detectChanges();
 
-          const id = this.currentUserId;
-          this.http.post(`https://localhost:7189/api/Employees/${id}/upload-avatar`, formData).subscribe({
-            next: res => {
-              this._snackBar.open("Avatar updated", "OK", { duration: 5000, panelClass: ["success-snackbar"] });
-            }, error: err => this._snackBar.open(err, "Ok", { duration: 5000, panelClass: ["error-snackbar"] })
-          })
-        }
-        this.userForm.controls['avatar'].setValue(formData);
-      };
+      const formData = new FormData();
+      formData.append('avatar', file);
+
+      if (this.editing) {
+        const id = this.currentUserId;
+        this.http.post(`https://localhost:7189/api/Employees/${id}/upload-avatar`, formData).subscribe({
+          next: () => {
+            this._snackBar.open('Avatar updated', 'OK', { duration: 5000, panelClass: ['success-snackbar'] });
+            this.cdr.detectChanges();
+          },
+          error: (err) => this._snackBar.open(err, 'Ok', { duration: 5000, panelClass: ['error-snackbar'] })
+        });
+      }
+
+      this.userForm.controls['avatar'].setValue(formData);
     }
   }
 

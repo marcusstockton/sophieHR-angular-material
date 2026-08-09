@@ -90,6 +90,10 @@ export class AppComponent {
   @HostListener('window:resize')
   onResize() {
     const width = window.innerWidth;
+    if (!this.sidenav) {
+      return;
+    }
+
     if (width < 500) {
       this.sidenav.close();
     } else {

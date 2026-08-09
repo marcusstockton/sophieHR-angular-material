@@ -35,7 +35,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { enableTracing: !environment.production })],
+  imports: [RouterModule.forRoot(routes, { enableTracing: false, useHash: true })],
   exports: [RouterModule],
   providers: [CompaniesClient, EmployeesClient, AccountClient, DepartmentsClient, NotesClient, LeaveRequestsClient, CompanyConfigClient]
 })

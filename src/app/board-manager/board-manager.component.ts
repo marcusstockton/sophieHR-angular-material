@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { finalize, forkJoin } from 'rxjs';
 import { CompaniesClient, CompanyDetailDto, EmployeeListDto, EmployeesClient } from '../client';
 import { TokenStorageService } from '../_services/token-storage.service';
 
@@ -15,9 +16,9 @@ import { TokenStorageService } from '../_services/token-storage.service';
 export class BoardManagerComponent implements OnInit, AfterViewInit {
 
   user: any;
-  company: CompanyDetailDto;
-  companyMap: string;
-  isLoading: boolean;
+  company: CompanyDetailDto | null = null;
+  isLoading = false;
+  totalEmployees = 0;
   dataSource = new MatTableDataSource<EmployeeListDto>();
   displayedColumns: string[] = ['firstName', 'lastName', 'jobTitle', 'workEmailAddress', 'workPhoneNumber', 'holidayAllowance', 'dateOfBirth', 'startOfEmployment'];
   @ViewChild(MatPaginator) private paginator: MatPaginator;
@@ -27,18 +28,18 @@ export class BoardManagerComponent implements OnInit, AfterViewInit {
     private companyService: CompaniesClient,
     private tokenStorageService: TokenStorageService,
     private employeeService: EmployeesClient,
-    private router: Router) { }
+    private router: Router,
+    private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.isLoading = true;
     this.user = this.tokenStorageService.getUser();
+
     if (!this.user) {
       this.router.navigate(['/login/']);
+      return;
     }
 
-    this.getCompany();
-    this.getEmployees();
-    this.isLoading = false;
+    this.loadDashboardData();
   }
 
   ngAfterViewInit(): void {
@@ -55,30 +56,43 @@ export class BoardManagerComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/user/' + row.id]);
   }
 
-  getCompany() {
-    this.companyService.getCompany(this.user['companyId']).subscribe((result: CompanyDetailDto) => {
-      this.company = result;
-      if (this.company.address?.mapImage == null && this.company.address?.lat! > 0 && this.company.address?.lon! > 0) {
-        this.companyService.getMapFromLatLong(this.company.address?.lat, this.company.address?.lon, undefined, undefined, undefined).subscribe({
-          next: img => {
-            this.companyMap = img;
-          }
-        })
-      }
-      else {
-        this.companyMap = this.company.address?.mapImage!
+  private loadDashboardData(): void {
+    this.isLoading = true;
+    this.company = null;
+    this.dataSource.data = [];
+    this.cdr.detectChanges();
+
+    const companyId = this.user?.companyId;
+    const managerId = this.user?.id;
+
+    if (!companyId || !managerId) {
+      this.isLoading = false;
+      this.cdr.detectChanges();
+      return;
+    }
+
+    forkJoin({
+      company: this.companyService.getCompany(companyId),
+      employees: this.employeeService.getEmployeesForManager(managerId)
+    }).pipe(
+      finalize(() => {
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      })
+    ).subscribe({
+      next: ({ company, employees }) => {
+        this.company = company;
+        this.dataSource.data = employees ?? [];
+        this.totalEmployees = this.dataSource.data.length;
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Failed to load manager dashboard data', error);
+        this.company = null;
+        this.dataSource.data = [];
+        this.cdr.detectChanges();
       }
     });
   }
-
-  getEmployees() {
-    this.employeeService.getEmployeesForManager(this.user['id']).subscribe((results: EmployeeListDto[]) => {
-      this.dataSource.data = results;
-    });
-  }
-
-
-
-
 
 }
