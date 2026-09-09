@@ -24,12 +24,12 @@ export class RegisterComponent {
   onSubmit(): void {
     const { firstName, lastName, email, password } = this.form;
 
-    var userReg: RegisterUserDto = new RegisterUserDto({
+    const userReg: RegisterUserDto = {
       firstName: firstName,
       lastName: lastName,
       emailAddress: email,
       password: password
-    });
+    };
 
     this.authService.registerNewAdminUser(userReg).subscribe(
       {

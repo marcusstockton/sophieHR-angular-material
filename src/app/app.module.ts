@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { BASE_URL } from './client'; // the generated file
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,6 +22,7 @@ import { HttpErrorInterceptor } from './_helpers/http-error.interceptor';
 import { MapComponent } from "./address/map/map.component";
 import { EmployeeCountChartComponent } from "./board-manager/employee-count-chart/employee-count-chart.component";
 import { provideCharts, withDefaultRegisterables, BaseChartDirective } from 'ng2-charts';
+import { environment } from 'src/environments/environment.prod';
 
 
 @NgModule({
@@ -59,6 +61,7 @@ import { provideCharts, withDefaultRegisterables, BaseChartDirective } from 'ng2
             multi: true
         },
         provideHttpClient(withInterceptorsFromDi()),
+        { provide: BASE_URL, useValue: environment.base_url },
         provideCharts(withDefaultRegisterables()),
     ],
     bootstrap: [AppComponent]

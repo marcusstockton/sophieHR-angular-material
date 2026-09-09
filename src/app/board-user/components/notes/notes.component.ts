@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { timeout } from 'rxjs';
 import { NoteDetailDto, NotesClient, NoteType } from 'src/app/client';
 import { NoteFormDialogComponent } from 'src/app/dialogs/notes/note-form-dialog/note-form-dialog.component';
-import * as dayjs from 'dayjs';
 
 @Component({
   selector: 'app-notes',
@@ -10,17 +10,24 @@ import * as dayjs from 'dayjs';
   styleUrls: ['./notes.component.scss'],
   standalone: false
 })
-export class NotesComponent implements OnInit {
+export class NotesComponent implements OnChanges {
 
-  notes: NoteDetailDto[] = [];
+  notes = signal<NoteDetailDto[]>([]);
+  isLoading = false;
+  loadError = false;
+  private requestedEmployeeId: string | undefined;
 
-  constructor(readonly dialog: MatDialog, private notesClient: NotesClient) { }
+  constructor(
+    readonly dialog: MatDialog,
+    private notesClient: NotesClient) { }
   @Input() employeeId: string | undefined;
   @Output() noteChangedEvent = new EventEmitter<boolean>();
 
-  ngOnInit(): void {
-    if (this.employeeId != null) {
-      this.getEmployeeNotes(this.employeeId);
+  ngOnChanges(changes: SimpleChanges): void {
+    const employeeId = changes['employeeId']?.currentValue;
+    if (employeeId != null && employeeId !== this.requestedEmployeeId) {
+      this.requestedEmployeeId = employeeId;
+      this.getEmployeeNotes(employeeId);
     }
   }
 
@@ -37,11 +44,35 @@ export class NotesComponent implements OnInit {
   };
 
   getEmployeeNotes(employeeId: any) {
-    this.notesClient.getNotesForEmployee(employeeId).subscribe({
-      next: (result: NoteDetailDto[]) => {
-        this.notes = result?.sort((a, b) => b!.createdDate!.getTime() - a!.createdDate!.getTime());
-      }
-    });
+    console.log('Fetching notes for employeeId:', employeeId);
+    if (employeeId == null) {
+      this.isLoading = false;
+      this.loadError = true;
+      return;
+    }
+
+    this.isLoading = true;
+    this.loadError = false;
+    try {
+      this.notesClient.getNotesForEmployee(employeeId).pipe(timeout(10000)).subscribe({
+        next: (result: NoteDetailDto[]) => {
+          const sortedNotes = (result ?? []).sort((a, b) =>
+            new Date(b.createdDate!).getTime() - new Date(a.createdDate!).getTime());
+          this.notes.set(sortedNotes);
+          console.log('Notes loaded:', sortedNotes.length);
+          this.isLoading = false;
+        },
+        error: () => {
+          this.notes.set([]);
+          this.isLoading = false;
+          this.loadError = true;
+        }
+      });
+    } catch {
+      this.notes.set([]);
+      this.isLoading = false;
+      this.loadError = true;
+    }
   }
 
   getNoteTypeNameByValue(value: number) {

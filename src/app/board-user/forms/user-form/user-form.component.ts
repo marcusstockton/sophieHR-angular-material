@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { CompaniesClient, DepartmentDetailDto, DepartmentsClient, EmployeeAddress, EmployeeCreateDto, EmployeeDetailDto, EmployeeListDto, EmployeesClient, KeyValuePairOfGuidAndString } from 'src/app/client';
+import { CompaniesClient, DepartmentDetailDto, DepartmentsClient, EmployeeAddress, EmployeeCreateDto, EmployeeDetailDto, EmployeeListDto, EmployeesClient, KeyValuePairOfGuidAndstring } from 'src/app/client';
 import { startWith, debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RandomUser } from 'src/app/models/RandomUser';
@@ -20,7 +20,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
   userForm: FormGroup;
   public editing: boolean = false;
   public loading: boolean = false;
-  public companies: KeyValuePairOfGuidAndString[];
+  public companies: KeyValuePairOfGuidAndstring[];
   public companyId: string = '';
   filteredOptions: Observable<any> | undefined;
   gettingTitles: boolean = false;
@@ -145,13 +145,16 @@ export class UserFormComponent implements OnInit, OnDestroy {
         this.getDepartmentsForCompany(result[0].key!);
         // this.loading = false;
       }
+      this.cdr.detectChanges();
     })
     this.employeeService.getTitles().subscribe((result) => {
       this.titles = result;
+      this.cdr.detectChanges();
     });
 
     this.employeeService.getRoles().subscribe((result) => {
       this.employeeTypes = result;
+      this.cdr.detectChanges();
     });
 
     // Subscribe to param changes
@@ -209,6 +212,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
         this.userForm.controls['managerId'].setValue(result[0].id);
       }
       this.loading = false;
+      this.cdr.detectChanges();
     });
   }
 
@@ -217,6 +221,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
     this.deptService.getDepartmentsByCompanyId(companyId).subscribe((depts: DepartmentDetailDto[]) => {
       this.departments = depts;
       this.loading = false;
+      this.cdr.detectChanges();
     })
   }
 
@@ -234,8 +239,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
     }
     if (this.editing) {
       var employeeId = this.currentUserId;
-      var address = new EmployeeAddress({ ...form.value.address });
-      var empDetails = new EmployeeDetailDto({ ...form.value });
+      var address = { ...form.value.address } as EmployeeAddress;
+      var empDetails = { ...form.value } as EmployeeDetailDto;
       empDetails.address = address;
 
       this.employeeService.putEmployee(employeeId!, empDetails).subscribe({
@@ -251,8 +256,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
       })
     } else {
       // creating
-      var address = new EmployeeAddress({ ...form.value.address });
-      var ef2 = new EmployeeCreateDto({ ...form.value });
+      var address = { ...form.value.address } as EmployeeAddress;
+      var ef2 = { ...form.value } as EmployeeCreateDto;
       ef2.username = form.value.userName;
       console.log("NEW EMPLOYEE DEETS: " + ef2.username);
       ef2.address = address;

@@ -93,7 +93,7 @@ export class LeaveRequestFormComponent implements OnInit {
     var ltid = Number.parseInt(this.form.controls['leaveType'].value);
     var lt: LeaveType = ltid as LeaveType;
 
-    var createRequest = new CreateLeaveRequest({
+    const createRequest: CreateLeaveRequest = {
       employeeId: this.employeeId,
       startDate: startDate,
       endDate: endDate,
@@ -101,7 +101,7 @@ export class LeaveRequestFormComponent implements OnInit {
       comments: this.form.controls['comments'].value,
       hours: this.form.controls['hours'].value,
       normalHoursPerDay: this.form.controls['normalHoursPerDay'].value
-    });
+    };
 
     this.leaveRequestClient.postLeaveRequest(createRequest).subscribe({
       next: x => this.dialogRef.close(x),

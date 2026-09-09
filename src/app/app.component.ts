@@ -3,7 +3,7 @@ import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { TokenStorageService } from './_services/token-storage.service';
 import { UserService } from './_services/user.service';
 import { MatSidenav } from '@angular/material/sidenav';
-import { CompaniesClient, KeyValuePairOfGuidAndString } from './client';
+import { CompaniesClient, KeyValuePairOfGuidAndstring } from './client';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +15,7 @@ export class AppComponent {
   role: string | undefined;
   username?: string | undefined;
   isExpanded: boolean;
-  companyNames: KeyValuePairOfGuidAndString[] = [];
+  companyNames: KeyValuePairOfGuidAndstring[] = [];
   companyId?: string;
   showShell = false;
   drawerOpen = false;

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { DepartmentDetailDto, DepartmentsClient, IUserTokens } from '../client';
+import { Component, signal } from '@angular/core';
+import { DepartmentDetailDto, DepartmentsClient, UserTokens } from '../client';
 import { TokenStorageService } from '../_services/token-storage.service';
 import { MaterialModule } from '../material/material.module';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -16,8 +16,8 @@ import { DeptCreateDialogComponent } from '../dialogs/departments/dept-create-di
 })
 export class DepartmentsComponent {
 
-  departments: DepartmentDetailDto[] = [];
-  user: IUserTokens | null = null;
+  departments = signal<DepartmentDetailDto[]>([]);
+  user: UserTokens | null = null;
 
   constructor(
     private departmentClient: DepartmentsClient,
@@ -33,12 +33,18 @@ export class DepartmentsComponent {
   }
 
   private getDepartments() {
-    this.departmentClient.getDepartmentsByCompanyId(this.user?.companyId!).subscribe(departments => {
-      this.departments = departments;
-    }, error => {
-      this._snackBar.open(error, "Ok", { duration: 5000, panelClass: ['error-snackbar'] });
+    console.log('Fetching departments for companyId:', this.user?.companyId);
+    this.departmentClient.getDepartmentsByCompanyId(this.user?.companyId!).subscribe({
+      next: (departments: DepartmentDetailDto[]) => {
+        this.departments.set(departments ?? []);
+      },
+      error: (error) => {
+        console.error('Error fetching departments:', error);
+        this._snackBar.open('Error fetching departments: ' + error.message, "Ok", { duration: 5000, panelClass: ['error-snackbar'] });
+      }
     });
   }
+
 
   public openAddDepartmentDialog() {
     const dialogRef = this.dialog.open(DeptCreateDialogComponent, { width: '600px', data: { companyId: this.user?.companyId } });

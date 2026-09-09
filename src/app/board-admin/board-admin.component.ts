@@ -4,7 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { CompaniesClient, CompanyDetailDto, DepartmentDetailDto, DepartmentsClient, EmployeeListDto, EmployeesClient, KeyValuePairOfGuidAndString } from 'src/app/client';
+import { CompaniesClient, CompanyDetailDto, DepartmentDetailDto, DepartmentsClient, EmployeeListDto, EmployeesClient, KeyValuePairOfGuidAndstring } from 'src/app/client';
 import { DeptCreateDialogComponent } from '../dialogs/departments/dept-create-dialog/dept-create-dialog.component';
 import { UserService } from '../_services/user.service';
 
@@ -18,7 +18,7 @@ export class BoardAdminComponent implements OnInit, AfterViewInit {
 
   companyId: string;
   company: CompanyDetailDto;
-  companies: KeyValuePairOfGuidAndString[] = [];
+  companies: KeyValuePairOfGuidAndstring[] = [];
   departments: DepartmentDetailDto[] = [];
 
   displayedColumns: string[] = ['firstName', 'middleName', 'lastName', 'jobTitle', 'workEmailAddress',

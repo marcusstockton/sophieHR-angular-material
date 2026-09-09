@@ -5,17 +5,32 @@
     {
       "type": "npm",
       "script": "start",
+      "label": "ng serve",
       "isBackground": true,
       "problemMatcher": {
         "owner": "typescript",
-        "pattern": "$tsc",
+        "source": "ts",
+        "applyTo": "allDocuments",
+        "pattern": {
+          "regexp": "^\\s*(?:ERROR in )?([^\\s].*)[\\(:](\\d+)[,:](\\d+)(?:\\):\\s+|\\s+-\\s+)(error|warning|info)\\s+TS(\\d+)\\s*:\\s*(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "code": 5,
+          "message": 6
+        },
+        "fileLocation": [
+          "relative",
+          "${cwd}"
+        ],
         "background": {
           "activeOnStart": true,
           "beginsPattern": {
-            "regexp": "(.*?)"
+            "regexp": "Compiling\\.\\.\\."
           },
           "endsPattern": {
-            "regexp": "bundle generation complete"
+            "regexp": "bundle generation complete|Failed to compile"
           }
         }
       }

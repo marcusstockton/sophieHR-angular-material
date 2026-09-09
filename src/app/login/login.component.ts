@@ -54,10 +54,10 @@ export class LoginComponent implements OnInit {
     this.loggingIn = true;
     const { username, password } = form.value;
 
-    var userlogin: UserLogins = new UserLogins({
+    const userlogin: UserLogins = {
       userName: username,
       password: password
-    });
+    };
 
     this.authService.getToken(userlogin).subscribe({
       next: (data) => {

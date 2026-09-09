@@ -1,13 +1,19 @@
 .company-detail {
   display: grid;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  box-sizing: border-box;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   grid-template-areas:
     'logo . header header header header'
     'menu main main main right right'
     'footer footer footer footer footer footer';
-  grid-template-rows: auto 1.5fr auto;
+  grid-template-rows: auto minmax(0, 1fr) minmax(80px, 12vh);
   grid-gap: 10px;
   background-color: #2196F3;
+  overflow: hidden;
 }
 
 .company-detail>div {

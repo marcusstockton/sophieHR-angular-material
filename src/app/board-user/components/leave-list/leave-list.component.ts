@@ -5,10 +5,10 @@ import { LeaveRequestFormComponent } from '../../dialogs/leave/leave-request-for
 import { LeaveType } from 'src/app/client';
 
 @Component({
-    selector: 'app-leave-list',
-    templateUrl: './leave-list.component.html',
-    styleUrls: ['./leave-list.component.scss'],
-    standalone: false
+  selector: 'app-leave-list',
+  templateUrl: './leave-list.component.html',
+  styleUrls: ['./leave-list.component.scss'],
+  standalone: false
 })
 export class LeaveListComponent implements OnInit {
 
@@ -41,7 +41,7 @@ export class LeaveListComponent implements OnInit {
       data: { leaveRequest, employeeId: this.employeeId }
     });
     dialogRef.afterClosed().subscribe(result => {
-      if (result instanceof LeaveRequest) {
+      if (result) {
         this.leaveRequests.push(result);
       }
     });

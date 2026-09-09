@@ -57,7 +57,7 @@ export class BoardUserComponent implements OnInit, OnDestroy {
 
     this.employeeService.getEmployee(this.employeeId!).subscribe({
       next: (employee: EmployeeDetailDto) => {
-        console.log('Employee loaded:', employee.firstName);
+        console.log('Employee loaded:', employee.firstName + " " + employee.lastName);
         this.loading = false;
         this.employeeRecord = employee;
         if (employee.dateOfBirth) {

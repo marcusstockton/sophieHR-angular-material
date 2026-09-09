@@ -25,10 +25,10 @@ export class DeptCreateDialogComponent {
 
 
   submit() {
-    var dept = new DepartmentCreateDto({
+    const dept: DepartmentCreateDto = {
       companyId: this.data.companyId,
       name: this.departmentForm.get("name")?.value
-    });
+    };
 
     if (!dept.name) {
       this._snackBar.open("Department name is required", "", { duration: 10000, panelClass: ['error-snackbar'] });

@@ -9,7 +9,7 @@
             Add Department
         </button>
     </div>
-    @if(departments.length === 0) {
+    @if(departments().length === 0) {
     <mat-card>
         <mat-card-content>
             <p>No departments found.</p>
@@ -22,7 +22,7 @@
         <div class="col-md-12">
             <mat-card>
                 <mat-card-content>
-                    @for(dept of departments; track dept.id){
+                    @for(dept of departments(); track $index){
                     <p>{{dept.name}}</p>
                     }
                 </mat-card-content>
