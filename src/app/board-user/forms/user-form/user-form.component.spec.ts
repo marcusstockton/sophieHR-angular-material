@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UntypedFormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { of } from 'rxjs';
@@ -16,16 +16,26 @@ describe('UserFormComponent', () => {
   let fixture: ComponentFixture<UserFormComponent>;
 
   beforeEach(async () => {
-    const mockEmployeesClient = jasmine.createSpyObj('EmployeesClient', ['getTitles', 'getEmployee', 'getManagersForCompanyId', 'postEmployee'])
-    mockEmployeesClient.getTitles.and.returnValue(of(["Mr", "Mrs", "Sir"]))
+    const mockEmployeesClient = jasmine.createSpyObj('EmployeesClient', [
+      'getTitles',
+      'getRoles',
+      'getEmployee',
+      'getManagersForCompanyId',
+      'postEmployee',
+    ]);
 
-    const mockCompaniesClient = jasmine.createSpyObj('CompaniesClient', ['getCompanyNames'])
+    mockEmployeesClient.getTitles.and.returnValue(of(['Mr', 'Mrs', 'Sir']));
+    mockEmployeesClient.getRoles.and.returnValue(of(['User', 'Manager', 'Admin']));
+    mockEmployeesClient.getManagersForCompanyId.and.returnValue(of([]));
+
+    const mockCompaniesClient = jasmine.createSpyObj('CompaniesClient', ['getCompanyNames']);
     const companyList: KeyValuePairOfGuidAndstring[] = [
-      new KeyValuePairOfGuidAndstring({ key: "1", value: "Test" })
-    ]
-    mockCompaniesClient.getCompanyNames.and.returnValue(of(companyList))
+      { key: '1', value: 'Test' } as KeyValuePairOfGuidAndstring
+    ];
+    mockCompaniesClient.getCompanyNames.and.returnValue(of(companyList));
 
-    const mockDepartmentsClient = jasmine.createSpyObj('DepartmentsClient', ['getDepartmentsByCompanyId'])
+    const mockDepartmentsClient = jasmine.createSpyObj('DepartmentsClient', ['getDepartmentsByCompanyId']);
+    mockDepartmentsClient.getDepartmentsByCompanyId.and.returnValue(of([]));
 
     await TestBed.configureTestingModule({
       declarations: [UserFormComponent],
@@ -35,12 +45,11 @@ describe('UserFormComponent', () => {
         { provide: EmployeesClient, useValue: mockEmployeesClient },
         { provide: CompaniesClient, useValue: mockCompaniesClient },
         { provide: DepartmentsClient, useValue: mockDepartmentsClient },
-        { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get: () => null, } } } },
+        { provide: ActivatedRoute, useValue: { paramMap: of(convertToParamMap({})) } },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

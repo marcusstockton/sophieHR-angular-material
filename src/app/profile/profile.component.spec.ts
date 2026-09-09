@@ -9,16 +9,22 @@ describe('ProfileComponent', () => {
   let mockTokenStorageService: jasmine.SpyObj<TokenStorageService>;
 
   beforeEach(async () => {
-    // Mock TokenStorageService
     mockTokenStorageService = jasmine.createSpyObj('TokenStorageService', ['getToken', 'getUser']);
     mockTokenStorageService.getToken.and.returnValue('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c');
-    mockTokenStorageService.getUser.and.returnValue({ id: "1", userName: 'testuser', email: 'test@example.com' });
+    mockTokenStorageService.getUser.and.returnValue({
+      id: '1',
+      userName: 'testuser',
+      email: 'test@example.com',
+      token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+      role: 'User',
+      expiredTime: new Date('2099-01-01T00:00:00Z')
+    });
 
     await TestBed.configureTestingModule({
       declarations: [ProfileComponent],
-      imports: [HttpClientTestingModule], // Import HttpClientTestingModule if HttpClient is used
+      imports: [HttpClientTestingModule],
       providers: [
-        { provide: TokenStorageService, useValue: mockTokenStorageService } // Provide the mocked TokenStorageService
+        { provide: TokenStorageService, useValue: mockTokenStorageService }
       ]
     }).compileComponents();
   });

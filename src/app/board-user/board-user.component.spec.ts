@@ -12,27 +12,26 @@ describe('BoardUserComponent', () => {
   let fixture: ComponentFixture<BoardUserComponent>;
 
   beforeEach(async () => {
+    const employee: EmployeeDetailDto = {
+      id: '1',
+      title: 'Tester'
+    };
 
-    const employee = new EmployeeDetailDto({
-      id: "1",
-      title: "Tester"
-    })
-
-    const mockEmployeesClient = jasmine.createSpyObj('EmployeesClient', ['getEmployee'])
+    const mockEmployeesClient = jasmine.createSpyObj('EmployeesClient', ['getEmployee']);
     mockEmployeesClient.getEmployee.and.returnValue(of(employee));
 
-    const mockDomSanitizer = jasmine.createSpyObj('DomSanitizer', ['bypassSecurityTrustUrl'])
+    const mockDomSanitizer = jasmine.createSpyObj('DomSanitizer', ['bypassSecurityTrustUrl']);
 
     await TestBed.configureTestingModule({
-      imports:[RouterTestingModule],
+      imports: [RouterTestingModule],
       declarations: [BoardUserComponent],
       providers: [
-        { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get: () => null, } } } },
+        { provide: ActivatedRoute, useValue: { paramMap: of(convertToParamMap({})) } },
         { provide: EmployeesClient, useValue: mockEmployeesClient },
         { provide: DomSanitizer, useValue: mockDomSanitizer },
       ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -12,20 +12,23 @@ describe('LoginComponent', () => {
   let fixture: ComponentFixture<LoginComponent>;
 
   beforeEach(async () => {
-    const mockAccountClient = jasmine.createSpyObj('AccountClient', ['getToken', 'getListOfManagers'])
-    mockAccountClient.getListOfManagers.and.returnValue(of(["Manager1", "Manager2", "Manager3", "Manager4"]))
-    const mockTokenStorageService = jasmine.createSpyObj('TokenStorageService', ['getToken', 'getUser', 'saveToken', 'saveUser'])
+    const mockAccountClient = jasmine.createSpyObj('AccountClient', ['getToken', 'getListOfManagers', 'getListOfCompanyAdmins']);
+    mockAccountClient.getListOfManagers.and.returnValue(of(['Manager1', 'Manager2', 'Manager3', 'Manager4']));
+    mockAccountClient.getListOfCompanyAdmins.and.returnValue(of(['Admin1', 'Admin2']));
+
+    const mockTokenStorageService = jasmine.createSpyObj('TokenStorageService', ['getToken', 'getUser', 'saveToken', 'saveUser']);
+    mockTokenStorageService.getToken.and.returnValue(null);
+    mockTokenStorageService.getUser.and.returnValue(null);
 
     await TestBed.configureTestingModule({
-      declarations: [ LoginComponent ],
-      imports:[RouterTestingModule],
+      declarations: [LoginComponent],
+      imports: [RouterTestingModule],
       providers: [
-        {provide: AccountClient, useValue: mockAccountClient},
-        {provide: TokenStorageService, useValue: mockTokenStorageService},
+        { provide: AccountClient, useValue: mockAccountClient },
+        { provide: TokenStorageService, useValue: mockTokenStorageService },
         UntypedFormBuilder,
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

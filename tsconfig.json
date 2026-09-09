@@ -17,6 +17,9 @@
     "declaration": false,
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
+    "types": [
+      "jasmine"
+    ],
     "importHelpers": true,
     "ignoreDeprecations": "6.0",
     "target": "ES2022",

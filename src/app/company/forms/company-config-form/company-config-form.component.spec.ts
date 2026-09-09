@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CompanyConfigFormComponent } from './company-config-form.component';
@@ -7,11 +8,17 @@ describe('CompanyConfigFormComponent', () => {
   let fixture: ComponentFixture<CompanyConfigFormComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [CompanyConfigFormComponent]
-    })
-    .compileComponents();
+    const mockLocation = jasmine.createSpyObj('Location', ['back']);
 
+    await TestBed.configureTestingModule({
+      declarations: [CompanyConfigFormComponent],
+      providers: [
+        { provide: Location, useValue: mockLocation },
+      ]
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(CompanyConfigFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

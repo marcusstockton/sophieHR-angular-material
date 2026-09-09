@@ -11,30 +11,33 @@ describe('BoardManagerComponent', () => {
   let fixture: ComponentFixture<BoardManagerComponent>;
 
   beforeEach(async () => {
-    const mockCompaniesClient = jasmine.createSpyObj('CompaniesClient', ['getCompany'])
-    mockCompaniesClient.getCompany.and.returnValue(of(new CompanyDetailDto({id: "1", name: "Test" })))
+    const company: CompanyDetailDto = {
+      id: '1',
+      name: 'Test'
+    };
 
-    const mockTokenStorageService = jasmine.createSpyObj('TokenStorageService',['getUser'])
-    mockTokenStorageService.getUser.and.returnValue(of({'companyId': 1, 'id': 1}));
+    const mockCompaniesClient = jasmine.createSpyObj('CompaniesClient', ['getCompany']);
+    mockCompaniesClient.getCompany.and.returnValue(of(company));
 
-    const mockEmployeesClient = jasmine.createSpyObj('EmployeesClient', ['getEmployeesForManager'])
+    const mockTokenStorageService = jasmine.createSpyObj('TokenStorageService', ['getUser']);
+    mockTokenStorageService.getUser.and.returnValue({ companyId: '1', id: '1', role: 'Manager' });
 
-    var employees: EmployeeListDto[] = [
-      new EmployeeListDto({id: '1'}),
-      new EmployeeListDto({id: '2'})
-    ]
-    mockEmployeesClient.getEmployeesForManager.and.returnValue(of(employees))
+    const mockEmployeesClient = jasmine.createSpyObj('EmployeesClient', ['getEmployeesForManager']);
+    const employees: EmployeeListDto[] = [
+      { id: '1' } as EmployeeListDto,
+      { id: '2' } as EmployeeListDto
+    ];
+    mockEmployeesClient.getEmployeesForManager.and.returnValue(of(employees));
 
     await TestBed.configureTestingModule({
-      declarations: [ BoardManagerComponent ],
-      imports:[RouterTestingModule],
-      providers:[
+      declarations: [BoardManagerComponent],
+      imports: [RouterTestingModule],
+      providers: [
         { provide: CompaniesClient, useValue: mockCompaniesClient },
-        { provide: TokenStorageService, useValue: mockTokenStorageService},
+        { provide: TokenStorageService, useValue: mockTokenStorageService },
         { provide: EmployeesClient, useValue: mockEmployeesClient },
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
