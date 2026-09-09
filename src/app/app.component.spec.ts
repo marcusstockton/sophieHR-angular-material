@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { MatSidenav } from '@angular/material/sidenav';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { AppComponent } from './app.component';
 import { CompaniesClient } from './client';
 import { TokenStorageService } from './_services/token-storage.service';
@@ -12,13 +12,11 @@ describe('AppComponent', () => {
     const mockUserService = jasmine.createSpyObj('UserService', ['updateCompanyId'])
     const mockCompaniesClient = jasmine.createSpyObj('CompaniesClient', ['getCompanyNames'])
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
       declarations: [
         AppComponent
       ],
       providers: [
+        provideRouter([]),
         { provide: TokenStorageService, useValue: mockTokenStorageService },
         { provide: UserService, useValue: mockUserService },
         { provide: CompaniesClient, useValue: mockCompaniesClient }

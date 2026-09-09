@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { CompaniesClient, DepartmentsClient, EmployeesClient } from '../client';
 
 import { BoardAdminComponent } from './board-admin.component';
@@ -15,9 +15,9 @@ describe('BoardAdminComponent', () => {
     const mockDepartmentsClient = jasmine.createSpyObj('DepartmentsClient', ['getDepartmentsByCompanyId'])
 
     await TestBed.configureTestingModule({
-      declarations: [ BoardAdminComponent ], 
-      imports:[RouterTestingModule],
-      providers:[
+      declarations: [BoardAdminComponent],
+      providers: [
+        provideRouter([]),
         { provide: CompaniesClient, useValue: mockCompaniesClient },
         { provide: EmployeesClient, useValue: mockEmployeesClient },
         { provide: EmployeesClient, useValue: mockEmployeesClient },
@@ -25,7 +25,7 @@ describe('BoardAdminComponent', () => {
         { provide: MatDialog, useValue: {} },
       ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

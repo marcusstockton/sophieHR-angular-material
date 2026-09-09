@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { inject, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter, Router } from '@angular/router';
 import { TokenStorageService } from '../_services/token-storage.service';
 
 import { AuthGuard } from './auth.guard';
@@ -11,8 +10,8 @@ describe('AuthGuard', () => {
   const mockTokenStorageService = jasmine.createSpyObj('TokenStorageService', ['isLoggedIn'])
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
       providers: [
+        provideRouter([]),
         { provide: TokenStorageService, useValue: mockTokenStorageService },
       ]
     });

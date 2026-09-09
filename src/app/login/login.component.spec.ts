@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UntypedFormBuilder } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { AccountClient } from '../client';
 import { TokenStorageService } from '../_services/token-storage.service';
@@ -22,8 +22,8 @@ describe('LoginComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [LoginComponent],
-      imports: [RouterTestingModule],
       providers: [
+        provideRouter([]),
         { provide: AccountClient, useValue: mockAccountClient },
         { provide: TokenStorageService, useValue: mockTokenStorageService },
         UntypedFormBuilder,

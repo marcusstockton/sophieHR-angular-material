@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { CompaniesClient, CompanyDetailDto, EmployeeListDto, EmployeesClient } from '../client';
 import { TokenStorageService } from '../_services/token-storage.service';
@@ -31,8 +31,8 @@ describe('BoardManagerComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [BoardManagerComponent],
-      imports: [RouterTestingModule],
       providers: [
+        provideRouter([]),
         { provide: CompaniesClient, useValue: mockCompaniesClient },
         { provide: TokenStorageService, useValue: mockTokenStorageService },
         { provide: EmployeesClient, useValue: mockEmployeesClient },

@@ -1,14 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UntypedFormBuilder } from '@angular/forms';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { CompaniesClient, DepartmentsClient, EmployeesClient, KeyValuePairOfGuidAndstring } from 'src/app/client';
 
 import { UserFormComponent } from './user-form.component';
 import { BoardUserModule } from '../../board-user.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('UserFormComponent', () => {
@@ -39,9 +37,10 @@ describe('UserFormComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [UserFormComponent],
-      imports: [RouterTestingModule, BrowserAnimationsModule, BoardUserModule],
+      imports: [BoardUserModule],
       providers: [
         UntypedFormBuilder,
+        provideRouter([]),
         { provide: EmployeesClient, useValue: mockEmployeesClient },
         { provide: CompaniesClient, useValue: mockCompaniesClient },
         { provide: DepartmentsClient, useValue: mockDepartmentsClient },

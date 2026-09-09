@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { EmployeeDetailDto, EmployeesClient } from '../client';
 
@@ -23,9 +22,9 @@ describe('BoardUserComponent', () => {
     const mockDomSanitizer = jasmine.createSpyObj('DomSanitizer', ['bypassSecurityTrustUrl']);
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
       declarations: [BoardUserComponent],
       providers: [
+        provideRouter([]),
         { provide: ActivatedRoute, useValue: { paramMap: of(convertToParamMap({})) } },
         { provide: EmployeesClient, useValue: mockEmployeesClient },
         { provide: DomSanitizer, useValue: mockDomSanitizer },
