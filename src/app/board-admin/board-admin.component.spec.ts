@@ -4,6 +4,7 @@ import { provideRouter } from '@angular/router';
 import { CompaniesClient, DepartmentsClient, EmployeesClient } from '../client';
 
 import { BoardAdminComponent } from './board-admin.component';
+import { MaterialModule } from '../material/material.module';
 
 describe('BoardAdminComponent', () => {
   let component: BoardAdminComponent;
@@ -15,6 +16,7 @@ describe('BoardAdminComponent', () => {
     const mockDepartmentsClient = jasmine.createSpyObj('DepartmentsClient', ['getDepartmentsByCompanyId'])
 
     await TestBed.configureTestingModule({
+      imports: [MaterialModule],
       declarations: [BoardAdminComponent],
       providers: [
         provideRouter([]),

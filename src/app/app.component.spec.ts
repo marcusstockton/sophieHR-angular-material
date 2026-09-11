@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { CompaniesClient } from './client';
 import { TokenStorageService } from './_services/token-storage.service';
 import { UserService } from './_services/user.service';
+import { MaterialModule } from './material/material.module';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -12,6 +13,7 @@ describe('AppComponent', () => {
     const mockUserService = jasmine.createSpyObj('UserService', ['updateCompanyId'])
     const mockCompaniesClient = jasmine.createSpyObj('CompaniesClient', ['getCompanyNames'])
     await TestBed.configureTestingModule({
+      imports: [MaterialModule],
       declarations: [
         AppComponent
       ],

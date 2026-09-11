@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 import { LeaveRequestsClient } from 'src/app/client';
 
 import { LeaveListComponent } from './leave-list.component';
+import { MaterialModule } from 'src/app/material/material.module';
 
 describe('LeaveListComponent', () => {
   let component: LeaveListComponent;
@@ -17,6 +18,7 @@ describe('LeaveListComponent', () => {
     mockMatDialog.open.and.returnValue({ afterClosed: () => of(null) });
 
     await TestBed.configureTestingModule({
+      imports: [MaterialModule],
       declarations: [LeaveListComponent],
       providers: [
         { provide: LeaveRequestsClient, useValue: mockLeaveRequestsClient },

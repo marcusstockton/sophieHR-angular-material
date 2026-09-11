@@ -8,13 +8,17 @@ import { CompaniesClient, DepartmentsClient, EmployeesClient, KeyValuePairOfGuid
 import { UserFormComponent } from './user-form.component';
 import { BoardUserModule } from '../../board-user.module';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { MaterialModule } from 'src/app/material/material.module';
 
 describe('UserFormComponent', () => {
   let component: UserFormComponent;
   let fixture: ComponentFixture<UserFormComponent>;
+  let mockEmployeesClient: jasmine.SpyObj<EmployeesClient>;
+  let mockCompaniesClient: jasmine.SpyObj<CompaniesClient>;
+  let mockDepartmentsClient: jasmine.SpyObj<DepartmentsClient>;
 
   beforeEach(async () => {
-    const mockEmployeesClient = jasmine.createSpyObj('EmployeesClient', [
+    mockEmployeesClient = jasmine.createSpyObj('EmployeesClient', [
       'getTitles',
       'getRoles',
       'getEmployee',
@@ -26,18 +30,18 @@ describe('UserFormComponent', () => {
     mockEmployeesClient.getRoles.and.returnValue(of(['User', 'Manager', 'Admin']));
     mockEmployeesClient.getManagersForCompanyId.and.returnValue(of([]));
 
-    const mockCompaniesClient = jasmine.createSpyObj('CompaniesClient', ['getCompanyNames']);
+    mockCompaniesClient = jasmine.createSpyObj('CompaniesClient', ['getCompanyNames']);
     const companyList: KeyValuePairOfGuidAndstring[] = [
       { key: '1', value: 'Test' } as KeyValuePairOfGuidAndstring
     ];
     mockCompaniesClient.getCompanyNames.and.returnValue(of(companyList));
 
-    const mockDepartmentsClient = jasmine.createSpyObj('DepartmentsClient', ['getDepartmentsByCompanyId']);
+    mockDepartmentsClient = jasmine.createSpyObj('DepartmentsClient', ['getDepartmentsByCompanyId']);
     mockDepartmentsClient.getDepartmentsByCompanyId.and.returnValue(of([]));
 
     await TestBed.configureTestingModule({
       declarations: [UserFormComponent],
-      imports: [BoardUserModule],
+      imports: [BoardUserModule, MaterialModule],
       providers: [
         UntypedFormBuilder,
         provideRouter([]),
@@ -59,5 +63,20 @@ describe('UserFormComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should load the title, role and company lookup sources into component state', () => {
+    expect(mockEmployeesClient.getTitles).toHaveBeenCalled();
+    expect(mockEmployeesClient.getRoles).toHaveBeenCalled();
+    expect(mockCompaniesClient.getCompanyNames).toHaveBeenCalled();
+    expect(component.titles).toEqual(['Mr', 'Mrs', 'Sir']);
+    expect(component.employeeTypes).toEqual(['User', 'Manager', 'Admin']);
+    expect(component.companies.length).toBe(1);
+    expect(component.companies[0].key).toBe('1');
+  });
+
+  it('should request the manager and department lists when the only company in the company dropdown is preselected', () => {
+    expect(mockEmployeesClient.getManagersForCompanyId).toHaveBeenCalledWith('1');
+    expect(mockDepartmentsClient.getDepartmentsByCompanyId).toHaveBeenCalledWith('1');
   });
 });

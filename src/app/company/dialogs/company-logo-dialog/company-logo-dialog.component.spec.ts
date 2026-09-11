@@ -3,6 +3,7 @@ import { CompanyLogoDialogComponent } from './company-logo-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CompaniesClient } from 'src/app/client';
 import { of } from 'rxjs';
+import { MaterialModule } from 'src/app/material/material.module';
 
 describe('CompanyLogoDialogComponent', () => {
   let component: CompanyLogoDialogComponent;
@@ -14,6 +15,7 @@ describe('CompanyLogoDialogComponent', () => {
     mockCompaniesClient.uploadLogo.and.returnValue(of(undefined));
 
     TestBed.configureTestingModule({
+      imports: [MaterialModule],
       declarations: [CompanyLogoDialogComponent],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },

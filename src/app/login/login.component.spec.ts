@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UntypedFormBuilder } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
 import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { AccountClient } from '../client';
 import { TokenStorageService } from '../_services/token-storage.service';
 
 import { LoginComponent } from './login.component';
+import { MaterialModule } from '../material/material.module';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -21,6 +22,7 @@ describe('LoginComponent', () => {
     mockTokenStorageService.getUser.and.returnValue(null);
 
     await TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule, MaterialModule],
       declarations: [LoginComponent],
       providers: [
         provideRouter([]),

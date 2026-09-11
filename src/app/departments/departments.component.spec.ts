@@ -6,6 +6,7 @@ import { DepartmentsClient } from '../client';
 import { TokenStorageService } from '../_services/token-storage.service';
 
 import { DepartmentsComponent } from './departments.component';
+import { MaterialModule } from '../material/material.module';
 
 describe('DepartmentsComponent', () => {
   let component: DepartmentsComponent;
@@ -23,7 +24,7 @@ describe('DepartmentsComponent', () => {
     mockDialog.open.and.returnValue({ afterClosed: () => of(null) });
 
     await TestBed.configureTestingModule({
-      imports: [DepartmentsComponent],
+      imports: [DepartmentsComponent, MaterialModule],
       providers: [
         { provide: DepartmentsClient, useValue: mockDepartmentClient },
         { provide: TokenStorageService, useValue: mockTokenStorageService },
