@@ -8,6 +8,7 @@ import { CompaniesClient, DepartmentDetailDto, DepartmentsClient, EmployeeAddres
 import { startWith, debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RandomUser } from 'src/app/models/RandomUser';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-user-form',
@@ -85,7 +86,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
       if (this.editing) {
         const id = this.currentUserId;
-        this.http.post(`https://localhost:7189/api/Employees/${id}/upload-avatar`, formData).subscribe({
+        this.http.post(`${environment.base_url}/api/Employees/${id}/upload-avatar`, formData).subscribe({
           next: () => {
             this._snackBar.open('Avatar updated', 'OK', { duration: 5000, panelClass: ['success-snackbar'] });
             this.cdr.detectChanges();
@@ -266,7 +267,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
         next: (result: EmployeeDetailDto) => {
           if (result.id) {
             var formData = form.controls['avatar'].value;
-            this.http.post(`https://localhost:7189/api/Employees/${result.id}/upload-avatar`, formData).subscribe({
+            this.http.post(`${environment.base_url}/api/Employees/${result.id}/upload-avatar`, formData).subscribe({
               next: res => {
                 this._snackBar.open("Employee created successfully", "Ok", { duration: 5000, panelClass: ["success-snackbar"] })
               }, error: err =>
